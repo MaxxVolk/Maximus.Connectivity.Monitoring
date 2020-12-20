@@ -1,0 +1,61 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <EntityTypes>
+      <ClassTypes>
+
+        <ClassType ID="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName" Accessibility="Public" Base="System!System.Entity" Abstract="false"
+                   Hosted="false" Singleton="false"
+                   Comment="The root class to define a destination address for other test classes hosted at this.">
+          <Property ID="FullyQualifiedDomainName" Type="string" Key="true" Comment="Just FQDN without any protocol preffixes."/>
+          <!-- Base tests enablers -->
+          <Property ID="EnableDNSTest" Type="bool" DefaultValue="true" />
+          <Property ID="EnablePingTest" Type="bool" DefaultValue="true" />
+          <!-- Other settings -->
+          <Property ID="CustomDNSServerList" Type="string"/>
+        </ClassType>
+
+        <ClassType ID="Maximus.Connectivity.Monitoring.Test.SSL" Accessibility="Public" Base="System!System.Entity" Abstract="false"
+                   Hosted="true" Singleton="false"
+                   Comment="Enables SSL test for its parent FQDN object. Defines additional testing parameters.">
+          <Property ID="Schema" Type="string" Key="true" Comment="Secure schema such as https, ldaps, smtps, etc. If empty or non-standard, then port number should be defined."/>
+          <Property ID="Port" Type="int" Key="true" DefaultValue="-1" Comment="Defines portt for secure connection, overrides default schema's value."/>
+          <!-- Testing options -->
+          <Property ID="IgnoreRevocationCheck" Type="bool" Comment="X509ChainPolicy.RevocationMode" />
+          <Property ID="ApplicationPolicy" Type="string" Comment="List of OIDs for X509ChainPolicy.ApplicationPolicy" />
+          <Property ID="CertificatePolicy" Type="string" Comment="List of OIDs for X509ChainPolicy.CertificatePolicy" />
+          <Property ID="AllowUnknownCertificateAuthority" Type="bool" />
+          <Property ID="IgnoreCertificateAuthorityRevocationUnknown" Type="bool" />
+          <Property ID="IgnoreCtlNotTimeValid" Type="bool" />
+          <Property ID="IgnoreCtlSignerRevocationUnknown" Type="bool" />
+          <Property ID="IgnoreEndRevocationUnknown" Type="bool" />
+          <Property ID="IgnoreInvalidBasicConstraints" Type="bool" />
+          <Property ID="IgnoreInvalidName" Type="bool" />
+          <Property ID="IgnoreInvalidPolicy" Type="bool" />
+          <Property ID="IgnoreNotTimeNested" Type="bool" />
+          <Property ID="IgnoreNotTimeValid" Type="bool" />
+          <Property ID="IgnoreRootRevocationUnknown" Type="bool" />
+          <Property ID="IgnoreWrongUsage" Type="bool" />
+        </ClassType>
+
+        <ClassType ID="Maximus.Connectivity.Monitoring.Test.HTTP" Accessibility="Public" Base="System!System.Entity" Abstract="false"
+                   Hosted="true" Singleton="false"
+                   Comment="Enables HTTP test for its parent FQDN object. Defines additional testing parameters." >
+          <Property ID="Name" Type="string" Key="true" Comment="Uniqie test name."/>
+          <Property ID="Schema" Type="string" Comment="http or https"/>
+          <Property ID="Path" Type="string" Comment="Full url is schema + parent.FullyQualifiedDomainName + path"/>
+          <!-- Testing options -->
+          <Property ID="AllowRedirect" Type="bool" DefaultValue="true"/>
+          <Property ID="RegularExpression" Type="string"/>
+        </ClassType>
+      </ClassTypes>
+    </EntityTypes>
+  </TypeDefinitions>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        
+
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>
