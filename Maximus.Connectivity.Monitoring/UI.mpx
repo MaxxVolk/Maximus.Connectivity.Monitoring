@@ -1,0 +1,44 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Categories>
+    <Category ID="Maximus.Connectivity.Monitoring.UIControl.Category" Target="Maximus.Connectivity.Monitoring.UI.Control.Assembly"
+              Value="Visualization!Microsoft.SystemCenter.Visualization.WindowsAssembly" />
+  </Categories>
+  <PresentationTypes>
+    <ViewTypes>
+      <ViewType ID="Maximus.Connectivity.Monitoring.UIControl.ViewType" Accessibility="Public">
+        <Configuration />
+        <ViewImplementation>
+          <Assembly>Maximus.Connectivity.Monitoring.UI.Control.Assembly</Assembly>
+          <Type>Maximus.Connectivity.UI.Control.FQDNGridView</Type>
+        </ViewImplementation>
+      </ViewType>
+    </ViewTypes>
+  </PresentationTypes>
+  <Presentation>
+    <Views>
+      <View ID="Maximus.Connectivity.Monitoring.UIControl.View" Accessibility="Public" Enabled="true" Visible="true"
+            TypeID="Maximus.Connectivity.Monitoring.UIControl.ViewType" Target="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName">
+        <Category>Operations</Category>
+      </View>
+    </Views>
+    <Folders>
+      <Folder ID="Maximus.Connectivity.Monitoring.Root.Folder" Accessibility="Public" ParentFolder="SC!Microsoft.SystemCenter.Monitoring.ViewFolder.Root" />
+    </Folders>
+    <FolderItems>
+      <FolderItem ID="Maximus.Connectivity.Monitoring.UIControl.FolderItem" ElementID="Maximus.Connectivity.Monitoring.UIControl.View"
+                  Folder="Maximus.Connectivity.Monitoring.Root.Folder"/>
+    </FolderItems>
+  </Presentation>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.UIControl.View">
+          <Name>Destination State and Editor</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Root.Folder">
+          <Name>Maximus Connectivity Monitoring</Name>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

@@ -6,19 +6,52 @@
         <ClassType ID="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName" Accessibility="Public" Base="System!System.Entity" Abstract="false"
                    Hosted="false" Singleton="false"
                    Comment="The root class to define a destination address for other test classes hosted at this.">
-          <Property ID="FullyQualifiedDomainName" Type="string" Key="true" Comment="Just FQDN without any protocol preffixes."/>
-          <!-- Base tests enablers -->
-          <Property ID="EnableDNSTest" Type="bool" DefaultValue="true" />
-          <Property ID="EnablePingTest" Type="bool" DefaultValue="true" />
-          <!-- Other settings -->
-          <Property ID="CustomDNSServerList" Type="string"/>
+          <!-- Inherited property 
+          <Property ID="DisplayName" Type="string" AutoIncrement="false" Key="false" CaseSensitive="false" MaxLength="4000" MinLength="0" Required="false" Scale="0" />
+          -->
+          <Property ID="FullyQualifiedDomainName" Type="string" Key="true" Comment="Just FQDN without any protocol prefixes."/>
+          <Property ID="TargetIndex" Type="int" Key="true" DefaultValue="0" Comment="Enables FQDN duplicates when required." />
+          <Property ID="Description" Type="string" MaxLength="1024" />
         </ClassType>
 
-        <ClassType ID="Maximus.Connectivity.Monitoring.Test.SSL" Accessibility="Public" Base="System!System.Entity" Abstract="false"
+        <ClassType ID="Maximus.Connectivity.Monitoring.Template" Accessibility="Internal" Base="System!System.Entity" Abstract="false"
+                   Hosted="false" Singleton="false"
+                   Comment="Universal test template.">
+          <Property ID="Name" Type="string" Key="true" />
+          <Property ID="Template" Type="string" MaxLength="8000" Comment="JSON object ClassId:{PropertyId=>Value}" />
+        </ClassType>
+
+        <ClassType ID="Maximus.Connectivity.Monitoring.Test" Accessibility="Public" Base="System!System.Entity" Abstract="true"
+                   Hosted="true" Singleton="false"
+                   Comment="Base class for all tests. Has template name.">
+          <Property ID="TestId" Type="guid" Key="true"/>
+          <Property ID="TemplateReference" Type="string" Comment="Template reference"/>
+          <Property ID="IntervalSeconds" Type="int" DefaultValue="600" />
+          <Property ID="MatchCount" Type="int" DefaultValue="3"/>
+          <Property ID="SampleCount" Type="int" DefaultValue="4"/>
+        </ClassType>
+
+        <ClassType ID="Maximus.Connectivity.Monitoring.Test.Ping" Accessibility="Public" Base="Maximus.Connectivity.Monitoring.Test" Abstract="false"
+                   Hosted="true"
+                   Comment="Enables Ping test and defines additional parameters.">
+          <Property ID="MaxRTT" Type="int" />
+          <Property ID="MaxTTL" Type="int" DefaultValue="128"/>
+          <Property ID="BufferSize" Type="int" DefaultValue="32"/>
+          <Property ID="Timeout" Type="int"/>
+          <Property ID="DontFragment" Type="bool" DefaultValue="true" />
+        </ClassType>
+
+        <ClassType ID="Maximus.Connectivity.Monitoring.Test.DNSNameResolution" Accessibility="Public" Base="Maximus.Connectivity.Monitoring.Test" Abstract="false"
+                   Hosted="true"
+                   Comment="Enables DNS name test and defines additional parameters.">
+          
+        </ClassType>
+
+        <ClassType ID="Maximus.Connectivity.Monitoring.Test.SSL" Accessibility="Public" Base="Maximus.Connectivity.Monitoring.Test" Abstract="false"
                    Hosted="true" Singleton="false"
                    Comment="Enables SSL test for its parent FQDN object. Defines additional testing parameters.">
-          <Property ID="Schema" Type="string" Key="true" Comment="Secure schema such as https, ldaps, smtps, etc. If empty or non-standard, then port number should be defined."/>
-          <Property ID="Port" Type="int" Key="true" DefaultValue="-1" Comment="Defines portt for secure connection, overrides default schema's value."/>
+          <Property ID="Schema" Type="string" Comment="Secure schema such as https, ldaps, smtps, etc. If empty or non-standard, then port number should be defined."/>
+          <Property ID="Port" Type="int" DefaultValue="-1" Comment="Defines portt for secure connection, overrides default schema's value."/>
           <!-- Testing options -->
           <Property ID="IgnoreRevocationCheck" Type="bool" Comment="X509ChainPolicy.RevocationMode" />
           <Property ID="ApplicationPolicy" Type="string" Comment="List of OIDs for X509ChainPolicy.ApplicationPolicy" />
@@ -37,24 +70,223 @@
           <Property ID="IgnoreWrongUsage" Type="bool" />
         </ClassType>
 
-        <ClassType ID="Maximus.Connectivity.Monitoring.Test.HTTP" Accessibility="Public" Base="System!System.Entity" Abstract="false"
+        <ClassType ID="Maximus.Connectivity.Monitoring.Test.HTTP" Accessibility="Public" Base="Maximus.Connectivity.Monitoring.Test" Abstract="false"
                    Hosted="true" Singleton="false"
                    Comment="Enables HTTP test for its parent FQDN object. Defines additional testing parameters." >
-          <Property ID="Name" Type="string" Key="true" Comment="Uniqie test name."/>
           <Property ID="Schema" Type="string" Comment="http or https"/>
-          <Property ID="Path" Type="string" Comment="Full url is schema + parent.FullyQualifiedDomainName + path"/>
+          <Property ID="Path" Type="string" Comment="Full url is schema + parent.FullyQualifiedDomainName + path."/>
           <!-- Testing options -->
           <Property ID="AllowRedirect" Type="bool" DefaultValue="true"/>
+          <Property ID="HTTPMethod" Type="string"/>
+          <Property ID="RequestBody" Type="string" MaxLength="2000" Comment="Request body for PUT method."/>
           <Property ID="RegularExpression" Type="string"/>
+          <Property ID="ExpressionIsNegative" Type="bool"/>
+          <Property ID="ExtraHeaders" Type="string"/>
+          <Property ID="Host" Type="string"/>
+          <Property ID="Accept" Type="string"/>
+          <Property ID="ContentType" Type="string"/>
+          <Property ID="UserAgent" Type="string"/>
         </ClassType>
+        
       </ClassTypes>
+      <RelationshipTypes>
+        <RelationshipType ID="Maximus.Connectivity.Monitoring.Test.HostedAt.FullyQualifiedDomainName" Base="System!System.Hosting" Abstract="false" Accessibility="Public">
+          <Source ID="FullyQualifiedDomainName" Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName" />
+          <Target ID="Test" Type="Maximus.Connectivity.Monitoring.Test" />
+        </RelationshipType>
+      </RelationshipTypes>
     </EntityTypes>
   </TypeDefinitions>
   <LanguagePacks>
     <LanguagePack ID="ENU" IsDefault="true">
       <DisplayStrings>
         
+        <!-- Maximus.Connectivity.Monitoring.FullyQualifiedDomainName -->
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName">
+          <Name>Fully Qualified Domain Name</Name>
+          <Description>Base class for network connectivity testing.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName" SubElementID="FullyQualifiedDomainName">
+          <Name>Fully Qualified Domain Name</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName" SubElementID="Description">
+          <Name>Description</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName" SubElementID="TargetIndex">
+          <Name>Index</Name>
+          <Description>Enables duplicate FQDNs.</Description>
+        </DisplayString>
+        
+        <!-- Maximus.Connectivity.Monitoring.Template -->
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Template">
+          <Name>Connectivity Test Template</Name>
+          <Description>Connectivity test template. For internal use only.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Template" SubElementID="Name">
+          <Name>Template Name</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Template" SubElementID="Template">
+          <Name>Content</Name>
+        </DisplayString>
 
+        <!-- Maximus.Connectivity.Monitoring.Test -->
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test">
+          <Name>Connectivity Test Base (Abstract)</Name>
+          <Description>Base class for all connectivity tests to support templates.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test" SubElementID="TemplateReference">
+          <Name>Template Reference</Name>
+          <Description>If set, test parameters will be overridden from the template and then follow template changes. Direct editing will be prohibited.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test" SubElementID="IntervalSeconds">
+          <Name>Test Interval</Name>
+          <Description>Interval between probes in seconds. Might be not applicable for some tests.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test" SubElementID="MatchCount">
+          <Name>Matches To Alert</Name>
+          <Description>Number of failed probes in a series before triggering an alert.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test" SubElementID="SampleCount">
+          <Name>Sample Series Size</Name>
+          <Description>Probe series size. Should be greater or equal to 'Matches To Alert'.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test" SubElementID="TestId">
+          <Name>Id</Name>
+        </DisplayString>
+
+        <!-- Maximus.Connectivity.Monitoring.Test.Ping -->
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping">
+          <Name>Connectivity Test - Ping</Name>
+          <Description>Settings for ping test.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping" SubElementID="MaxRTT">
+          <Name>Max RTT</Name>
+          <Description>Maximum RTT value in milliseconds. Set to 0 to keep system default option.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping" SubElementID="MaxTTL">
+          <Name>Max TTL</Name>
+          <Description>Maximum TTL value in hops. Set to 0 to keep system default option.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping" SubElementID="BufferSize">
+          <Name>Buffer Size</Name>
+          <Description>ICMP buffer size in bytes.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping" SubElementID="DontFragment">
+          <Name>Don't Fragment</Name>
+          <Description>Disable packet fragmentation.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping" SubElementID="Timeout">
+          <Name>Timeout</Name>
+          <Description>Ping timeout in milliseconds. Set to 0 to keep system default option.</Description>
+        </DisplayString>
+        
+        <!-- Maximus.Connectivity.Monitoring.Test.DNSNameResolution -->
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.DNSNameResolution">
+          <Name>Connectivity Test - DNS Name Resolution</Name>
+          <Description>Settings for DNS name test.</Description>
+        </DisplayString>
+        
+        <!-- Maximus.Connectivity.Monitoring.Test.SSL -->
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL">
+          <Name>Connectivity Test - Secure Socket Layer Connection</Name>
+          <Description>Settings for SSL connection testing.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="AllowUnknownCertificateAuthority">
+          <Name>Allow Unknown Certificate Authority</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="ApplicationPolicy">
+          <Name>Application Policy OIDs</Name>
+          <Description>List of OIDs for X509 Chain Application Policy</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="CertificatePolicy">
+          <Name>Certificate Policy OIDs</Name>
+          <Description>List of OIDs for X509 Chain Certificate Policy</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreCertificateAuthorityRevocationUnknown">
+          <Name>Ignore Certificate Authority Revocation Unknown</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreCtlNotTimeValid">
+          <Name>Ignore CTL Not Time Valid</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreCtlSignerRevocationUnknown">
+          <Name>Ignore CTL Signer Revocation Unknown</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreEndRevocationUnknown">
+          <Name>Ignore End Revocation Unknown</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreInvalidBasicConstraints">
+          <Name>Ignore Invalid Basic Constraints</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreInvalidName">
+          <Name>Ignore Invalid Name</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreInvalidPolicy">
+          <Name>Ignore Invalid Policy</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreNotTimeNested">
+          <Name>Ignore Not Time Nested</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreNotTimeValid">
+          <Name>Ignore Not Time Valid</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreRevocationCheck">
+          <Name>Ignore Revocation Check</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreRootRevocationUnknown">
+          <Name>Ignore Root Revocation Unknown</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreWrongUsage">
+          <Name>Ignore Wrong Usage</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="Port">
+          <Name>Port</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="Schema">
+          <Name>Schema</Name>
+        </DisplayString>
+        
+        <!-- Maximus.Connectivity.Monitoring.Test.HTTP -->
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP">
+          <Name>Connectivity Test - HTTP Probe</Name>
+          <Description>Settings for HTTP Probe testing.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="Accept">
+          <Name>Header - Accept</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="AllowRedirect">
+          <Name>Allow Redirect</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="ContentType">
+          <Name>Header - Content-Type</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="ExpressionIsNegative">
+          <Name>Expression Not Match</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="ExtraHeaders">
+          <Name>Header - Extra</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="Host">
+          <Name>Header - Host</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="HTTPMethod">
+          <Name>HTTP Method</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="Path">
+          <Name>Request Path</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="RegularExpression">
+          <Name>Regular Expression</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="RequestBody">
+          <Name>Request Body</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="Schema">
+          <Name>Schema</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="UserAgent">
+          <Name>Header - User-Agent</Name>
+        </DisplayString>
+        
       </DisplayStrings>
     </LanguagePack>
   </LanguagePacks>

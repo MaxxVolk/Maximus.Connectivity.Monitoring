@@ -57,12 +57,42 @@
     </ManagementPackReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assemblies.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Classes.mpx">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ManagementPack.mpx">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Presentation.mptg.mpx">
+      <SubType>Code</SubType>
+      <DependentUpon>Presentation.mptg</DependentUpon>
+    </Compile>
+    <Compile Include="UI.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Maximus.Connectivity.Modules\Maximus.Connectivity.Modules.csproj">
+      <Name>Maximus.Connectivity.Modules</Name>
+      <Project>{25347474-03c0-487e-ac28-a77bb07f1109}</Project>
+      <Private>True</Private>
+      <PackageToBundle>True</PackageToBundle>
+    </ProjectReference>
+    <ProjectReference Include="..\Maximus.Connectivity.UI.Control\Maximus.Connectivity.UI.Control.csproj">
+      <Name>Maximus.Connectivity.UI.Control</Name>
+      <Project>{2dfd75a2-9ff4-4d74-a386-dc40950bd126}</Project>
+      <Private>True</Private>
+      <PackageToBundle>True</PackageToBundle>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Presentation.mptg">
+      <SubType>Content</SubType>
+      <Generator>FragmentGenerator</Generator>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VSAC\Microsoft.SystemCenter.OperationsManager.targets" />
 </Project>

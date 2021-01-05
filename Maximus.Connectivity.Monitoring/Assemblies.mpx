@@ -1,0 +1,15 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Resources>
+    <Assembly ID="Maximus.Connectivity.Monitoring.UI.Control.Assembly" HasNullStream="false" Accessibility="Public"
+              QualifiedName="Maximus.Connectivity.UI.Control, Version=1.0.0.48, Culture=neutral, PublicKeyToken=fd5098a6a3259696"
+              FileName="Maximus.Connectivity.UI.Control.dll">
+      <Dependency ID="MBL!Maximus.Base.Library.Console.Assembly" />
+    </Assembly>
+    <DeployableAssembly ID="Maximus.Connectivity.Monitoring.Modules.DeployableAssembly" HasNullStream="false" Accessibility="Public"
+                        QualifiedName="Maximus.Connectivity.Modules, Version=1.0.0.0, Culture=neutral, PublicKeyToken=fd5098a6a3259696"
+                        FileName="Maximus.Connectivity.Modules.dll">
+      <Dependency ID="MBL!Maximus.Base.Library.ManagedWorkflowBase.DeployableAssembly"/>
+      <Dependency ID="MBL!Maximus.Base.Library.Newtonsoft.Json.DeployableAssembly"/>
+    </DeployableAssembly>
+  </Resources>
+</ManagementPackFragment>
