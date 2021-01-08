@@ -29,15 +29,15 @@
           <Property ID="IntervalSeconds" Type="int" DefaultValue="600" />
           <Property ID="MatchCount" Type="int" DefaultValue="3"/>
           <Property ID="SampleCount" Type="int" DefaultValue="4"/>
+          <Property ID="CollectPerformanceData" Type="bool" DefaultValue="false"/>
         </ClassType>
 
         <ClassType ID="Maximus.Connectivity.Monitoring.Test.Ping" Accessibility="Public" Base="Maximus.Connectivity.Monitoring.Test" Abstract="false"
                    Hosted="true"
                    Comment="Enables Ping test and defines additional parameters.">
-          <Property ID="MaxRTT" Type="int" />
           <Property ID="MaxTTL" Type="int" DefaultValue="128"/>
           <Property ID="BufferSize" Type="int" DefaultValue="32"/>
-          <Property ID="Timeout" Type="int"/>
+          <Property ID="Timeout" Type="int" DefaultValue="5000"/>
           <Property ID="DontFragment" Type="bool" DefaultValue="true" />
         </ClassType>
 
@@ -152,16 +152,17 @@
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test" SubElementID="TestId">
           <Name>Id</Name>
+          <Description>Internal test unique identifier.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test" SubElementID="CollectPerformanceData">
+          <Name>Collect Performance Data</Name>
+          <Description>Enabled performance data collection from the test object if supported. Refer to each test implementation for details.</Description>
         </DisplayString>
 
         <!-- Maximus.Connectivity.Monitoring.Test.Ping -->
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping">
           <Name>Connectivity Test - Ping</Name>
           <Description>Settings for ping test.</Description>
-        </DisplayString>
-        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping" SubElementID="MaxRTT">
-          <Name>Max RTT</Name>
-          <Description>Maximum RTT value in milliseconds. Set to 0 to keep system default option.</Description>
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping" SubElementID="MaxTTL">
           <Name>Max TTL</Name>

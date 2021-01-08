@@ -35,6 +35,11 @@
       <Alias>MBL</Alias>
       <MinVersion>1.0.0.16</MinVersion>
     </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.DataWarehouse.Library">
+      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2016\Microsoft.SystemCenter.DataWarehouse.Library.mp</HintPath>
+      <Alias>MSDL</Alias>
+      <MinVersion>7.2.11719.0</MinVersion>
+    </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.SystemCenter.Library">
       <Alias>SC</Alias>
       <PackageToBundle>false</PackageToBundle>
@@ -53,7 +58,12 @@
     </ManagementPackReference>
     <ManagementPackReference Include="Microsoft.SystemCenter.Visualization.Library">
       <Alias>Visualization</Alias>
-      <PackageToBundle>false</PackageToBundle>
+      <PackageToBundle>False</PackageToBundle>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Performance.Library">
+      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2016\System.Performance.Library.mp</HintPath>
+      <Alias>Perf</Alias>
+      <MinVersion>7.0.8437.0</MinVersion>
     </ManagementPackReference>
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +79,17 @@
     <Compile Include="Presentation.mptg.mpx">
       <SubType>Code</SubType>
       <DependentUpon>Presentation.mptg</DependentUpon>
+    </Compile>
+    <Compile Include="TestRollup.mptg.mpx">
+      <SubType>Code</SubType>
+      <DependentUpon>TestRollup.mptg</DependentUpon>
+    </Compile>
+    <Compile Include="Tests\Ping\PingModules.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\Ping\PingTemplates.mptg.mpx">
+      <SubType>Code</SubType>
+      <DependentUpon>Tests\Ping\PingTemplates.mptg</DependentUpon>
     </Compile>
     <Compile Include="UI.mpx">
       <SubType>Code</SubType>
@@ -93,6 +114,18 @@
       <SubType>Content</SubType>
       <Generator>FragmentGenerator</Generator>
     </Content>
+    <Content Include="TestRollup.mptg">
+      <SubType>Content</SubType>
+      <Generator>FragmentGenerator</Generator>
+    </Content>
+    <Content Include="Tests\Ping\PingTemplates.mptg">
+      <SubType>Content</SubType>
+      <Generator>FragmentGenerator</Generator>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tests" />
+    <Folder Include="Tests\Ping" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VSAC\Microsoft.SystemCenter.OperationsManager.targets" />
 </Project>

@@ -40,7 +40,7 @@ namespace Maximus.Connectivity.UI.Control
       get
       {
         string MostDerivedProperties = "";
-        string CommonProperties = $"Common settings: (Template: {entity[IDs.TestBaseClassProperties.TemplateReferencePropertyId].Value ?? "<No template>"}; Interval: {entity[IDs.TestBaseClassProperties.IntervalSecondsPropertyId].Value}s; Alert if {entity[IDs.TestBaseClassProperties.MatchCountPropertyId].Value} out of {entity[IDs.TestBaseClassProperties.SampleCountPropertyId].Value} probes fail.)";
+        string CommonProperties = $"Common settings: (Template: {entity[IDs.TestBaseClassProperties.TemplateReferencePropertyId].Value ?? "<No template>"}; Interval: {entity[IDs.TestBaseClassProperties.IntervalSecondsPropertyId].Value}s; Collect performance: {entity[IDs.TestBaseClassProperties.CollectPerformanceDataPropertyId].Value}; Alert if {entity[IDs.TestBaseClassProperties.MatchCountPropertyId].Value} out of {entity[IDs.TestBaseClassProperties.SampleCountPropertyId].Value} probes fail.)";
         foreach (ManagementPackProperty mpProperty in entity.GetProperties())
         {
           if (mpProperty.ParentElement.Id == SystemId.EntityClassId) // don't list display name

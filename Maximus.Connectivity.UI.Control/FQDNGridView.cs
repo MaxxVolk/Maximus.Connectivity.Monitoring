@@ -41,7 +41,6 @@ namespace Maximus.Connectivity.UI.Control
     protected override void OnLoad(EventArgs e)
     {
       base.OnLoad(e);
-      // MessageBox.Show($"detailed view is {(DetailView == null ? "" : "not")} null");
       if (DetailView is TestBrowser tb)
         tb.MasterView = this;
     }
@@ -74,11 +73,25 @@ namespace Maximus.Connectivity.UI.Control
         }
         AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.EditTest, OnEditTest, null); // status us in the child form
         AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.DeleteTest, OnDeleteTest, null); // status us in the child form
+        AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
+        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.BulkExport, OnBulkExport, null); 
+        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.BulkImport, OnBulkImport, null); 
+        AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
       }
       catch (Exception e)
       {
         MessageBox.Show($"In {System.Reflection.MethodBase.GetCurrentMethod().Name} {e.GetType().Name} said {e.Message} at {e.StackTrace}");
       }
+    }
+
+    private void OnBulkImport(object sender, CommandEventArgs e)
+    {
+      MessageBox.Show("Not implemented yet.");
+    }
+
+    private void OnBulkExport(object sender, CommandEventArgs e)
+    {
+      MessageBox.Show("Not implemented yet.");
     }
 
     private void OnNewDestination(object sender, CommandEventArgs e)
@@ -325,6 +338,8 @@ namespace Maximus.Connectivity.UI.Control
       TryAddCommand(MaximusCommands.TestActionsCommand, "Add Test...", "Add a test to the selected destination.");
       TryAddCommand(MaximusCommands.EditTest, "Edit Test", "Edit the currently selected test for the selected destination.");
       TryAddCommand(MaximusCommands.DeleteTest, "Delete Test", "Delete the currently selected test for the selected destination.");
+      TryAddCommand(MaximusCommands.BulkExport, "Bulk Export", "Exports all destinations and optionally export tests.");
+      TryAddCommand(MaximusCommands.BulkImport, "Bulk Import", "Import destinations and/or test settings.");
 
       // dynamic commands
       if (!TestClassesInitialized)

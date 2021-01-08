@@ -1,0 +1,61 @@
+<TemplateGroup>
+  <Instances>
+    <Instance ID="Instance25d4652727294c659a3f50c39b44c8db" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
+      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MonitorType>Maximus.Connectivity.Monitoring.Ping.UnitMonitor</MonitorType>
+        <MonitorConfig>&lt;IntervalSeconds&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/IntervalSeconds$&lt;/IntervalSeconds&gt;&lt;MatchCount&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/MatchCount$&lt;/MatchCount&gt;&lt;SampleCount&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/SampleCount$&lt;/SampleCount&gt;&lt;TestDisplayName&gt;$Target/Host/Property[Type="System!System.Entity"]/DisplayName$&lt;/TestDisplayName&gt;&lt;FullyQualifiedDomainName&gt;$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$&lt;/FullyQualifiedDomainName&gt;&lt;TargetIndex&gt;$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$&lt;/TargetIndex&gt;&lt;MaxTTL&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.Ping"]/MaxTTL$&lt;/MaxTTL&gt;&lt;BufferSize&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.Ping"]/BufferSize$&lt;/BufferSize&gt;&lt;Timeout&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.Ping"]/Timeout$&lt;/Timeout&gt;&lt;DontFragment&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.Ping"]/DontFragment$&lt;/DontFragment&gt;</MonitorConfig>
+        <MonitorOperationalStates>
+          <OperationalState>
+            <OperationalStateId>Reachable</OperationalStateId>
+            <OperationalStateDisplayName>Reachable</OperationalStateDisplayName>
+            <MonitorTypeStateId>Reachable</MonitorTypeStateId>
+            <HealthState>Success</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>Unreachable</OperationalStateId>
+            <OperationalStateDisplayName>Unreachable</OperationalStateDisplayName>
+            <MonitorTypeStateId>Unreachable</MonitorTypeStateId>
+            <HealthState>Error</HealthState>
+          </OperationalState>
+        </MonitorOperationalStates>
+        <ParentMonitor>Health!System.Health.AvailabilityState</ParentMonitor>
+        <Accessibility>Public</Accessibility>
+        <Id>Test.Ping.Monitor</Id>
+        <DisplayName>ICMP availability (Ping) Monitor</DisplayName>
+        <Description>Monitor destination availability by using ICMP echo test.</Description>
+        <Target>Maximus.Connectivity.Monitoring.Test.Ping</Target>
+        <Enabled>true</Enabled>
+        <Category>AvailabilityHealth</Category>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <AlertAutoResolve>true</AlertAutoResolve>
+        <AlertOnState>Error</AlertOnState>
+        <AlertPriority>High</AlertPriority>
+        <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+        <AlertName>Destination Unreachable</AlertName>
+        <AlertDescription>Failed to receive ICMP echo (ping) response from the $Target/Host/Property[Type="System!System.Entity"]/DisplayName$ destination (index: $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$) at the $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$ address.</AlertDescription>
+        <ConfirmDelivery>false</ConfirmDelivery>
+      </UnitMonitorConfig>
+    </Instance>
+    <Instance ID="Instance95a4d23f36874556ac25cab9eb1c5fa1" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Id>Test.Ping.RoundTripTime.PerformanceCollectionRule</Id>
+        <DisplayName>Ping Round Trip Time Performance Collection Rule</DisplayName>
+        <Description>Collects ping test round trip time historical performance data.</Description>
+        <Category>PerformanceCollection</Category>
+        <ConfirmDelivery>false</ConfirmDelivery>
+        <Target>Maximus.Connectivity.Monitoring.Test.Ping</Target>
+        <Enabled>true</Enabled>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <DiscardLevel>100</DiscardLevel>
+        <ConditionDetectionId>CD</ConditionDetectionId>
+        <DataSourceId>DS</DataSourceId>
+        <DataSourceConfig>&lt;IntervalSeconds&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/IntervalSeconds$&lt;/IntervalSeconds&gt;&lt;TestDisplayName&gt;$Target/Host/Property[Type="System!System.Entity"]/DisplayName$&lt;/TestDisplayName&gt;&lt;FullyQualifiedDomainName&gt;$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$&lt;/FullyQualifiedDomainName&gt;&lt;TargetIndex&gt;$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$&lt;/TargetIndex&gt;&lt;MaxTTL&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.Ping"]/MaxTTL$&lt;/MaxTTL&gt;&lt;BufferSize&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.Ping"]/BufferSize$&lt;/BufferSize&gt;&lt;Timeout&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.Ping"]/Timeout$&lt;/Timeout&gt;&lt;DontFragment&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.Ping"]/DontFragment$&lt;/DontFragment&gt;&lt;CollectPerformanceData&gt;$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/CollectPerformanceData$&lt;/CollectPerformanceData&gt;</DataSourceConfig>
+        <DataSourceType>Maximus.Connectivity.Monitoring.Ping.Performance.RoundTripTime.DataSource</DataSourceType>
+        <CollectToDB>true</CollectToDB>
+        <CollectToDW>true</CollectToDW>
+      </PerformanceCollectionRuleConfig>
+    </Instance>
+  </Instances>
+</TemplateGroup>

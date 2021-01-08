@@ -1,0 +1,257 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+      
+      <DataSourceModuleType ID="Maximus.Connectivity.Monitoring.Ping.DataSource" Accessibility="Public" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          
+          <xsd:element minOccurs="1" name="TestDisplayName" type="xsd:string" />
+
+          <xsd:element minOccurs="1" name="FullyQualifiedDomainName" type="xsd:string" />
+          <xsd:element minOccurs="1" name="TargetIndex" type="xsd:integer" />
+
+          <xsd:element minOccurs="1" name="MaxTTL" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="BufferSize" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="Timeout" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="DontFragment" type="xsd:boolean" />
+        </Configuration>
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS_Scheduler" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <SyncTime />
+              </DataSource>
+              <ProbeAction ID="PA_Ping" TypeID="Maximus.Connectivity.Monitoring.Ping.ProbeAction">
+                <TestDisplayName>$Config/TestDisplayName$</TestDisplayName>
+                <FullyQualifiedDomainName>$Config/FullyQualifiedDomainName$</FullyQualifiedDomainName>
+                <TargetIndex>$Config/TargetIndex$</TargetIndex>
+                <MaxTTL>$Config/MaxTTL$</MaxTTL>
+                <BufferSize>$Config/BufferSize$</BufferSize>
+                <Timeout>$Config/Timeout$</Timeout>
+                <DontFragment>$Config/DontFragment$</DontFragment>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="PA_Ping">
+                <Node ID="DS_Scheduler" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>
+
+      <DataSourceModuleType ID="Maximus.Connectivity.Monitoring.Ping.Performance.RoundTripTime.DataSource" Accessibility="Public" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+
+          <xsd:element minOccurs="1" name="TestDisplayName" type="xsd:string" />
+
+          <xsd:element minOccurs="1" name="FullyQualifiedDomainName" type="xsd:string" />
+          <xsd:element minOccurs="1" name="TargetIndex" type="xsd:integer" />
+
+          <xsd:element minOccurs="1" name="MaxTTL" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="BufferSize" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="Timeout" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="DontFragment" type="xsd:boolean" />
+
+          <xsd:element minOccurs="1" name="CollectPerformanceData" type="xsd:boolean" />
+        </Configuration>
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS_Ping" TypeID="Maximus.Connectivity.Monitoring.Ping.DataSource">
+                <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+                <TestDisplayName>$Config/TestDisplayName$</TestDisplayName>
+                <FullyQualifiedDomainName>$Config/FullyQualifiedDomainName$</FullyQualifiedDomainName>
+                <TargetIndex>$Config/TargetIndex$</TargetIndex>
+                <MaxTTL>$Config/MaxTTL$</MaxTTL>
+                <BufferSize>$Config/BufferSize$</BufferSize>
+                <Timeout>$Config/Timeout$</Timeout>
+                <DontFragment>$Config/DontFragment$</DontFragment>
+              </DataSource>
+              <ConditionDetection ID="CD_Reachable" TypeID="System!System.ExpressionFilter">
+                <Expression>
+                  <And>
+                    <!-- comparing as string, because the converter is case sensitive, but when value comes from an object, it's capitalized -->
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <Value Type="String">$Config/CollectPerformanceData$</Value>
+                        </ValueExpression>
+                        <Operator>Equal</Operator>
+                        <ValueExpression>
+                          <Value Type="String">True</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <XPathQuery Type="String">Property[@Name='State']</XPathQuery>
+                        </ValueExpression>
+                        <Operator>Equal</Operator>
+                        <ValueExpression>
+                          <Value Type="String">OK</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                  </And>
+                </Expression>
+              </ConditionDetection>
+              <ConditionDetection ID="CD_PerfMapper" TypeID="Perf!System.Performance.DataGenericMapper">
+                <ObjectName>Ping</ObjectName>
+                <CounterName>RoundTripTime</CounterName>
+                <InstanceName />
+                <Value>$Data/Property[@Name='RoundTripTime']$</Value>
+              </ConditionDetection>
+            </MemberModules>
+            <Composition>
+              <Node ID="CD_PerfMapper">
+                <Node ID="CD_Reachable">
+                  <Node ID="DS_Ping" />
+                </Node>
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>Perf!System.Performance.Data</OutputType>
+      </DataSourceModuleType>
+
+      <ProbeActionModuleType ID="Maximus.Connectivity.Monitoring.Ping.ProbeAction" Accessibility="Public" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="1" name="TestDisplayName" type="xsd:string" />
+          
+          <xsd:element minOccurs="1" name="FullyQualifiedDomainName" type="xsd:string" />
+          <xsd:element minOccurs="1" name="TargetIndex" type="xsd:integer" />
+          
+          <xsd:element minOccurs="1" name="MaxTTL" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="BufferSize" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="Timeout" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="DontFragment" type="xsd:boolean" />
+        </Configuration>
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Managed>
+            <Assembly>Maximus.Connectivity.Monitoring.Modules.DeployableAssembly</Assembly>
+            <Type>Maximus.Connectivity.Modules.PingPA</Type>
+          </Managed>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
+    </ModuleTypes>
+
+    <MonitorTypes>
+      <UnitMonitorType ID="Maximus.Connectivity.Monitoring.Ping.UnitMonitor" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Reachable" NoDetection="false"/>
+          <MonitorTypeState ID="Unreachable" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="1" name="IntervalSeconds" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="MatchCount" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="SampleCount" type="xsd:integer" />
+
+          <xsd:element minOccurs="1" name="TestDisplayName" type="xsd:string" />
+
+          <xsd:element minOccurs="1" name="FullyQualifiedDomainName" type="xsd:string" />
+          <xsd:element minOccurs="1" name="TargetIndex" type="xsd:integer" />
+
+          <xsd:element minOccurs="1" name="MaxTTL" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="BufferSize" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="Timeout" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="DontFragment" type="xsd:boolean" />
+        </Configuration>
+        <OverrideableParameters />
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS_Ping" TypeID="Maximus.Connectivity.Monitoring.Ping.DataSource">
+              <IntervalSeconds>$Config/IntervalSeconds$</IntervalSeconds>
+              <TestDisplayName>$Config/TestDisplayName$</TestDisplayName>
+              <FullyQualifiedDomainName>$Config/FullyQualifiedDomainName$</FullyQualifiedDomainName>
+              <TargetIndex>$Config/TargetIndex$</TargetIndex>
+              <MaxTTL>$Config/MaxTTL$</MaxTTL>
+              <BufferSize>$Config/BufferSize$</BufferSize>
+              <Timeout>$Config/Timeout$</Timeout>
+              <DontFragment>$Config/DontFragment$</DontFragment>
+            </DataSource>
+            <ProbeAction ID="PA_Ping" TypeID="Maximus.Connectivity.Monitoring.Ping.ProbeAction">
+              <TestDisplayName>$Config/TestDisplayName$</TestDisplayName>
+              <FullyQualifiedDomainName>$Config/FullyQualifiedDomainName$</FullyQualifiedDomainName>
+              <TargetIndex>$Config/TargetIndex$</TargetIndex>
+              <MaxTTL>$Config/MaxTTL$</MaxTTL>
+              <BufferSize>$Config/BufferSize$</BufferSize>
+              <Timeout>$Config/Timeout$</Timeout>
+              <DontFragment>$Config/DontFragment$</DontFragment>
+            </ProbeAction>
+            <ProbeAction ID="PA_Passthrough" TypeID="System!System.PassThroughProbe" />
+            <ConditionDetection ID="CD_Reachable" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='State']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">OK</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_Unreachable" TypeID="System!System.ExpressionFilter.IntervalSuppression">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='State']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">ERROR</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+              <SuppressionSettings>
+                <MatchCount>$Config/MatchCount$</MatchCount>
+                <SampleCount>$Config/SampleCount$</SampleCount>
+              </SuppressionSettings>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Reachable">
+              <Node ID="CD_Reachable">
+                <Node ID="DS_Ping" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Unreachable">
+              <Node ID="CD_Unreachable">
+                <Node ID="DS_Ping" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Reachable">
+              <Node ID="CD_Reachable">
+                <Node ID="PA_Ping">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Unreachable">
+              <Node ID="CD_Unreachable">
+                <Node ID="PA_Ping">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+    </MonitorTypes>
+  </TypeDefinitions>
+</ManagementPackFragment>
+ 
