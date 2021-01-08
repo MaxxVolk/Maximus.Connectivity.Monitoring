@@ -22,29 +22,46 @@ namespace Maximus.Connectivity.UI.Control
   {
     private CreatableObjectAdapter CreatableObjectAdapter;
     private ManagementGroup ManagementGroup;
+    private ManagementPackClass TagretClass;
+    private MonitoringObject ExistingObject;
 
     public NewTestDialog(ManagementGroup managementGroup, ManagementPackClass managementPackClass, MonitoringObject baseDestinationObject, Guid existingTestObjectId)
     {
       InitializeComponent();
       ManagementGroup = managementGroup;
-      if (existingTestObjectId == Guid.Empty)
-        Text = $"New {(string.IsNullOrWhiteSpace(managementPackClass.DisplayName) ? managementPackClass.Name : managementPackClass.DisplayName)}";
-      else
-        Text = $"Edit {(string.IsNullOrWhiteSpace(managementPackClass.DisplayName) ? managementPackClass.Name : managementPackClass.DisplayName)}";
 
-      CreatableEnterpriseManagementObject testObject = new CreatableEnterpriseManagementObject(managementGroup, managementPackClass);
-      // bind to host object -- for both new and existing test objects
-      testObject[IDs.FullyQualifiedDomainNameClassProperties.FullyQualifiedDomainNamePropertyId].Value = baseDestinationObject[IDs.FullyQualifiedDomainNameClassProperties.FullyQualifiedDomainNamePropertyId].Value; // parent key 1
-      testObject[IDs.FullyQualifiedDomainNameClassProperties.TargetIndexPropertyId].Value = baseDestinationObject[IDs.FullyQualifiedDomainNameClassProperties.TargetIndexPropertyId].Value; // parent key 2
+      if (existingTestObjectId == Guid.Empty)
+      {
+        if (baseDestinationObject == null)
+          throw new ArgumentNullException(nameof(baseDestinationObject));
+        TagretClass = managementPackClass ?? throw new ArgumentNullException(nameof(managementPackClass));
+      }
+      else
+      {
+        ExistingObject = ManagementGroup.EntityObjects.GetObject<MonitoringObject>(existingTestObjectId, ObjectQueryOptions.Default);
+        TagretClass = ExistingObject.GetMostDerivedClasses().First();
+      }
+
+      if (existingTestObjectId == Guid.Empty)
+        Text = $"New {(string.IsNullOrWhiteSpace(TagretClass.DisplayName) ? TagretClass.Name : TagretClass.DisplayName)}";
+      else
+        Text = $"Edit {(string.IsNullOrWhiteSpace(TagretClass.DisplayName) ? TagretClass.Name : TagretClass.DisplayName)}";
+
+      CreatableEnterpriseManagementObject testObject = new CreatableEnterpriseManagementObject(managementGroup, TagretClass);
       // initialize or load other properties
       if (existingTestObjectId == Guid.Empty)
       {
         testObject[IDs.TestBaseClassProperties.TestIdPropertyId].Value = Guid.NewGuid();
-        testObject[SystemId.EntityClassProperties.DisplayNamePropertyId].Value = string.IsNullOrWhiteSpace(managementPackClass.DisplayName) ? managementPackClass.Name : managementPackClass.DisplayName;
+        testObject[SystemId.EntityClassProperties.DisplayNamePropertyId].Value = string.IsNullOrWhiteSpace(TagretClass.DisplayName) ? TagretClass.Name : TagretClass.DisplayName;
+        // bind to host object -- from explicit parent
+        testObject[IDs.FullyQualifiedDomainNameClassProperties.FullyQualifiedDomainNamePropertyId].Value = baseDestinationObject[IDs.FullyQualifiedDomainNameClassProperties.FullyQualifiedDomainNamePropertyId].Value; // parent key 1
+        testObject[IDs.FullyQualifiedDomainNameClassProperties.TargetIndexPropertyId].Value = baseDestinationObject[IDs.FullyQualifiedDomainNameClassProperties.TargetIndexPropertyId].Value; // parent key 2
       }
       else
       {
-
+        // host object binding will be done automatically as a part of property copying
+        foreach (ManagementPackProperty mpProperty in ExistingObject.GetProperties())
+          testObject[mpProperty].Value = ExistingObject[mpProperty].Value;
       }
       CreatableObjectAdapter = new CreatableObjectAdapter(testObject);
       pgObjectEditor.SelectedObject = CreatableObjectAdapter;
@@ -58,7 +75,10 @@ namespace Maximus.Connectivity.UI.Control
           IncrementalDiscoveryData incrementalDiscovery = new IncrementalDiscoveryData();
           incrementalDiscovery.Add(CreatableObjectAdapter.BaseObject);
           EnterpriseManagementConnector connector = ManagementGroup.ConnectorFramework.GetMonitoringConnector();
-          incrementalDiscovery.Commit(connector);
+          if (ExistingObject == null)
+            incrementalDiscovery.Commit(connector); // new
+          else
+            incrementalDiscovery.Overwrite(connector); // update
         }
         catch (Exception ex)
         {

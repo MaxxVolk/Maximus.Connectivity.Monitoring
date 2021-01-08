@@ -117,12 +117,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TestEditor.cs">
+    <Compile Include="TestBrowser.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TestEditor.Designer.cs">
-      <DependentUpon>TestEditor.cs</DependentUpon>
+    <Compile Include="TestBrowser.Designer.cs">
+      <DependentUpon>TestBrowser.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestObjectAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Maximus.snk" />
@@ -138,8 +139,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestEditor.resx">
-      <DependentUpon>TestEditor.cs</DependentUpon>
+    <EmbeddedResource Include="TestBrowser.resx">
+      <DependentUpon>TestBrowser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

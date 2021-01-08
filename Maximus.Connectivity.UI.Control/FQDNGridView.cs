@@ -26,7 +26,8 @@ namespace Maximus.Connectivity.UI.Control
 {
   public partial class FQDNGridView : SimpleGridViewWithDetails
   {
-    private Dictionary<CommandID, ManagementPackClass> TestClassesAddCommands = new Dictionary<CommandID, ManagementPackClass>();
+    private Dictionary<Guid, ManagementPackClass> TestClassesAddCommands = new Dictionary<Guid, ManagementPackClass>(); // command Guid = Class Id
+    private readonly int TestClassCommandId = 206386;
     private bool TestClassesInitialized = false;
 
     public FQDNGridView() : base()
@@ -40,12 +41,17 @@ namespace Maximus.Connectivity.UI.Control
     protected override void OnLoad(EventArgs e)
     {
       base.OnLoad(e);
+      // MessageBox.Show($"detailed view is {(DetailView == null ? "" : "not")} null");
+      if (DetailView is TestBrowser tb)
+        tb.MasterView = this;
     }
 
     private void Grid_SelectionChanged(object sender, EventArgs e)
     {
       ForceCommandUpdate(MaximusCommands.DeleteDestination, true);
       ForceCommandUpdate(MaximusCommands.EditDestination, true);
+      ForceCommandUpdate(MaximusCommands.DeleteTest, true);
+      ForceCommandUpdate(MaximusCommands.EditTest, true);
     }
 
     protected override void AddUserActions()
@@ -54,19 +60,20 @@ namespace Maximus.Connectivity.UI.Control
       {
         RegisterCommands();
         AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.NewDestination); // , OnNewDestination); -- do it just ONCE !!!
-        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.DeleteDestination); // , OnDeleteDestination, OnDeleteDestinationStatus); -- do it just ONCE !!!
         AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.EditDestination); // , OnEditDestination, OnEditDestinationStatus); -- do it just ONCE !!!
+        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.DeleteDestination); // , OnDeleteDestination, OnDeleteDestinationStatus); -- do it just ONCE !!!
         AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
         if (TestClassesInitialized)
         {
           ICommandTaskDropDown parent = AddTaskDropDownItem(TaskCommands.ActionsTaskGroup, MaximusCommands.TestActionsCommand);
           
-          foreach (KeyValuePair<CommandID, ManagementPackClass> commandAndClass in TestClassesAddCommands)
+          foreach (KeyValuePair<Guid, ManagementPackClass> commandAndClass in TestClassesAddCommands)
           {
-            parent.Items.Add(parent.CreateCommandControl(this, typeof(ICommandMenuItem), commandAndClass.Key));
+            parent.Items.Add(parent.CreateCommandControl(this, typeof(ICommandMenuItem), new CommandID(commandAndClass.Key, TestClassCommandId)));
           }
         }
-        
+        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.EditTest, OnEditTest, null); // status us in the child form
+        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.DeleteTest, OnDeleteTest, null); // status us in the child form
       }
       catch (Exception e)
       {
@@ -80,6 +87,7 @@ namespace Maximus.Connectivity.UI.Control
       {
         newDestinationDialog.ShowDialog();
       }
+      OnRefreshCommand(this, e);
     }
 
     protected override void AddUserContextMenu(ContextMenuHelper contextMenu)
@@ -95,9 +103,9 @@ namespace Maximus.Connectivity.UI.Control
           ICommandMenuItem subMenu = contextMenu.AddContextMenuItem(MaximusCommands.TestActionsCommand, null);
           if (TestClassesInitialized)
           {
-            foreach(KeyValuePair<CommandID, ManagementPackClass> commandAndClass in TestClassesAddCommands)
+            foreach(KeyValuePair<Guid, ManagementPackClass> commandAndClass in TestClassesAddCommands)
             {
-              contextMenu.AddContextMenuItem(commandAndClass.Key, OnAddNewTest, OnSingleRowSelectedStatus, subMenu); // can register callback only ONCE
+              contextMenu.AddContextMenuItem(new CommandID(commandAndClass.Key, TestClassCommandId), OnAddNewTest, OnSingleRowSelectedStatus, subMenu); // can register callback only ONCE
             }
           }
           contextMenu.AddContextMenuSeparator();
@@ -107,6 +115,70 @@ namespace Maximus.Connectivity.UI.Control
       {
         MessageBox.Show($"In {System.Reflection.MethodBase.GetCurrentMethod().Name} it said {e.Message}");
       }
+    }
+
+    private void OnDeleteTest(object sender, CommandEventArgs e)
+    {
+      if (DetailView is TestBrowser tb && tb.Grid.SelectedRows != null && tb.Grid.SelectedRows.Count > 0)
+        try
+        {
+          TestObjectAdapter firstDataItem = (TestObjectAdapter)tb.Grid.SelectedRows[0].DataBoundItem;
+
+          bool doDelete = false;
+          if (tb.Grid.SelectedRows.Count == 1)
+            doDelete = MessageBox.Show($"You're about to delete the {firstDataItem.DisplayName} destination.\r\nAre you sure?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+          else
+            doDelete = MessageBox.Show($"You're about to delete multiple destinations.\r\nAre you sure?", "Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+          if (doDelete)
+          {
+            EnterpriseManagementConnector connector = ManagementGroup.ConnectorFramework.GetMonitoringConnector();
+            IncrementalDiscoveryData incrementalDiscovery = new IncrementalDiscoveryData();
+            ManagementPackClass fqdnClass = ManagementGroup.EntityTypes.GetClass(IDs.FullyQualifiedDomainNameClassId);
+
+            foreach (DataGridViewRow gridRow in tb.Grid.SelectedRows)
+            {
+              TestObjectAdapter dataItem = (TestObjectAdapter)gridRow.DataBoundItem;
+              MonitoringObject currentObject = ManagementGroup.EntityObjects.GetObject<MonitoringObject>(dataItem.Source.Id, ObjectQueryOptions.Default);
+              CreatableEnterpriseManagementObject oldInstance = new CreatableEnterpriseManagementObject(ManagementGroup, currentObject.GetMostDerivedClasses().First());
+              // host keys
+              oldInstance[IDs.FullyQualifiedDomainNameClassProperties.FullyQualifiedDomainNamePropertyId].Value = currentObject[IDs.FullyQualifiedDomainNameClassProperties.FullyQualifiedDomainNamePropertyId].Value;
+              oldInstance[IDs.FullyQualifiedDomainNameClassProperties.TargetIndexPropertyId].Value = currentObject[IDs.FullyQualifiedDomainNameClassProperties.TargetIndexPropertyId].Value;
+              // key
+              oldInstance[IDs.TestBaseClassProperties.TestIdPropertyId].Value = currentObject[IDs.TestBaseClassProperties.TestIdPropertyId].Value;
+              incrementalDiscovery.Remove(oldInstance);
+            }
+
+            incrementalDiscovery.Commit(connector);
+          }
+
+          // emulate Refresh command for detail view
+          SendRefreshCommandToDetailView();
+        }
+        catch (Exception ex)
+        {
+          MessageBox.Show($"In {System.Reflection.MethodBase.GetCurrentMethod().Name} {ex.GetType().Name} said {ex.Message} at {ex.StackTrace}");
+        }
+    }
+
+    private void OnEditTest(object sender, CommandEventArgs e)
+    {
+      if (DetailView is TestBrowser tb && tb.Grid.SelectedRows != null && tb.Grid.SelectedRows.Count == 1)
+      {
+        TestObjectAdapter targetTestObject = (TestObjectAdapter)tb.Grid.SelectedRows[0].DataBoundItem;
+        using (NewTestDialog ntd = new NewTestDialog(ManagementGroup,  null, null, targetTestObject.Source.Id))
+        {
+          ntd.ShowDialog();
+        }
+        // emulate Refresh command for detail view
+        SendRefreshCommandToDetailView();
+      }  
+    }
+
+    protected override void OnRefreshCommand(object sender, CommandEventArgs args)
+    {
+      base.OnRefreshCommand(sender, args);
+      // emulate Refresh command for detail view
+      SendRefreshCommandToDetailView();
     }
 
     private void OnAddNewTest(object sender, CommandEventArgs e)
@@ -120,15 +192,25 @@ namespace Maximus.Connectivity.UI.Control
             currentObjectId = dataItem.ManagedEntityId;
           if (currentObjectId == Guid.Empty)
             currentObjectId = dataItem.GetPartialMonitoringObject(ManagementGroup).Id;
-          using (NewTestDialog newTestDialog = new NewTestDialog(ManagementGroup, TestClassesAddCommands[e.Id], ManagementGroup.EntityObjects.GetObject<MonitoringObject>(currentObjectId, ObjectQueryOptions.Default), Guid.Empty))
+          using (NewTestDialog newTestDialog = new NewTestDialog(ManagementGroup, TestClassesAddCommands[e.Id.Guid], ManagementGroup.EntityObjects.GetObject<MonitoringObject>(currentObjectId, ObjectQueryOptions.Default), Guid.Empty))
           {
             newTestDialog.ShowDialog();
           }
+          SendRefreshCommandToDetailView();
         }
         catch (Exception ex)
         {
           MessageBox.Show($"In {System.Reflection.MethodBase.GetCurrentMethod().Name} {ex.GetType().Name} said {ex.Message} at {ex.StackTrace}");
         }
+    }
+
+    private void SendRefreshCommandToDetailView()
+    {
+      if (DetailView != null)
+      {
+        RegisteredCommand refreshCommand = CommandService.Find(ViewCommands.Refresh);
+        refreshCommand.Invoke(DetailView, this, null);
+      }
     }
 
     private void OnSingleRowSelectedStatus(object sender, CommandStatusEventArgs e)
@@ -210,7 +292,6 @@ namespace Maximus.Connectivity.UI.Control
         {
           MessageBox.Show($"In {System.Reflection.MethodBase.GetCurrentMethod().Name} {ex.GetType().Name} said {ex.Message} at {ex.StackTrace}");
         }
-      
     }
 
     private bool TryAddCommand(CommandID id, string text, string toolTip, Image image = null, bool enabled = true, bool visible = true)
@@ -241,18 +322,19 @@ namespace Maximus.Connectivity.UI.Control
       TryAddCommand(MaximusCommands.NewDestination, "New Destination", "Create a new destination FQDN object.", Resources.NewDestination);
       TryAddCommand(MaximusCommands.DeleteDestination, "Delete Destination", "Delete the selected destination.", CommandHelpers.GetImage(StandardCommands.Delete));
       TryAddCommand(MaximusCommands.EditDestination, "Edit Destination", "Delete the selected destination.", CommandHelpers.GetImage(ViewCommands.ViewProperties));
-      TryAddCommand(MaximusCommands.TestActionsCommand, "Add Test...", "Adds a test to the selected destination.");
+      TryAddCommand(MaximusCommands.TestActionsCommand, "Add Test...", "Add a test to the selected destination.");
+      TryAddCommand(MaximusCommands.EditTest, "Edit Test", "Edit the currently selected test for the selected destination.");
+      TryAddCommand(MaximusCommands.DeleteTest, "Delete Test", "Delete the currently selected test for the selected destination.");
 
       // dynamic commands
       if (!TestClassesInitialized)
       {
         ManagementPackClass baseClass = ManagementGroup.EntityTypes.GetClass(IDs.TestBaseClassId);
         IList<ManagementPackType> testClasses = baseClass.GetDerivedTypes(TraversalDepth.Recursive);
-        int commandIndex = 1;
         foreach(ManagementPackType testClass in testClasses)
         {
-          CommandID testClassCommand = new CommandID(MaximusCommands.AddTestCommandBase.Guid, MaximusCommands.AddTestCommandBase.ID + commandIndex++);
-          TestClassesAddCommands.Add(testClassCommand, ManagementGroup.EntityTypes.GetClass(testClass.Id));
+          CommandID testClassCommand = new CommandID(testClass.Id, TestClassCommandId);
+          TestClassesAddCommands.Add(testClassCommand.Guid, ManagementGroup.EntityTypes.GetClass(testClass.Id));
           string commandText = string.IsNullOrWhiteSpace(testClass.DisplayName) ? testClass.Name : testClass.DisplayName;
           TryAddCommand(testClassCommand, $"Add {commandText}", "Adds a test to the selected destination.");
         }

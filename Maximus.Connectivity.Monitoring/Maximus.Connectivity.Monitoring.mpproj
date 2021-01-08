@@ -5,7 +5,7 @@
     <RootNamespace>Maximus.Connectivity.Monitoring</RootNamespace>
     <Name>Maximus.Connectivity.Monitoring</Name>
     <ManagementPackName>Maximus.Connectivity.Monitoring</ManagementPackName>
-    <Version>1.0.0.0</Version>
+    <Version>1.0.0.70</Version>
     <MpFrameworkVersion>v7.0.3</MpFrameworkVersion>
     <MpFrameworkProfile>OM</MpFrameworkProfile>
     <ProductVersion>1.1.0.0</ProductVersion>
