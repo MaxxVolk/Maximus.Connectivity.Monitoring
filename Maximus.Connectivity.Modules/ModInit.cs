@@ -6,6 +6,7 @@ using Microsoft.EnterpriseManagement.HealthService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,8 +16,11 @@ namespace Maximus.Connectivity.Modules
   {
     static ModInit()
     {
-
+      ServicePointManager.CheckCertificateRevocationList = false;
+      ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true; // ignore certificates
     }
+
+    internal static char[] Separators = { ',', ';', '|' };
 
     const string LogSourceName = "Maximus Connectivity Monitoring Module";
     const int LogBaseEventId = 2860;
@@ -25,8 +29,8 @@ namespace Maximus.Connectivity.Modules
     static internal LoggingHelper Logger => _Logger ?? (_Logger = new LoggingHelper(LogSourceName, LogBaseEventId, EventLoggingLevel.Informational));
 
     internal const int evtId_PingPA                 = 0;
-    //internal const int evtId_ = 1;
-    //internal const int evtId_ = 2;
+    internal const int evtId_ServerCertificatePA    = 1;
+    internal const int evtId_DNSResolutionPA        = 2;
     //internal const int evtId_ = 3;
     //internal const int evtId_ = 4;
     //internal const int evtId_ = 5;

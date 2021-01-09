@@ -84,12 +84,22 @@
       <SubType>Code</SubType>
       <DependentUpon>TestRollup.mptg</DependentUpon>
     </Compile>
+    <Compile Include="Tests\DNS Resolution\DNSModules.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Tests\Ping\PingModules.mpx">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Tests\Ping\PingTemplates.mptg.mpx">
       <SubType>Code</SubType>
       <DependentUpon>Tests\Ping\PingTemplates.mptg</DependentUpon>
+    </Compile>
+    <Compile Include="Tests\SSL Connection\SSLModules.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\SSL Connection\SSLTemplates.mptg.mpx">
+      <SubType>Code</SubType>
+      <DependentUpon>Tests\SSL Connection\SSLTemplates.mptg</DependentUpon>
     </Compile>
     <Compile Include="UI.mpx">
       <SubType>Code</SubType>
@@ -122,9 +132,15 @@
       <SubType>Content</SubType>
       <Generator>FragmentGenerator</Generator>
     </Content>
+    <Content Include="Tests\SSL Connection\SSLTemplates.mptg">
+      <SubType>Content</SubType>
+      <Generator>FragmentGenerator</Generator>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests" />
+    <Folder Include="Tests\DNS Resolution" />
+    <Folder Include="Tests\SSL Connection" />
     <Folder Include="Tests\Ping" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VSAC\Microsoft.SystemCenter.OperationsManager.targets" />

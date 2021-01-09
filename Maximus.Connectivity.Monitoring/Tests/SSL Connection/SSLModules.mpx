@@ -1,0 +1,582 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+      
+      <DataSourceModuleType ID="Maximus.Connectivity.Monitoring.SSL.DataSource" Accessibility="Public" Batching="false">
+        <Configuration />
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS_Scheduler" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/IntervalSeconds$</IntervalSeconds>
+                <SyncTime />
+              </DataSource>
+              <ProbeAction ID="PA_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.ProbeAction" />
+            </MemberModules>
+            <Composition>
+              <Node ID="PA_SSL">
+                <Node ID="DS_Scheduler" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>
+
+      <ProbeActionModuleType ID="Maximus.Connectivity.Monitoring.SSL.ProbeAction" Accessibility="Public" Batching="false">
+        <Configuration />
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <ProbeAction ID="PA_SubstituteParametersFromObject" TypeID="Maximus.Connectivity.Monitoring.SSL.NativeProbeAction">
+                <TestDisplayName>$Target/Host/Property[Type="System!System.Entity"]/DisplayName$</TestDisplayName>
+                <FullyQualifiedDomainName>$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$</FullyQualifiedDomainName>
+                <TargetIndex>$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$</TargetIndex>
+                <Schema>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/Schema$</Schema>
+                <Port>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/Port$</Port>
+                <IgnoreRevocationCheck>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreRevocationCheck$</IgnoreRevocationCheck>
+                <ApplicationPolicy>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/ApplicationPolicy$</ApplicationPolicy>
+                <CertificatePolicy>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/CertificatePolicy$</CertificatePolicy>
+                <DisabledHash>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/DisabledHash$</DisabledHash>
+                <AllowedSSLProtocols>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/AllowedSSLProtocols$</AllowedSSLProtocols>
+                <DisabledSSLProtocols>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/DisabledSSLProtocols$</DisabledSSLProtocols>
+                <AllowUnknownCertificateAuthority>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/AllowUnknownCertificateAuthority$</AllowUnknownCertificateAuthority>
+                <IgnoreCertificateAuthorityRevocationUnknown>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreCertificateAuthorityRevocationUnknown$</IgnoreCertificateAuthorityRevocationUnknown>
+                <IgnoreCtlNotTimeValid>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreCtlNotTimeValid$</IgnoreCtlNotTimeValid>
+                <IgnoreCtlSignerRevocationUnknown>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreCtlSignerRevocationUnknown$</IgnoreCtlSignerRevocationUnknown>
+                <IgnoreEndRevocationUnknown>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreEndRevocationUnknown$</IgnoreEndRevocationUnknown>
+                <IgnoreInvalidBasicConstraints>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreInvalidBasicConstraints$</IgnoreInvalidBasicConstraints>
+                <IgnoreInvalidName>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreInvalidName$</IgnoreInvalidName>
+                <IgnoreInvalidPolicy>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreInvalidPolicy$</IgnoreInvalidPolicy>
+                <IgnoreNotTimeNested>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreNotTimeNested$</IgnoreNotTimeNested>
+                <IgnoreNotTimeValid>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreNotTimeValid$</IgnoreNotTimeValid>
+                <IgnoreRootRevocationUnknown>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreRootRevocationUnknown$</IgnoreRootRevocationUnknown>
+                <IgnoreWrongUsage>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/IgnoreWrongUsage$</IgnoreWrongUsage>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="PA_SubstituteParametersFromObject" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
+
+      <ProbeActionModuleType ID="Maximus.Connectivity.Monitoring.SSL.NativeProbeAction" Accessibility="Internal" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="1" name="TestDisplayName" type="xsd:string" />
+
+          <xsd:element minOccurs="1" name="FullyQualifiedDomainName" type="xsd:string" />
+          <xsd:element minOccurs="1" name="TargetIndex" type="xsd:integer" />
+
+          <xsd:element minOccurs="1" name="Schema" type="xsd:string" />
+          <xsd:element minOccurs="1" name="Port" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="IgnoreRevocationCheck" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="ApplicationPolicy" type="xsd:string" />
+          <xsd:element minOccurs="1" name="CertificatePolicy" type="xsd:string" />
+          <xsd:element minOccurs="1" name="DisabledHash" type="xsd:string" />
+          <xsd:element minOccurs="1" name="AllowedSSLProtocols" type="xsd:string" />
+          <xsd:element minOccurs="1" name="DisabledSSLProtocols" type="xsd:string" />
+          <xsd:element minOccurs="1" name="AllowUnknownCertificateAuthority" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreCertificateAuthorityRevocationUnknown" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreCtlNotTimeValid" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreCtlSignerRevocationUnknown" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreEndRevocationUnknown" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreInvalidBasicConstraints" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreInvalidName" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreInvalidPolicy" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreNotTimeNested" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreNotTimeValid" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreRootRevocationUnknown" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="IgnoreWrongUsage" type="xsd:boolean" />
+        </Configuration>
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Managed>
+            <Assembly>Maximus.Connectivity.Monitoring.Modules.DeployableAssembly</Assembly>
+            <Type>Maximus.Connectivity.Modules.ServerCertificatePA</Type>
+          </Managed>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
+
+    </ModuleTypes>
+    <MonitorTypes>
+
+      <!-- Maximus.Connectivity.Monitoring.SSL.CertExpiration.UnitMonitor -->
+      <UnitMonitorType ID="Maximus.Connectivity.Monitoring.SSL.CertExpiration.UnitMonitor" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Valid" NoDetection="false"/>
+          <MonitorTypeState ID="AboutToExpire" NoDetection="false"/>
+          <MonitorTypeState ID="Expired" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration>
+          <xsd:element minOccurs="1" name="DaysBeforeExpirationWarning" type="xsd:double" />
+        </Configuration>
+        <OverrideableParameters>
+          <OverrideableParameter ID="DaysBeforeExpirationWarning" Selector="$Config/DaysBeforeExpirationWarning$" ParameterType="double" />
+        </OverrideableParameters>
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.DataSource" />
+            <ProbeAction ID="PA_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.ProbeAction" />
+            <ProbeAction ID="PA_Passthrough" TypeID="System!System.PassThroughProbe" />
+            <ConditionDetection ID="CD_Valid" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Double">Property[@Name='DaysToExpire']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Greater</Operator>
+                  <ValueExpression>
+                    <Value Type="Double">$Config/DaysBeforeExpirationWarning$</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_AboutToExpire" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <And>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Double">Property[@Name='DaysToExpire']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>LessEqual</Operator>
+                      <ValueExpression>
+                        <Value Type="Double">$Config/DaysBeforeExpirationWarning$</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                  <Expression>
+                    <SimpleExpression>
+                      <ValueExpression>
+                        <XPathQuery Type="Double">Property[@Name='DaysToExpire']</XPathQuery>
+                      </ValueExpression>
+                      <Operator>Greater</Operator>
+                      <ValueExpression>
+                        <Value Type="Double">0</Value>
+                      </ValueExpression>
+                    </SimpleExpression>
+                  </Expression>
+                </And>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_Expired" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Double">Property[@Name='DaysToExpire']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>LessEqual</Operator>
+                  <ValueExpression>
+                    <Value Type="Double">0</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Valid">
+              <Node ID="CD_Valid">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="AboutToExpire">
+              <Node ID="CD_AboutToExpire">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Expired">
+              <Node ID="CD_Expired">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Valid">
+              <Node ID="CD_Valid">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="AboutToExpire">
+              <Node ID="CD_AboutToExpire">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Expired">
+              <Node ID="CD_Expired">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+
+      <!-- Maximus.Connectivity.Monitoring.SSL.DisabledProtocols.UnitMonitor -->
+      <UnitMonitorType ID="Maximus.Connectivity.Monitoring.SSL.DisabledProtocols.UnitMonitor" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Secure" NoDetection="false"/>
+          <MonitorTypeState ID="Insecure" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration />
+        <OverrideableParameters />
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.DataSource" />
+            <ProbeAction ID="PA_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.ProbeAction" />
+            <ProbeAction ID="PA_Passthrough" TypeID="System!System.PassThroughProbe" />
+            <ConditionDetection ID="CD_Secure" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Boolean">Property[@Name='HasDisabledProtocols']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="Boolean">false</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_Insecure" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Boolean">Property[@Name='HasDisabledProtocols']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="Boolean">true</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Secure">
+              <Node ID="CD_Secure">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Insecure">
+              <Node ID="CD_Insecure">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Secure">
+              <Node ID="CD_Secure">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Insecure">
+              <Node ID="CD_Insecure">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+
+      <!-- Maximus.Connectivity.Monitoring.SSL.DontSupportProtocols.UnitMonitor -->
+      <UnitMonitorType ID="Maximus.Connectivity.Monitoring.SSL.DontSupportProtocols.UnitMonitor" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Secure" NoDetection="false"/>
+          <MonitorTypeState ID="Insecure" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration />
+        <OverrideableParameters />
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.DataSource" />
+            <ProbeAction ID="PA_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.ProbeAction" />
+            <ProbeAction ID="PA_Passthrough" TypeID="System!System.PassThroughProbe" />
+            <ConditionDetection ID="CD_Secure" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Boolean">Property[@Name='DontSupportProtocols']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="Boolean">false</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_Insecure" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Boolean">Property[@Name='DontSupportProtocols']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="Boolean">true</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Secure">
+              <Node ID="CD_Secure">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Insecure">
+              <Node ID="CD_Insecure">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Secure">
+              <Node ID="CD_Secure">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Insecure">
+              <Node ID="CD_Insecure">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+
+      <!-- Maximus.Connectivity.Monitoring.SSL.PolicyErrors.UnitMonitor -->
+      <UnitMonitorType ID="Maximus.Connectivity.Monitoring.SSL.PolicyErrors.UnitMonitor" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Secure" NoDetection="false"/>
+          <MonitorTypeState ID="Insecure" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration />
+        <OverrideableParameters />
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.DataSource" />
+            <ProbeAction ID="PA_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.ProbeAction" />
+            <ProbeAction ID="PA_Passthrough" TypeID="System!System.PassThroughProbe" />
+            <ConditionDetection ID="CD_Secure" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='PolicyErrors']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">NONE</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_Insecure" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='PolicyErrors']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>NotEqual</Operator>
+                  <ValueExpression>
+                    <Value Type="String">NONE</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Secure">
+              <Node ID="CD_Secure">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Insecure">
+              <Node ID="CD_Insecure">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Secure">
+              <Node ID="CD_Secure">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Insecure">
+              <Node ID="CD_Insecure">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+
+      <!-- Maximus.Connectivity.Monitoring.SSL.WeakSignatureAlgorithm.UnitMonitor -->
+      <UnitMonitorType ID="Maximus.Connectivity.Monitoring.SSL.WeakSignatureAlgorithm.UnitMonitor" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Secure" NoDetection="false"/>
+          <MonitorTypeState ID="Insecure" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration />
+        <OverrideableParameters />
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.DataSource" />
+            <ProbeAction ID="PA_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.ProbeAction" />
+            <ProbeAction ID="PA_Passthrough" TypeID="System!System.PassThroughProbe" />
+            <ConditionDetection ID="CD_Secure" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Boolean">Property[@Name='SignatureAlgorithmDisabled']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="Boolean">false</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_Insecure" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Boolean">Property[@Name='SignatureAlgorithmDisabled']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="Boolean">true</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Secure">
+              <Node ID="CD_Secure">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Insecure">
+              <Node ID="CD_Insecure">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Secure">
+              <Node ID="CD_Secure">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Insecure">
+              <Node ID="CD_Insecure">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+
+      <!-- Maximus.Connectivity.Monitoring.SSL.CertificateValid.UnitMonitor -->
+      <UnitMonitorType ID="Maximus.Connectivity.Monitoring.SSL.CertificateValid.UnitMonitor" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Secure" NoDetection="false"/>
+          <MonitorTypeState ID="Insecure" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration />
+        <OverrideableParameters />
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.DataSource" />
+            <ProbeAction ID="PA_SSL" TypeID="Maximus.Connectivity.Monitoring.SSL.ProbeAction" />
+            <ProbeAction ID="PA_Passthrough" TypeID="System!System.PassThroughProbe" />
+            <ConditionDetection ID="CD_Secure" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Boolean">Property[@Name='CertificateIsValid']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="Boolean">true</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_Insecure" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="Boolean">Property[@Name='CertificateIsValid']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="Boolean">false</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Secure">
+              <Node ID="CD_Secure">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Insecure">
+              <Node ID="CD_Insecure">
+                <Node ID="DS_SSL" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Secure">
+              <Node ID="CD_Secure">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Insecure">
+              <Node ID="CD_Insecure">
+                <Node ID="PA_SSL">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+    </MonitorTypes>
+  </TypeDefinitions>
+</ManagementPackFragment>

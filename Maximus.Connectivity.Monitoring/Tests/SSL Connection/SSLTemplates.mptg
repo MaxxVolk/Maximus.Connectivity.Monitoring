@@ -1,0 +1,250 @@
+<TemplateGroup>
+  <Instances>
+    <Instance ID="Instance1cb8bbbf42bb4bd8ba0ce5a2d4aaa2da" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
+      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MonitorType>Maximus.Connectivity.Monitoring.SSL.CertExpiration.UnitMonitor</MonitorType>
+        <MonitorConfig>&lt;DaysBeforeExpirationWarning&gt;15&lt;/DaysBeforeExpirationWarning&gt;</MonitorConfig>
+        <MonitorOperationalStates>
+          <OperationalState>
+            <OperationalStateId>Valid</OperationalStateId>
+            <OperationalStateDisplayName>Valid</OperationalStateDisplayName>
+            <MonitorTypeStateId>Valid</MonitorTypeStateId>
+            <HealthState>Success</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>AboutToExpire</OperationalStateId>
+            <OperationalStateDisplayName>AboutToExpire</OperationalStateDisplayName>
+            <MonitorTypeStateId>AboutToExpire</MonitorTypeStateId>
+            <HealthState>Warning</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>Expired</OperationalStateId>
+            <OperationalStateDisplayName>Expired</OperationalStateDisplayName>
+            <MonitorTypeStateId>Expired</MonitorTypeStateId>
+            <HealthState>Error</HealthState>
+          </OperationalState>
+        </MonitorOperationalStates>
+        <ParentMonitor>Health!System.Health.AvailabilityState</ParentMonitor>
+        <Accessibility>Public</Accessibility>
+        <Id>SSL.CertExpiration.Monitor</Id>
+        <DisplayName>Certificate Expiration Monitor</DisplayName>
+        <Description>Warns when remote server certificate is expiring.</Description>
+        <Target>Maximus.Connectivity.Monitoring.Test.SSL</Target>
+        <Enabled>true</Enabled>
+        <Category>AvailabilityHealth</Category>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <AlertAutoResolve>true</AlertAutoResolve>
+        <AlertOnState>Warning</AlertOnState>
+        <AlertPriority>Normal</AlertPriority>
+        <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+        <AlertName>Remote Server Certificate Expiring</AlertName>
+        <AlertDescription>Remote server certificate used to connect to the $Target/Host/Property[Type="System!System.Entity"]/DisplayName$ destination (index: $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$) at the $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$:$Data/Context/Property[@Name='RemotePort']$ is expiring (WARNING) or has expired (CRITICAL).
+
+Certificate details:
+Issuer: $Data/Context/Property[@Name='Issuer']$
+Subject: $Data/Context/Property[@Name='Subject']$
+Days to expire: $Data/Context/Property[@Name='DaysToExpire']$ (at the time this alert is triggered)
+End date: $Data/Context/Property[@Name='EndDate']$
+Serial number: $Data/Context/Property[@Name='SerialNumber']$</AlertDescription>
+        <ConfirmDelivery>false</ConfirmDelivery>
+      </UnitMonitorConfig>
+    </Instance>
+    <Instance ID="Instancecaeede346a1c4dd38a700969c722379c" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
+      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MonitorType>Maximus.Connectivity.Monitoring.SSL.DisabledProtocols.UnitMonitor</MonitorType>
+        <MonitorConfig />
+        <MonitorOperationalStates>
+          <OperationalState>
+            <OperationalStateId>Secure</OperationalStateId>
+            <OperationalStateDisplayName>Secure</OperationalStateDisplayName>
+            <MonitorTypeStateId>Secure</MonitorTypeStateId>
+            <HealthState>Success</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>Insecure</OperationalStateId>
+            <OperationalStateDisplayName>Insecure</OperationalStateDisplayName>
+            <MonitorTypeStateId>Insecure</MonitorTypeStateId>
+            <HealthState>Error</HealthState>
+          </OperationalState>
+        </MonitorOperationalStates>
+        <ParentMonitor>Health!System.Health.SecurityState</ParentMonitor>
+        <Accessibility>Public</Accessibility>
+        <Id>SSL.DisabledProtocols.Monitor</Id>
+        <DisplayName>Disabled SSL Protocols Monitor</DisplayName>
+        <Description>Alerts when remote server uses obsolete secure protocols.</Description>
+        <Target>Maximus.Connectivity.Monitoring.Test.SSL</Target>
+        <Enabled>true</Enabled>
+        <Category>SecurityHealth</Category>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <AlertAutoResolve>true</AlertAutoResolve>
+        <AlertOnState>Error</AlertOnState>
+        <AlertPriority>Normal</AlertPriority>
+        <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+        <AlertName>Disabled SSL Protocol Detected</AlertName>
+        <AlertDescription>Remote server uses a disable SSL protocol while connecting to connect to the $Target/Host/Property[Type="System!System.Entity"]/DisplayName$ destination (index: $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$) at the $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$:$Data/Context/Property[@Name='RemotePort']$.
+
+Server supported SSL protocols: $Data/Context/Property[@Name='SupportedSslProtocols']$
+Disabled SSL protocols: $Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/DisabledSSLProtocols$</AlertDescription>
+        <ConfirmDelivery>false</ConfirmDelivery>
+      </UnitMonitorConfig>
+    </Instance>
+    <Instance ID="Instanceff59fa9da4d94137b94c6aa495b5a4da" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
+      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MonitorType>Maximus.Connectivity.Monitoring.SSL.DontSupportProtocols.UnitMonitor</MonitorType>
+        <MonitorOperationalStates>
+          <OperationalState>
+            <OperationalStateId>Secure</OperationalStateId>
+            <OperationalStateDisplayName>Secure</OperationalStateDisplayName>
+            <MonitorTypeStateId>Secure</MonitorTypeStateId>
+            <HealthState>Success</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>Insecure</OperationalStateId>
+            <OperationalStateDisplayName>Insecure</OperationalStateDisplayName>
+            <MonitorTypeStateId>Insecure</MonitorTypeStateId>
+            <HealthState>Warning</HealthState>
+          </OperationalState>
+        </MonitorOperationalStates>
+        <ParentMonitor>Health!System.Health.SecurityState</ParentMonitor>
+        <Accessibility>Public</Accessibility>
+        <Id>SSL.DontSupportProtocols.Monitor</Id>
+        <DisplayName>Allowed SSL Protocol Monitor</DisplayName>
+        <Description>(weak condition) Alerts when remote server doesn't suppot all/any of allowed SSL protocols.</Description>
+        <Target>Maximus.Connectivity.Monitoring.Test.SSL</Target>
+        <Enabled>true</Enabled>
+        <Category>SecurityHealth</Category>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <AlertAutoResolve>true</AlertAutoResolve>
+        <AlertOnState>Warning</AlertOnState>
+        <AlertPriority>Low</AlertPriority>
+        <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+        <AlertName>No Allowed SSL Protocols Supported</AlertName>
+        <AlertDescription>Remote server doesn't implement any of allowed SSL protocol while connecting to connect to the $Target/Host/Property[Type="System!System.Entity"]/DisplayName$ destination (index: $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$) at the $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$:$Data/Context/Property[@Name='RemotePort']$.
+
+Server supported SSL protocols: $Data/Context/Property[@Name='SupportedSslProtocols']$
+Allowed SSL protocols: $Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/AllowedSSLProtocols$</AlertDescription>
+        <ConfirmDelivery>false</ConfirmDelivery>
+      </UnitMonitorConfig>
+    </Instance>
+    <Instance ID="Instance6f446c21b0844a439e50ce17ca864a79" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
+      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MonitorType>Maximus.Connectivity.Monitoring.SSL.PolicyErrors.UnitMonitor</MonitorType>
+        <MonitorOperationalStates>
+          <OperationalState>
+            <OperationalStateId>Secure</OperationalStateId>
+            <OperationalStateDisplayName>Secure</OperationalStateDisplayName>
+            <MonitorTypeStateId>Secure</MonitorTypeStateId>
+            <HealthState>Success</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>Insecure</OperationalStateId>
+            <OperationalStateDisplayName>Insecure</OperationalStateDisplayName>
+            <MonitorTypeStateId>Insecure</MonitorTypeStateId>
+            <HealthState>Warning</HealthState>
+          </OperationalState>
+        </MonitorOperationalStates>
+        <ParentMonitor>Health!System.Health.ConfigurationState</ParentMonitor>
+        <Accessibility>Public</Accessibility>
+        <Id>SSL.PolicyErrors.Monitor</Id>
+        <DisplayName>Certificate Policy Monitor</DisplayName>
+        <Description>Alerts if remote server's certificate doesn't match the policy.</Description>
+        <Target>Maximus.Connectivity.Monitoring.Test.SSL</Target>
+        <Enabled>true</Enabled>
+        <Category>ConfigurationHealth</Category>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <AlertAutoResolve>true</AlertAutoResolve>
+        <AlertOnState>Warning</AlertOnState>
+        <AlertPriority>Normal</AlertPriority>
+        <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+        <AlertName>Remote Server Certificate Policy Error</AlertName>
+        <AlertDescription>Remote server certificate doesn't match the policy while connecting to connect to the $Target/Host/Property[Type="System!System.Entity"]/DisplayName$ destination (index: $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$) at the $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$:$Data/Context/Property[@Name='RemotePort']$.
+
+Policy error(s): $Data/Context/Property[@Name='PolicyErrors']$</AlertDescription>
+        <ConfirmDelivery>false</ConfirmDelivery>
+      </UnitMonitorConfig>
+    </Instance>
+    <Instance ID="Instance4b1c05e0998145cbb15f29be407510f0" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
+      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MonitorType>Maximus.Connectivity.Monitoring.SSL.WeakSignatureAlgorithm.UnitMonitor</MonitorType>
+        <MonitorOperationalStates>
+          <OperationalState>
+            <OperationalStateId>Secure</OperationalStateId>
+            <OperationalStateDisplayName>Secure</OperationalStateDisplayName>
+            <MonitorTypeStateId>Secure</MonitorTypeStateId>
+            <HealthState>Success</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>Insecure</OperationalStateId>
+            <OperationalStateDisplayName>Insecure</OperationalStateDisplayName>
+            <MonitorTypeStateId>Insecure</MonitorTypeStateId>
+            <HealthState>Warning</HealthState>
+          </OperationalState>
+        </MonitorOperationalStates>
+        <ParentMonitor>Health!System.Health.SecurityState</ParentMonitor>
+        <Accessibility>Public</Accessibility>
+        <Id>SSL.WeakSignatureAlgorithm.Monitor</Id>
+        <DisplayName>Weak Certificate Hash Signature Algorithm Monitor</DisplayName>
+        <Description>Alerts, when remote server's certificate uses a weak hash algorithm.</Description>
+        <Target>Maximus.Connectivity.Monitoring.Test.SSL</Target>
+        <Enabled>true</Enabled>
+        <Category>SecurityHealth</Category>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <AlertAutoResolve>true</AlertAutoResolve>
+        <AlertOnState>Warning</AlertOnState>
+        <AlertPriority>Low</AlertPriority>
+        <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+        <AlertName>Remote Server Certificate Weak Signature Algorithm</AlertName>
+        <AlertDescription>Remote a certificate with weak hash algorithm while connecting to connect to the $Target/Host/Property[Type="System!System.Entity"]/DisplayName$ destination (index: $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$) at the $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$:$Data/Context/Property[@Name='RemotePort']$.
+
+Certificate hash method: $Data/Context/Property[@Name='SignatureAlgorithm']$
+Disabled hash algorithm: $Target/Property[Type="Maximus.Connectivity.Monitoring.Test.SSL"]/DisabledHash$</AlertDescription>
+        <ConfirmDelivery>false</ConfirmDelivery>
+      </UnitMonitorConfig>
+    </Instance>
+    <Instance ID="Instance09704ea551f34d5e98eda34fd5ad0de4" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
+      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MonitorType>Maximus.Connectivity.Monitoring.SSL.CertificateValid.UnitMonitor</MonitorType>
+        <MonitorOperationalStates>
+          <OperationalState>
+            <OperationalStateId>Secure</OperationalStateId>
+            <OperationalStateDisplayName>Secure</OperationalStateDisplayName>
+            <MonitorTypeStateId>Secure</MonitorTypeStateId>
+            <HealthState>Success</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>Insecure</OperationalStateId>
+            <OperationalStateDisplayName>Insecure</OperationalStateDisplayName>
+            <MonitorTypeStateId>Insecure</MonitorTypeStateId>
+            <HealthState>Warning</HealthState>
+          </OperationalState>
+        </MonitorOperationalStates>
+        <ParentMonitor>Health!System.Health.ConfigurationState</ParentMonitor>
+        <Accessibility>Public</Accessibility>
+        <Id>SSL.CertificateValid.Monitor</Id>
+        <DisplayName>Certificate Validity Monitor</DisplayName>
+        <Description>Alerts if remote server's certificate is invalid.</Description>
+        <Target>Maximus.Connectivity.Monitoring.Test.SSL</Target>
+        <Enabled>true</Enabled>
+        <Category>ConfigurationHealth</Category>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <AlertAutoResolve>true</AlertAutoResolve>
+        <AlertOnState>Warning</AlertOnState>
+        <AlertPriority>High</AlertPriority>
+        <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+        <AlertName>Remote Server Certificate Not Valid</AlertName>
+        <AlertDescription>Remote server certificate was not valid while connecting to connect to the $Target/Host/Property[Type="System!System.Entity"]/DisplayName$ destination (index: $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$) at the $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$:$Data/Context/Property[@Name='RemotePort']$.
+
+Validation errors: $Data/Context/Property[@Name='CertificateStatus']$
+
+Note: you can disabled any validity checks by editing the associated test object.</AlertDescription>
+        <ConfirmDelivery>false</ConfirmDelivery>
+      </UnitMonitorConfig>
+    </Instance>
+  </Instances>
+</TemplateGroup>

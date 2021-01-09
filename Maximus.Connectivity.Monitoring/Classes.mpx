@@ -51,11 +51,14 @@
                    Hosted="true" Singleton="false"
                    Comment="Enables SSL test for its parent FQDN object. Defines additional testing parameters.">
           <Property ID="Schema" Type="string" Comment="Secure schema such as https, ldaps, smtps, etc. If empty or non-standard, then port number should be defined."/>
-          <Property ID="Port" Type="int" DefaultValue="-1" Comment="Defines portt for secure connection, overrides default schema's value."/>
+          <Property ID="Port" Type="int" DefaultValue="-1" Comment="Defines port for secure connection, overrides default schema's value."/>
           <!-- Testing options -->
           <Property ID="IgnoreRevocationCheck" Type="bool" Comment="X509ChainPolicy.RevocationMode" />
           <Property ID="ApplicationPolicy" Type="string" Comment="List of OIDs for X509ChainPolicy.ApplicationPolicy" />
           <Property ID="CertificatePolicy" Type="string" Comment="List of OIDs for X509ChainPolicy.CertificatePolicy" />
+          <Property ID="DisabledHash" Type="string" DefaultValue="sha1RSA" />
+          <Property ID="AllowedSSLProtocols" Type="string" DefaultValue="Tls11|Tls12|Tls13"/>
+          <Property ID="DisabledSSLProtocols" Type="string" DefaultValue="Ssl2|Ssl3"/>
           <Property ID="AllowUnknownCertificateAuthority" Type="bool" />
           <Property ID="IgnoreCertificateAuthorityRevocationUnknown" Type="bool" />
           <Property ID="IgnoreCtlNotTimeValid" Type="bool" />
@@ -162,7 +165,7 @@
         <!-- Maximus.Connectivity.Monitoring.Test.Ping -->
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping">
           <Name>Connectivity Test - Ping</Name>
-          <Description>Settings for ping test.</Description>
+          <Description>When created, this test object will add the 'ICMP availability (Ping) Monitor' monitor for the selected destination. The 'Collect Performance Data' option is supported. When on, it will record round trip time.</Description>
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping" SubElementID="MaxTTL">
           <Name>Max TTL</Name>
@@ -190,7 +193,7 @@
         <!-- Maximus.Connectivity.Monitoring.Test.SSL -->
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL">
           <Name>Connectivity Test - Secure Socket Layer Connection</Name>
-          <Description>Settings for SSL connection testing.</Description>
+          <Description>When created, this object will add the 'Certificate Expiration Monitor', '', and '' monitors. Note, that certificate expiration warning threshold is set in monitor overrides, not in the object property. Default threshold is 15 days. The 'Collect Performance Data' option is not supported.</Description>
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="AllowUnknownCertificateAuthority">
           <Name>Allow Unknown Certificate Authority</Name>
@@ -202,6 +205,10 @@
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="CertificatePolicy">
           <Name>Certificate Policy OIDs</Name>
           <Description>List of OIDs for X509 Chain Certificate Policy</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="DisabledHash">
+          <Name>Disabled Hash List</Name>
+          <Description>List of Signature Algorithm OID friendly names, which should not be used. Allowed values include, but not limited to sha1RSA, md5RSA, sha256NoSign, sha256RSA, etc. See https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-gpnap/a48b02b2-2a10-4eb0-bed4-1807a6d2f5ad for details. Separate multiple values with ',', ';', or '|'.</Description>
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="IgnoreCertificateAuthorityRevocationUnknown">
           <Name>Ignore Certificate Authority Revocation Unknown</Name>
@@ -241,9 +248,19 @@
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="Port">
           <Name>Port</Name>
+          <Description>Remote port number for secure connection testing. Set schema to empty value to use this parameter.</Description>
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="Schema">
           <Name>Schema</Name>
+          <Description>Secure schema like https, ldaps, smtps, etc. If schema is set and recognized, then default schema port is used. For example, 443 is the standard port for https. If schema in not known, or a non-standard port is required, don't set schema value, but set explicit port.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="AllowedSSLProtocols">
+          <Name>Allowed SSL Protocols</Name>
+          <Description>Remote server must implement at least one of these protocols to consider as secure. Allowed values are Ssl2, Ssl3, Tls, Tls11, Tls12, or Tls13, or any combination of these separated by ',', ';', or '|'.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="DisabledSSLProtocols">
+          <Name>Disabled SSL Protocols</Name>
+          <Description>Remote server must not implement at least one of these protocols to consider as secure. Allowed values are Ssl2, Ssl3, Tls, Tls11, Tls12, or Tls13, or any combination of these separated by ',', ';', or '|'.</Description>
         </DisplayString>
         
         <!-- Maximus.Connectivity.Monitoring.Test.HTTP -->

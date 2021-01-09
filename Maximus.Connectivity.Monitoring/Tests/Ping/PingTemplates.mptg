@@ -25,7 +25,7 @@
         <Description>Monitor destination availability by using ICMP echo test.</Description>
         <Target>Maximus.Connectivity.Monitoring.Test.Ping</Target>
         <Enabled>true</Enabled>
-        <Category>AvailabilityHealth</Category>
+        <Category>StateCollection</Category>
         <Remotable>true</Remotable>
         <Priority>Normal</Priority>
         <AlertAutoResolve>true</AlertAutoResolve>
@@ -38,7 +38,7 @@
       </UnitMonitorConfig>
     </Instance>
     <Instance ID="Instance95a4d23f36874556ac25cab9eb1c5fa1" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
-      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <PerformanceCollectionRuleConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <Id>Test.Ping.RoundTripTime.PerformanceCollectionRule</Id>
         <DisplayName>Ping Round Trip Time Performance Collection Rule</DisplayName>
         <Description>Collects ping test round trip time historical performance data.</Description>

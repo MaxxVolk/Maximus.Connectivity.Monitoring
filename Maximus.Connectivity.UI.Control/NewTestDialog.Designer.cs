@@ -31,11 +31,14 @@ namespace Maximus.Connectivity.UI.Control
     {
       this.pgObjectEditor = new System.Windows.Forms.PropertyGrid();
       this.pControls = new System.Windows.Forms.Panel();
-      this.btOK = new System.Windows.Forms.Button();
       this.btCancel = new System.Windows.Forms.Button();
+      this.btOK = new System.Windows.Forms.Button();
       this.pEditor = new System.Windows.Forms.Panel();
+      this.pDescription = new System.Windows.Forms.Panel();
+      this.rtbDescription = new System.Windows.Forms.RichTextBox();
       this.pControls.SuspendLayout();
       this.pEditor.SuspendLayout();
+      this.pDescription.SuspendLayout();
       this.SuspendLayout();
       // 
       // pgObjectEditor
@@ -43,7 +46,7 @@ namespace Maximus.Connectivity.UI.Control
       this.pgObjectEditor.Dock = System.Windows.Forms.DockStyle.Fill;
       this.pgObjectEditor.Location = new System.Drawing.Point(0, 0);
       this.pgObjectEditor.Name = "pgObjectEditor";
-      this.pgObjectEditor.Size = new System.Drawing.Size(659, 550);
+      this.pgObjectEditor.Size = new System.Drawing.Size(659, 462);
       this.pgObjectEditor.TabIndex = 1;
       // 
       // pControls
@@ -56,17 +59,6 @@ namespace Maximus.Connectivity.UI.Control
       this.pControls.Size = new System.Drawing.Size(659, 48);
       this.pControls.TabIndex = 2;
       // 
-      // btOK
-      // 
-      this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-      this.btOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-      this.btOK.Location = new System.Drawing.Point(491, 13);
-      this.btOK.Name = "btOK";
-      this.btOK.Size = new System.Drawing.Size(75, 23);
-      this.btOK.TabIndex = 0;
-      this.btOK.Text = "OK";
-      this.btOK.UseVisualStyleBackColor = true;
-      // 
       // btCancel
       // 
       this.btCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -78,14 +70,44 @@ namespace Maximus.Connectivity.UI.Control
       this.btCancel.Text = "Cancel";
       this.btCancel.UseVisualStyleBackColor = true;
       // 
+      // btOK
+      // 
+      this.btOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+      this.btOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+      this.btOK.Location = new System.Drawing.Point(491, 13);
+      this.btOK.Name = "btOK";
+      this.btOK.Size = new System.Drawing.Size(75, 23);
+      this.btOK.TabIndex = 0;
+      this.btOK.Text = "OK";
+      this.btOK.UseVisualStyleBackColor = true;
+      // 
       // pEditor
       // 
       this.pEditor.Controls.Add(this.pgObjectEditor);
       this.pEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-      this.pEditor.Location = new System.Drawing.Point(0, 0);
+      this.pEditor.Location = new System.Drawing.Point(0, 88);
       this.pEditor.Name = "pEditor";
-      this.pEditor.Size = new System.Drawing.Size(659, 550);
+      this.pEditor.Size = new System.Drawing.Size(659, 462);
       this.pEditor.TabIndex = 3;
+      // 
+      // pDescription
+      // 
+      this.pDescription.Controls.Add(this.rtbDescription);
+      this.pDescription.Dock = System.Windows.Forms.DockStyle.Top;
+      this.pDescription.Location = new System.Drawing.Point(0, 0);
+      this.pDescription.Name = "pDescription";
+      this.pDescription.Size = new System.Drawing.Size(659, 88);
+      this.pDescription.TabIndex = 4;
+      // 
+      // rtbDescription
+      // 
+      this.rtbDescription.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.rtbDescription.Location = new System.Drawing.Point(0, 0);
+      this.rtbDescription.Name = "rtbDescription";
+      this.rtbDescription.ReadOnly = true;
+      this.rtbDescription.Size = new System.Drawing.Size(659, 88);
+      this.rtbDescription.TabIndex = 0;
+      this.rtbDescription.Text = "";
       // 
       // NewTestDialog
       // 
@@ -95,6 +117,7 @@ namespace Maximus.Connectivity.UI.Control
       this.CancelButton = this.btCancel;
       this.ClientSize = new System.Drawing.Size(659, 598);
       this.Controls.Add(this.pEditor);
+      this.Controls.Add(this.pDescription);
       this.Controls.Add(this.pControls);
       this.MinimizeBox = false;
       this.Name = "NewTestDialog";
@@ -103,6 +126,7 @@ namespace Maximus.Connectivity.UI.Control
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NewTestDialog_FormClosing);
       this.pControls.ResumeLayout(false);
       this.pEditor.ResumeLayout(false);
+      this.pDescription.ResumeLayout(false);
       this.ResumeLayout(false);
 
     }
@@ -114,5 +138,7 @@ namespace Maximus.Connectivity.UI.Control
     private System.Windows.Forms.Button btCancel;
     private System.Windows.Forms.Button btOK;
     private System.Windows.Forms.Panel pEditor;
+    private System.Windows.Forms.Panel pDescription;
+    private System.Windows.Forms.RichTextBox rtbDescription;
   }
 }

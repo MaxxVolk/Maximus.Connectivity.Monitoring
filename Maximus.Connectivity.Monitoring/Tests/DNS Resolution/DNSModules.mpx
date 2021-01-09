@@ -1,0 +1,72 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+
+      <DataSourceModuleType ID="Maximus.Connectivity.Monitoring.DNS.DataSource" Accessibility="Public" Batching="false">
+        <Configuration />
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS_Scheduler" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/IntervalSeconds$</IntervalSeconds>
+                <SyncTime />
+              </DataSource>
+              <ProbeAction ID="PA_SSL" TypeID="Maximus.Connectivity.Monitoring.DNS.ProbeAction" />
+            </MemberModules>
+            <Composition>
+              <Node ID="PA_SSL">
+                <Node ID="DS_Scheduler" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>
+      
+      <ProbeActionModuleType ID="Maximus.Connectivity.Monitoring.DNS.ProbeAction" Accessibility="Public" Batching="false">
+        <Configuration />
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <ProbeAction ID="PA_SubstituteParametersFromObject" TypeID="Maximus.Connectivity.Monitoring.DNS.NativeProbeAction">
+                <TestDisplayName>$Target/Host/Property[Type="System!System.Entity"]/DisplayName$</TestDisplayName>
+                <FullyQualifiedDomainName>$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$</FullyQualifiedDomainName>
+                <TargetIndex>$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$</TargetIndex>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="PA_SubstituteParametersFromObject" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
+      
+      <ProbeActionModuleType ID="Maximus.Connectivity.Monitoring.DNS.NativeProbeAction" Accessibility="Internal" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="1" name="TestDisplayName" type="xsd:string" />
+
+          <xsd:element minOccurs="1" name="FullyQualifiedDomainName" type="xsd:string" />
+          <xsd:element minOccurs="1" name="TargetIndex" type="xsd:integer" />
+        </Configuration>
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Managed>
+            <Assembly>Maximus.Connectivity.Monitoring.Modules.DeployableAssembly</Assembly>
+            <Type>Maximus.Connectivity.Modules.DNSResolutionPA</Type>
+          </Managed>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
+    </ModuleTypes>
+    <MonitorTypes>
+      <UnitMonitorType ID="Maximus.Connectivity.Monitoring.DNS.NameResolution.UnitMonitor" Accessibility="Public">
+        
+      </UnitMonitorType>
+    </MonitorTypes>
+  </TypeDefinitions>
+</ManagementPackFragment>

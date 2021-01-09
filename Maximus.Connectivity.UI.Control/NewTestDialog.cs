@@ -22,7 +22,7 @@ namespace Maximus.Connectivity.UI.Control
   {
     private CreatableObjectAdapter CreatableObjectAdapter;
     private ManagementGroup ManagementGroup;
-    private ManagementPackClass TagretClass;
+    private ManagementPackClass TargetClass;
     private MonitoringObject ExistingObject;
 
     public NewTestDialog(ManagementGroup managementGroup, ManagementPackClass managementPackClass, MonitoringObject baseDestinationObject, Guid existingTestObjectId)
@@ -34,25 +34,26 @@ namespace Maximus.Connectivity.UI.Control
       {
         if (baseDestinationObject == null)
           throw new ArgumentNullException(nameof(baseDestinationObject));
-        TagretClass = managementPackClass ?? throw new ArgumentNullException(nameof(managementPackClass));
+        TargetClass = managementPackClass ?? throw new ArgumentNullException(nameof(managementPackClass));
       }
       else
       {
         ExistingObject = ManagementGroup.EntityObjects.GetObject<MonitoringObject>(existingTestObjectId, ObjectQueryOptions.Default);
-        TagretClass = ExistingObject.GetMostDerivedClasses().First();
+        TargetClass = ExistingObject.GetMostDerivedClasses().First();
       }
+      rtbDescription.Text = TargetClass.Description;
 
       if (existingTestObjectId == Guid.Empty)
-        Text = $"New {(string.IsNullOrWhiteSpace(TagretClass.DisplayName) ? TagretClass.Name : TagretClass.DisplayName)}";
+        Text = $"New {(string.IsNullOrWhiteSpace(TargetClass.DisplayName) ? TargetClass.Name : TargetClass.DisplayName)}";
       else
-        Text = $"Edit {(string.IsNullOrWhiteSpace(TagretClass.DisplayName) ? TagretClass.Name : TagretClass.DisplayName)}";
+        Text = $"Edit {(string.IsNullOrWhiteSpace(TargetClass.DisplayName) ? TargetClass.Name : TargetClass.DisplayName)}";
 
-      CreatableEnterpriseManagementObject testObject = new CreatableEnterpriseManagementObject(managementGroup, TagretClass);
+      CreatableEnterpriseManagementObject testObject = new CreatableEnterpriseManagementObject(managementGroup, TargetClass);
       // initialize or load other properties
       if (existingTestObjectId == Guid.Empty)
       {
         testObject[IDs.TestBaseClassProperties.TestIdPropertyId].Value = Guid.NewGuid();
-        testObject[SystemId.EntityClassProperties.DisplayNamePropertyId].Value = string.IsNullOrWhiteSpace(TagretClass.DisplayName) ? TagretClass.Name : TagretClass.DisplayName;
+        testObject[SystemId.EntityClassProperties.DisplayNamePropertyId].Value = string.IsNullOrWhiteSpace(TargetClass.DisplayName) ? TargetClass.Name : TargetClass.DisplayName;
         // bind to host object -- from explicit parent
         testObject[IDs.FullyQualifiedDomainNameClassProperties.FullyQualifiedDomainNamePropertyId].Value = baseDestinationObject[IDs.FullyQualifiedDomainNameClassProperties.FullyQualifiedDomainNamePropertyId].Value; // parent key 1
         testObject[IDs.FullyQualifiedDomainNameClassProperties.TargetIndexPropertyId].Value = baseDestinationObject[IDs.FullyQualifiedDomainNameClassProperties.TargetIndexPropertyId].Value; // parent key 2
