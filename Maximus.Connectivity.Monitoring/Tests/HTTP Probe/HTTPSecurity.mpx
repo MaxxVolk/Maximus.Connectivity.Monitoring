@@ -1,0 +1,17 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <SecureReferences>
+      <SecureReference ID="Maximus.Connectivity.Monitoring.HTTP.Credentials.SecureReference" Accessibility="Public" Context="Maximus.Connectivity.Monitoring.Test.HTTP"/>
+    </SecureReferences>
+  </TypeDefinitions>
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <DisplayStrings>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.HTTP.Credentials.SecureReference">
+          <Name>Connectivity Test - HTTP Probe Credentials</Name>
+          <Description>Credentials to use with HTTP Probes in Maximus Connectivity Monitoring management pack.</Description>
+        </DisplayString>
+      </DisplayStrings>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

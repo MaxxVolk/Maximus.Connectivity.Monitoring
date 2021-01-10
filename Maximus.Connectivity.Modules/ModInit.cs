@@ -31,7 +31,7 @@ namespace Maximus.Connectivity.Modules
     internal const int evtId_PingPA                 = 0;
     internal const int evtId_ServerCertificatePA    = 1;
     internal const int evtId_DNSResolutionPA        = 2;
-    //internal const int evtId_ = 3;
+    internal const int evtId_HTTPProbePA = 3;
     //internal const int evtId_ = 4;
     //internal const int evtId_ = 5;
     //internal const int evtId_ = 6;

@@ -1,0 +1,40 @@
+<TemplateGroup>
+  <Instances>
+    <Instance ID="Instance1cb8bbbf42bb4bd8ba0ce5a2d4aaa2da" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
+      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MonitorType>Maximus.Connectivity.Monitoring.DNS.NameResolution.UnitMonitor</MonitorType>
+        <MonitorOperationalStates>
+          <OperationalState>
+            <OperationalStateId>Resolved</OperationalStateId>
+            <OperationalStateDisplayName>Resolved</OperationalStateDisplayName>
+            <MonitorTypeStateId>Resolved</MonitorTypeStateId>
+            <HealthState>Success</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>NoIPFound</OperationalStateId>
+            <OperationalStateDisplayName>NoIPFound</OperationalStateDisplayName>
+            <MonitorTypeStateId>NoIPFound</MonitorTypeStateId>
+            <HealthState>Error</HealthState>
+          </OperationalState>
+        </MonitorOperationalStates>
+        <ParentMonitor>Health!System.Health.AvailabilityState</ParentMonitor>
+        <Accessibility>Public</Accessibility>
+        <Id>DNS.NameResolution.Monitor</Id>
+        <DisplayName>DNS Name Resolution Monitor</DisplayName>
+        <Description>Alerts when destination name cannot be resolved to an IP address.</Description>
+        <Target>Maximus.Connectivity.Monitoring.Test.DNSNameResolution</Target>
+        <Enabled>true</Enabled>
+        <Category>AvailabilityHealth</Category>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <AlertAutoResolve>true</AlertAutoResolve>
+        <AlertOnState>Error</AlertOnState>
+        <AlertPriority>Normal</AlertPriority>
+        <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+        <AlertName>DNS Name Resolution Failed</AlertName>
+        <AlertDescription>Failed to resolve DNS name for the $Target/Host/Property[Type="System!System.Entity"]/DisplayName$ destination (index: $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$) at the $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$ address.</AlertDescription>
+        <ConfirmDelivery>false</ConfirmDelivery>
+      </UnitMonitorConfig>
+    </Instance>
+  </Instances>
+</TemplateGroup>

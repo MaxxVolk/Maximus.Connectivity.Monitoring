@@ -65,7 +65,77 @@
     </ModuleTypes>
     <MonitorTypes>
       <UnitMonitorType ID="Maximus.Connectivity.Monitoring.DNS.NameResolution.UnitMonitor" Accessibility="Public">
-        
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Resolved" NoDetection="false"/>
+          <MonitorTypeState ID="NoIPFound" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration />
+        <OverrideableParameters />
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS_DNS" TypeID="Maximus.Connectivity.Monitoring.DNS.DataSource" />
+            <ProbeAction ID="PA_DNS" TypeID="Maximus.Connectivity.Monitoring.DNS.ProbeAction" />
+            <ProbeAction ID="PA_Passthrough" TypeID="System!System.PassThroughProbe" />
+            <ConditionDetection ID="CD_Resolved" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='State']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">OK</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_NoIPFound" TypeID="System!System.ExpressionFilter.IntervalSuppression">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='State']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">ERROR</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+              <SuppressionSettings>
+                <MatchCount>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/MatchCount$</MatchCount>
+                <SampleCount>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/SampleCount$</SampleCount>
+              </SuppressionSettings>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Resolved">
+              <Node ID="CD_Resolved">
+                <Node ID="DS_DNS" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="NoIPFound">
+              <Node ID="CD_NoIPFound">
+                <Node ID="DS_DNS" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Resolved">
+              <Node ID="CD_Resolved">
+                <Node ID="PA_DNS">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="NoIPFound">
+              <Node ID="CD_NoIPFound">
+                <Node ID="PA_DNS">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
       </UnitMonitorType>
     </MonitorTypes>
   </TypeDefinitions>

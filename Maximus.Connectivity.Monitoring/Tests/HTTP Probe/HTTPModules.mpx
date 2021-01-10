@@ -1,0 +1,275 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+
+      <DataSourceModuleType ID="Maximus.Connectivity.Monitoring.HTTP.DataSource" Accessibility="Public" Batching="false">
+        <Configuration />
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS_Scheduler" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/IntervalSeconds$</IntervalSeconds>
+                <SyncTime />
+              </DataSource>
+              <ProbeAction ID="PA_HTTP" TypeID="Maximus.Connectivity.Monitoring.HTTP.ProbeAction" />
+            </MemberModules>
+            <Composition>
+              <Node ID="PA_HTTP">
+                <Node ID="DS_Scheduler" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>
+
+      <DataSourceModuleType ID="Maximus.Connectivity.Monitoring.HTTP.ResponseTime.DataSource" Accessibility="Public" Batching="false">
+        <Configuration />
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS_HTTP" TypeID="Maximus.Connectivity.Monitoring.HTTP.DataSource" />
+              <ConditionDetection ID="CD_ValidResults" TypeID="System!System.ExpressionFilter">
+                <Expression>
+                  <And>
+                    <!-- comparing as string, because the converter is case sensitive, but when value comes from an object, it's capitalized -->
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <Value Type="String">$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/CollectPerformanceData$</Value>
+                        </ValueExpression>
+                        <Operator>Equal</Operator>
+                        <ValueExpression>
+                          <Value Type="String">True</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                    <Expression>
+                      <Or>
+                        <Expression>
+                          <SimpleExpression>
+                            <ValueExpression>
+                              <XPathQuery Type="String">Property[@Name='State']</XPathQuery>
+                            </ValueExpression>
+                            <Operator>Equal</Operator>
+                            <ValueExpression>
+                              <Value Type="String">OK</Value>
+                            </ValueExpression>
+                          </SimpleExpression>
+                        </Expression>
+                        <Expression>
+                          <SimpleExpression>
+                            <ValueExpression>
+                              <XPathQuery Type="String">Property[@Name='State']</XPathQuery>
+                            </ValueExpression>
+                            <Operator>Equal</Operator>
+                            <ValueExpression>
+                              <Value Type="String">WARNING</Value>
+                            </ValueExpression>
+                          </SimpleExpression>
+                        </Expression>
+                      </Or>
+                    </Expression>
+                  </And>
+                </Expression>
+              </ConditionDetection>
+              <ConditionDetection ID="CD_PerfMapper" TypeID="Perf!System.Performance.DataGenericMapper">
+                <ObjectName>HTTP Request</ObjectName>
+                <CounterName>ResponseTime</CounterName>
+                <InstanceName />
+                <Value>$Data/Property[@Name='ResponseTimeMs']$</Value>
+              </ConditionDetection>
+            </MemberModules>
+            <Composition>
+              <Node ID="CD_PerfMapper">
+                <Node ID="CD_ValidResults">
+                  <Node ID="DS_HTTP" />
+                </Node>
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>Perf!System.Performance.Data</OutputType>
+      </DataSourceModuleType>
+      
+      <ProbeActionModuleType ID="Maximus.Connectivity.Monitoring.HTTP.ProbeAction" Accessibility="Internal" Batching="false">
+        <Configuration />
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <ProbeAction ID="PA_SubstituteParametersFromObject" TypeID="Maximus.Connectivity.Monitoring.HTTP.NativeProbeAction">
+                <TestDisplayName>$Target/Host/Property[Type="System!System.Entity"]/DisplayName$</TestDisplayName>
+                <FullyQualifiedDomainName>$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$</FullyQualifiedDomainName>
+                <TargetIndex>$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$</TargetIndex>
+                <Schema>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/Schema$</Schema>
+                <Path>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/Path$</Path>
+                <Port>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/Port$</Port>
+                <AllowRedirect>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/AllowRedirect$</AllowRedirect>
+                <HTTPMethod>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/HTTPMethod$</HTTPMethod>
+                <AuthenticationScheme>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/AuthenticationScheme$</AuthenticationScheme>
+                <RequestBody>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/RequestBody$</RequestBody>
+                <RegularExpression>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/RegularExpression$</RegularExpression>
+                <ExpressionIsNegative>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/ExpressionIsNegative$</ExpressionIsNegative>
+                <ExtraHeaders>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/ExtraHeaders$</ExtraHeaders>
+                <Host>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/Host$</Host>
+                <Accept>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/Accept$</Accept>
+                <ContentType>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/ContentType$</ContentType>
+                <UserAgent>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.HTTP"]/UserAgent$</UserAgent>
+                <Username>$RunAs[Name="Maximus.Connectivity.Monitoring.HTTP.Credentials.SecureReference"]/UserName$</Username>
+                <Password>$RunAs[Name="Maximus.Connectivity.Monitoring.HTTP.Credentials.SecureReference"]/Password$</Password>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="PA_SubstituteParametersFromObject" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
+      
+      <ProbeActionModuleType ID="Maximus.Connectivity.Monitoring.HTTP.NativeProbeAction" Accessibility="Internal" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="1" name="TestDisplayName" type="xsd:string" />
+
+          <xsd:element minOccurs="1" name="FullyQualifiedDomainName" type="xsd:string" />
+          <xsd:element minOccurs="1" name="TargetIndex" type="xsd:integer" />
+
+          <xsd:element minOccurs="1" name="Schema" type="xsd:string" />
+          <xsd:element minOccurs="1" name="Path" type="xsd:string" />
+          <xsd:element minOccurs="1" name="Port" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="AllowRedirect" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="HTTPMethod" type="xsd:string" />
+          <xsd:element minOccurs="1" name="AuthenticationScheme" type="xsd:string" />
+          <xsd:element minOccurs="1" name="RequestBody" type="xsd:string" />
+          <xsd:element minOccurs="1" name="RegularExpression" type="xsd:string" />
+          <xsd:element minOccurs="1" name="ExpressionIsNegative" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="ExtraHeaders" type="xsd:string" />
+          <xsd:element minOccurs="1" name="Host" type="xsd:string" />
+          <xsd:element minOccurs="1" name="Accept" type="xsd:string" />
+          <xsd:element minOccurs="1" name="ContentType" type="xsd:string" />
+          <xsd:element minOccurs="1" name="UserAgent" type="xsd:string" />
+          <xsd:element minOccurs="1" name="Username" type="xsd:string" />
+          <xsd:element minOccurs="1" name="Password" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Managed>
+            <Assembly>Maximus.Connectivity.Monitoring.Modules.DeployableAssembly</Assembly>
+            <Type>Maximus.Connectivity.Modules.HTTPProbePA</Type>
+          </Managed>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
+    </ModuleTypes>
+    <MonitorTypes>
+      <UnitMonitorType ID="Maximus.Connectivity.Monitoring.HTTP.Probe.UnitMonitor" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Success" NoDetection="false"/>
+          <MonitorTypeState ID="WrongResponse" NoDetection="false"/>
+          <MonitorTypeState ID="Failure" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration />
+        <OverrideableParameters />
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS_HTTP" TypeID="Maximus.Connectivity.Monitoring.HTTP.DataSource" />
+            <ProbeAction ID="PA_HTTP" TypeID="Maximus.Connectivity.Monitoring.HTTP.ProbeAction" />
+            <ProbeAction ID="PA_Passthrough" TypeID="System!System.PassThroughProbe" />
+            <ConditionDetection ID="CD_Success" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='State']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">OK</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_WrongResponse" TypeID="System!System.ExpressionFilter.IntervalSuppression">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='State']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">WARNING</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+              <SuppressionSettings>
+                <MatchCount>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/MatchCount$</MatchCount>
+                <SampleCount>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/SampleCount$</SampleCount>
+              </SuppressionSettings>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_Failure" TypeID="System!System.ExpressionFilter.IntervalSuppression">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='State']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">ERROR</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+              <SuppressionSettings>
+                <MatchCount>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/MatchCount$</MatchCount>
+                <SampleCount>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/SampleCount$</SampleCount>
+              </SuppressionSettings>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Success">
+              <Node ID="CD_Success">
+                <Node ID="DS_HTTP" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="WrongResponse">
+              <Node ID="CD_WrongResponse">
+                <Node ID="DS_HTTP" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Failure">
+              <Node ID="CD_Failure">
+                <Node ID="DS_HTTP" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Success">
+              <Node ID="CD_Success">
+                <Node ID="PA_HTTP">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="WrongResponse">
+              <Node ID="CD_WrongResponse">
+                <Node ID="PA_HTTP">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Failure">
+              <Node ID="CD_Failure">
+                <Node ID="PA_HTTP">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+    </MonitorTypes>
+  </TypeDefinitions>
+</ManagementPackFragment>

@@ -87,6 +87,20 @@
     <Compile Include="Tests\DNS Resolution\DNSModules.mpx">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Tests\DNS Resolution\DNSTemplates.mptg.mpx">
+      <SubType>Code</SubType>
+      <DependentUpon>Tests\DNS Resolution\DNSTemplates.mptg</DependentUpon>
+    </Compile>
+    <Compile Include="Tests\HTTP Probe\HTTPModules.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\HTTP Probe\HTTPSecurity.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\HTTP Probe\HTTPTemplates.mptg.mpx">
+      <SubType>Code</SubType>
+      <DependentUpon>Tests\HTTP Probe\HTTPTemplates.mptg</DependentUpon>
+    </Compile>
     <Compile Include="Tests\Ping\PingModules.mpx">
       <SubType>Code</SubType>
     </Compile>
@@ -128,6 +142,14 @@
       <SubType>Content</SubType>
       <Generator>FragmentGenerator</Generator>
     </Content>
+    <Content Include="Tests\DNS Resolution\DNSTemplates.mptg">
+      <SubType>Content</SubType>
+      <Generator>FragmentGenerator</Generator>
+    </Content>
+    <Content Include="Tests\HTTP Probe\HTTPTemplates.mptg">
+      <SubType>Content</SubType>
+      <Generator>FragmentGenerator</Generator>
+    </Content>
     <Content Include="Tests\Ping\PingTemplates.mptg">
       <SubType>Content</SubType>
       <Generator>FragmentGenerator</Generator>
@@ -140,6 +162,7 @@
   <ItemGroup>
     <Folder Include="Tests" />
     <Folder Include="Tests\DNS Resolution" />
+    <Folder Include="Tests\HTTP Probe" />
     <Folder Include="Tests\SSL Connection" />
     <Folder Include="Tests\Ping" />
   </ItemGroup>
