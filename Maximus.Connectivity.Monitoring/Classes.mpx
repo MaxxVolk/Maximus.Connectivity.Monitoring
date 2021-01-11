@@ -166,7 +166,7 @@
 
         <!-- Maximus.Connectivity.Monitoring.Test.Ping -->
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping">
-          <Name>Connectivity Test - Ping</Name>
+          <Name>Ping</Name>
           <Description>When created, this test object will add the 'ICMP availability (Ping) Monitor' monitor for the selected destination. The 'Collect Performance Data' option is supported. When on, it will record round trip time.</Description>
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.Ping" SubElementID="MaxTTL">
@@ -188,13 +188,13 @@
         
         <!-- Maximus.Connectivity.Monitoring.Test.DNSNameResolution -->
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.DNSNameResolution">
-          <Name>Connectivity Test - DNS Name Resolution</Name>
+          <Name>DNS Name Resolution</Name>
           <Description>When created, this test object will add the 'DNS Name Resolution Monitor' monitor for the selected destination. The 'Collect Performance Data' option is not supported.</Description>
         </DisplayString>
         
         <!-- Maximus.Connectivity.Monitoring.Test.SSL -->
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL">
-          <Name>Connectivity Test - Secure Socket Layer Connection</Name>
+          <Name>Secure Socket Layer Connection</Name>
           <Description>When created, this object will add the 'Certificate Expiration Monitor', 'Allowed SSL Protocol Monitor', 'Certificate Policy Monitor', 'Certificate Validity Monitor', 'Disabled SSL Protocols Monitor' and 'Weak Certificate Hash Signature Algorithm Monitor' monitors. Note, that certificate expiration warning threshold is set in monitor overrides, not in the object property. Default threshold is 15 days. The 'Collect Performance Data' option is not supported.</Description>
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.SSL" SubElementID="AllowUnknownCertificateAuthority">
@@ -267,7 +267,7 @@
         
         <!-- Maximus.Connectivity.Monitoring.Test.HTTP -->
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP">
-          <Name>Connectivity Test - HTTP Probe</Name>
+          <Name>HTTP Probe</Name>
           <Description>When created, this test object will add the '' monitor for the selected destination. To assign User name and Password use the '' security profile. The 'Collect Performance Data' option is supported and will collect response time.</Description>
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="Accept">

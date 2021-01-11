@@ -351,6 +351,8 @@ namespace Maximus.Connectivity.UI.Control
           CommandID testClassCommand = new CommandID(testClass.Id, TestClassCommandId);
           TestClassesAddCommands.Add(testClassCommand.Guid, ManagementGroup.EntityTypes.GetClass(testClass.Id));
           string commandText = string.IsNullOrWhiteSpace(testClass.DisplayName) ? testClass.Name : testClass.DisplayName;
+          ManagementPack testClassMP = testClass.GetManagementPack();
+          commandText += " (" + (testClassMP.DisplayName ?? testClassMP.Name) + ")";
           TryAddCommand(testClassCommand, $"Add {commandText}", "Adds a test to the selected destination.");
         }
         TestClassesInitialized = true;
