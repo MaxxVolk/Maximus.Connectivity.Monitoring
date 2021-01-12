@@ -348,6 +348,8 @@ namespace Maximus.Connectivity.UI.Control
         IList<ManagementPackType> testClasses = baseClass.GetDerivedTypes(TraversalDepth.Recursive);
         foreach(ManagementPackType testClass in testClasses)
         {
+          if (testClass.Abstract)
+            continue;
           CommandID testClassCommand = new CommandID(testClass.Id, TestClassCommandId);
           TestClassesAddCommands.Add(testClassCommand.Guid, ManagementGroup.EntityTypes.GetClass(testClass.Id));
           string commandText = string.IsNullOrWhiteSpace(testClass.DisplayName) ? testClass.Name : testClass.DisplayName;
