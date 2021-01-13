@@ -187,7 +187,7 @@ namespace Maximus.Connectivity.UI.Control
       {
         string fqdnValue = tbFQDN.Text;
         int targetIndexValue = 0;
-        if (cbAllowDuplicates.Checked)
+        if (cbAllowDuplicates.Checked || ExistingObject != null) // for existing object always use existing index value, which was loaded into nudTargetIndex in the constructor
           targetIndexValue = Convert.ToInt32(nudTargetIndex.Value);
         object selectedMAP = null;
         if (rbPool.Checked)
@@ -308,7 +308,7 @@ namespace Maximus.Connectivity.UI.Control
         {
           bool objectChanged = false;
           objectChanged = objectChanged || (ExistingObject[SystemId.EntityClassProperties.DisplayNamePropertyId].Value?.ToString() != tbDisplayName.Text);
-          objectChanged = objectChanged || (ExistingObject[IDs.FullyQualifiedDomainNameClassProperties.FullyQualifiedDomainNamePropertyId].Value?.ToString() != fqdnValue);
+          // immutable: objectChanged = objectChanged || (ExistingObject[IDs.FullyQualifiedDomainNameClassProperties.FullyQualifiedDomainNamePropertyId].Value?.ToString() != fqdnValue);
           objectChanged = objectChanged || (ExistingObject[IDs.FullyQualifiedDomainNameClassProperties.DescriptionPropertyId].Value?.ToString() != tbDescription.Text);
           // TargetIndex cannot be changed for existing objects
           if (objectChanged)
