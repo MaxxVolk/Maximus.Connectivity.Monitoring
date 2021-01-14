@@ -15,6 +15,7 @@ Tests objects implemented in the current release:
   - SSL Connection and Remote Certificate Validation (6 monitors)
   - HTTP Probe (1 monitor and 1 performance collection rule)
   - DNS Name Resolution (1 monitor)
+  - SQL Server (4 monitors and 3 performance collection rule) via extension: https://github.com/MaxxVolk/Maximus.Connectivity.SQLExtension.Monitoring
 
 The main idea behind this management pack is to create flexible infrastructure, 
 which allows to create and configure a suitable monitoring sets for each destination. 
@@ -23,4 +24,8 @@ then add 'Ping', 'DNS Resolution', 'SSL', 'TCP Connect', and 'SQL Synthetic tran
 For a mail server, you can create a destination and add 'Ping', 'DNS Resolution', 'SSL', 'TCP Connect',
 'SMTP Send', and 'IMAP Receive' modules. Or, for an S3-compatible storage service you can make
 a set of 'Ping', 'DNS Resolution', 'SSL', 'TCP Connect', and 'S3 Synthetic Transaction'.
+
+Example extension simple MP will be added soon, meanwhile https://github.com/MaxxVolk/Maximus.Connectivity.SQLExtension.Monitoring
+can be used as example.
+
 
