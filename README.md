@@ -2,6 +2,8 @@
 ## Management Pack for System Center Operations Manager 
 Multi-protocol connectivity testing for SCOM, including ping, HTTP, SSL/TLS, etc.
 
+User manual is available at: http://maxcoreblog.com/2021/01/14/maximus-connectivity-monitoring/
+
 See "making of" article at http://maxcoreblog.com/2021/01/11/connectivity-monitoring-scom-management-pack-the-making-of/
 
 Main management pack features:
