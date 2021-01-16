@@ -58,25 +58,65 @@ namespace Maximus.Connectivity.UI.Control
       try
       {
         RegisterCommands();
-        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.NewDestination); // , OnNewDestination); -- do it just ONCE !!!
-        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.EditDestination); // , OnEditDestination, OnEditDestinationStatus); -- do it just ONCE !!!
-        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.DeleteDestination); // , OnDeleteDestination, OnDeleteDestinationStatus); -- do it just ONCE !!!
-        AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
+
+        #region experiment
+
+        ICommandControlContainer actionsTaskContainer = ((ICommandControlService)GetService(typeof(ICommandControlService))).GetContainer(this, "Actions");
+
+        ICommandTaskGroup destinationsTaskGroup = (ICommandTaskGroup)actionsTaskContainer.CreateCommandControl(this, typeof(ICommandTaskGroup), MaximusCommands.DestinationGroup);
+        actionsTaskContainer.Items.Add(destinationsTaskGroup);
+        AddTaskItem(MaximusCommands.DestinationGroup, MaximusCommands.NewDestination); // , OnNewDestination); -- do it just ONCE !!!
+        AddTaskItem(MaximusCommands.DestinationGroup, MaximusCommands.EditDestination); // , OnEditDestination, OnEditDestinationStatus); -- do it just ONCE !!!
+        AddTaskItem(MaximusCommands.DestinationGroup, MaximusCommands.DeleteDestination); // , OnDeleteDestination, OnDeleteDestinationStatus); -- do it just ONCE !!!
+        //CommandHelpers.AddActionItem(this, destinationsTaskGroup, actionsTaskContainer, MaximusCommands.NewDestination, CommandRoute.SendToControlCreator);
+        //CommandHelpers.AddActionItem(this, destinationsTaskGroup, actionsTaskContainer, MaximusCommands.EditDestination, CommandRoute.SendToControlCreator);
+        //CommandHelpers.AddActionItem(this, destinationsTaskGroup, actionsTaskContainer, MaximusCommands.DeleteDestination, CommandRoute.SendToControlCreator);
+
+        ICommandTaskGroup testsTaskGroup = (ICommandTaskGroup)actionsTaskContainer.CreateCommandControl(this, typeof(ICommandTaskGroup), MaximusCommands.TestGroup);
+        actionsTaskContainer.Items.Add(testsTaskGroup);
         if (TestClassesInitialized)
         {
-          ICommandTaskDropDown parent = AddTaskDropDownItem(TaskCommands.ActionsTaskGroup, MaximusCommands.TestActionsCommand);
-          
+          //  ICommandTaskDropDown parent = (ICommandTaskDropDown)CommandHelpers.AddActionDropDownItem(this, actionsTaskContainer, MaximusCommands.AddTestDropDown, CommandRoute.SendToControlCreator);
+          ICommandTaskDropDown parent = AddTaskDropDownItem(MaximusCommands.TestGroup, MaximusCommands.AddTestDropDown);
+
           foreach (KeyValuePair<Guid, ManagementPackClass> commandAndClass in TestClassesAddCommands)
           {
             parent.Items.Add(parent.CreateCommandControl(this, typeof(ICommandMenuItem), new CommandID(commandAndClass.Key, TestClassCommandId)));
           }
         }
-        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.EditTest, OnEditTest, null); // status us in the child form
-        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.DeleteTest, OnDeleteTest, null); // status us in the child form
-        AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
-        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.BulkExport, OnBulkExport, null); 
-        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.BulkImport, OnBulkImport, null); 
-        AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
+        AddTaskItem(MaximusCommands.TestGroup, MaximusCommands.EditTest, OnEditTest, null); // status us in the child form
+        AddTaskItem(MaximusCommands.TestGroup, MaximusCommands.DeleteTest, OnDeleteTest, null); // status us in the child form
+        //CommandHelpers.AddActionItem(this, testsTaskGroup, actionsTaskContainer, MaximusCommands.EditTest, CommandRoute.SendToControlCreator);
+        //CommandHelpers.AddActionItem(this, testsTaskGroup, actionsTaskContainer, MaximusCommands.DeleteTest, CommandRoute.SendToControlCreator);
+
+        ICommandTaskGroup configurationTaskGroup = (ICommandTaskGroup)actionsTaskContainer.CreateCommandControl(this, typeof(ICommandTaskGroup), MaximusCommands.ConfigurationGroup);
+        actionsTaskContainer.Items.Add(configurationTaskGroup);
+        AddTaskItem(MaximusCommands.ConfigurationGroup, MaximusCommands.EditTemplates);
+        AddTaskItem(MaximusCommands.ConfigurationGroup, MaximusCommands.BulkExport, OnBulkExport, null); 
+        AddTaskItem(MaximusCommands.ConfigurationGroup, MaximusCommands.BulkImport, OnBulkImport, null); 
+        //CommandHelpers.AddActionItem(this, configurationTaskGroup, actionsTaskContainer, MaximusCommands.BulkExport, CommandRoute.SendToControlCreator);
+        //CommandHelpers.AddActionItem(this, configurationTaskGroup, actionsTaskContainer, MaximusCommands.BulkImport, CommandRoute.SendToControlCreator);
+        #endregion
+
+        //AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.NewDestination); // , OnNewDestination); -- do it just ONCE !!!
+        //AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.EditDestination); // , OnEditDestination, OnEditDestinationStatus); -- do it just ONCE !!!
+        //AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.DeleteDestination); // , OnDeleteDestination, OnDeleteDestinationStatus); -- do it just ONCE !!!
+        //AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
+        //if (TestClassesInitialized)
+        //{
+        //  ICommandTaskDropDown parent = AddTaskDropDownItem(TaskCommands.ActionsTaskGroup, MaximusCommands.TestActionsCommand);
+          
+        //  foreach (KeyValuePair<Guid, ManagementPackClass> commandAndClass in TestClassesAddCommands)
+        //  {
+        //    parent.Items.Add(parent.CreateCommandControl(this, typeof(ICommandMenuItem), new CommandID(commandAndClass.Key, TestClassCommandId)));
+        //  }
+        //}
+        // AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.EditTest, OnEditTest, null); // status us in the child form
+        // AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.DeleteTest, OnDeleteTest, null); // status us in the child form
+        // AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
+        //AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.BulkExport, OnBulkExport, null); 
+        //AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.BulkImport, OnBulkImport, null); 
+        //AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
       }
       catch (Exception e)
       {
@@ -113,7 +153,7 @@ namespace Maximus.Connectivity.UI.Control
           contextMenu.AddContextMenuItem(MaximusCommands.NewDestination, OnNewDestination); // can register callback only ONCE
           contextMenu.AddContextMenuItem(MaximusCommands.EditDestination, OnEditDestination, OnSingleRowSelectedStatus); // can register callback only ONCE
           contextMenu.AddContextMenuItem(MaximusCommands.DeleteDestination, OnDeleteDestination, OnDeleteDestinationStatus); // can register callback only ONCE
-          ICommandMenuItem subMenu = contextMenu.AddContextMenuItem(MaximusCommands.TestActionsCommand, null);
+          ICommandMenuItem subMenu = contextMenu.AddContextMenuItem(MaximusCommands.AddTestDropDown, null);
           if (TestClassesInitialized)
           {
             foreach(KeyValuePair<Guid, ManagementPackClass> commandAndClass in TestClassesAddCommands)
@@ -332,14 +372,21 @@ namespace Maximus.Connectivity.UI.Control
 
     private void RegisterCommands()
     {
+      // Destination
+      TryAddCommand(MaximusCommands.DestinationGroup, "Destination", "");
       TryAddCommand(MaximusCommands.NewDestination, "New Destination", "Create a new destination FQDN object.", Resources.NewDestination);
       TryAddCommand(MaximusCommands.DeleteDestination, "Delete Destination", "Delete the selected destination.", CommandHelpers.GetImage(StandardCommands.Delete));
       TryAddCommand(MaximusCommands.EditDestination, "Edit Destination", "Delete the selected destination.", CommandHelpers.GetImage(ViewCommands.ViewProperties));
-      TryAddCommand(MaximusCommands.TestActionsCommand, "Add Test...", "Add a test to the selected destination.");
+      // Tests
+      TryAddCommand(MaximusCommands.TestGroup, "Test Object", "");
+      TryAddCommand(MaximusCommands.AddTestDropDown, "Add Test...", "Add a test to the selected destination.");
       TryAddCommand(MaximusCommands.EditTest, "Edit Test", "Edit the currently selected test for the selected destination.");
       TryAddCommand(MaximusCommands.DeleteTest, "Delete Test", "Delete the currently selected test for the selected destination.");
+      // Configuration
+      TryAddCommand(MaximusCommands.ConfigurationGroup, "Configuration", "");
       TryAddCommand(MaximusCommands.BulkExport, "Bulk Export", "Exports all destinations and optionally export tests.");
       TryAddCommand(MaximusCommands.BulkImport, "Bulk Import", "Import destinations and/or test settings.");
+      TryAddCommand(MaximusCommands.EditTemplates, "Edit Templates", "Edit Templates and apply changes to referenced tests.", enabled: false);
 
       // dynamic commands
       if (!TestClassesInitialized)
