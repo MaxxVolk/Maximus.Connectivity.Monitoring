@@ -27,18 +27,9 @@ namespace Maximus.Connectivity.UI.Control
     public static readonly CommandID BulkImport = new CommandID(MaximusCommandsBaseId, 5);
     public static readonly CommandID BulkExport = new CommandID(MaximusCommandsBaseId, 6);
     public static readonly CommandID EditTemplates = new CommandID(MaximusCommandsBaseId, 7);
-  }
 
-  public static class TestActions
-  {
-    //public static readonly Guid DestinationGroupId = new Guid("4564A340-B18A-43D7-9ECD-65B7A3F5DE37");
-    //public static readonly Guid TestGroupId = new Guid("33ECEC17-5C2C-4FAB-AFC8-1B75D613BDCC");
-    //public static readonly Guid ConfigurationGroupId = new Guid("4ECD72C2-8485-45CC-8980-F6A4EF1C0E7F");
-
-    //public static readonly CommandID DestinationGroup = CommandHelpers.RegisterCommand(DestinationGroupId, 0, "Destinations", null);
-    //public static readonly CommandID TestGroup = CommandHelpers.RegisterCommand(TestGroupId, 0, "Tests", null);
-    //public static readonly CommandID ConfigurationGroup = CommandHelpers.RegisterCommand(ConfigurationGroupId, 0, "Configuration", null);
-
-    // public static readonly CommandID CreateNewGroupCommand = CommandHelpers.RegisterCommand(DestinationGroupId, 1, "New Destination", (Image)GroupsResources.GroupImage);
+    public static readonly CommandID MaintenanceModeStart = new CommandID(MaximusCommandsBaseId, 8);
+    public static readonly CommandID MaintenanceModeEdit = new CommandID(MaximusCommandsBaseId, 9);
+    public static readonly CommandID MaintenanceModeEnd = new CommandID(MaximusCommandsBaseId, 10);
   }
 }

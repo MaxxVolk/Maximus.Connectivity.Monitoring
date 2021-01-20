@@ -92,6 +92,21 @@
           <Property ID="ContentType" Type="string"/>
           <Property ID="UserAgent" Type="string"/>
         </ClassType>
+
+        <ClassType ID="Maximus.Connectivity.Monitoring.Test.TCPConnect" Accessibility="Public" Base="Maximus.Connectivity.Monitoring.Test" Abstract="false"
+                   Hosted="true"
+                   Comment="Enables Ping test and defines additional parameters.">
+          <Property ID="Port" Type="int" />
+          <Property ID="UseSSL" Type="bool" />
+          <Property ID="Timeout" Type="int" DefaultValue="15000"/>
+          <Property ID="SendData" Type="bool" DefaultValue="false" />
+          <Property ID="RequestBody" Type="string" MaxLength="8000"/>
+          <Property ID="RequestIsBinary" Type="bool" DefaultValue="false"/>
+          <Property ID="UnescapeBody" Type="bool" DefaultValue="true"/>
+          <Property ID="ExpectResponse" Type="bool" DefaultValue="false" />
+          <Property ID="Encoding" Type="enum" EnumType="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding"/>
+          <Property ID="ResponseRegEx" Type="string"/>
+        </ClassType>
         
       </ClassTypes>
       <RelationshipTypes>
@@ -100,6 +115,14 @@
           <Target ID="Test" Type="Maximus.Connectivity.Monitoring.Test" />
         </RelationshipType>
       </RelationshipTypes>
+      <EnumerationTypes>
+        <EnumerationValue ID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding" Accessibility="Public" />
+        <EnumerationValue ID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding.ASCII" Accessibility="Public" Parent="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding"/>
+        <EnumerationValue ID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding.UTF8" Accessibility="Public" Parent="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding"/>
+        <EnumerationValue ID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding.Unicode" Accessibility="Public" Parent="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding"/>
+        <EnumerationValue ID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding.UTF7" Accessibility="Public" Parent="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding"/>
+        <EnumerationValue ID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding.UTF32" Accessibility="Public" Parent="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding"/>
+      </EnumerationTypes>
     </EntityTypes>
   </TypeDefinitions>
   <LanguagePacks>
@@ -268,7 +291,7 @@
         <!-- Maximus.Connectivity.Monitoring.Test.HTTP -->
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP">
           <Name>HTTP Probe</Name>
-          <Description>When created, this test object will add the '' monitor for the selected destination. To assign User name and Password use the '' security profile. The 'Collect Performance Data' option is supported and will collect response time.</Description>
+          <Description>When created, this test object will add the 'HTTP Probe Monitor' monitor for the selected destination. To assign User name and Password use the 'Connectivity Test - HTTP Probe Credentials' security profile. The 'Collect Performance Data' option is supported and will collect response time.</Description>
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="Accept">
           <Name>Header - Accept</Name>
@@ -323,7 +346,91 @@
           <Description>Adds 'User-Agent' header value.</Description>
         </DisplayString>
         
+        <!-- Maximus.Connectivity.Monitoring.Test.TCPConnect -->
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect">
+          <Name>TCP Connect</Name>
+          <Description>When created, will add the 'TCP Connect' monitor for the selected destination. The 'Collect Performance Data' option is supported.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" SubElementID="Encoding">
+          <Name>Encoding</Name>
+          <Description>Encoding for both in and out data, with an exception when out data is binary string (see Request Is Binary property)</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" SubElementID="ExpectResponse">
+          <Name>Expect Response</Name>
+          <Description>Don't close connection immediately, but try to receive a response. No response, but successful connect will result in warning state. Response will be also tested against Response Regular Expression property if set.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" SubElementID="Port">
+          <Name>Remote Port</Name>
+          <Description>Remote TCP/IP port to connect to.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" SubElementID="RequestBody">
+          <Name>Request Body</Name>
+          <Description>Output data. Either a printable string (see Encoding and Unescape Body properties), or a binary string like 'DF0ACD83F1' when Request Is Binary is set to true.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" SubElementID="RequestIsBinary">
+          <Name>Request Is Binary</Name>
+          <Description>Interpret the 'Request Body' property as a binary string like 'DF0ACD83F1'.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" SubElementID="ResponseRegEx">
+          <Name>Response Regular Expression</Name>
+          <Description>A regular expression to validate response. If response not received, or received, but doesn't match the expression, this will result in Warning state.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" SubElementID="SendData">
+          <Name>Send Data</Name>
+          <Description>Try send data after connection. If connect is successful, but unable to send data, this will result in Warning state.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" SubElementID="Timeout">
+          <Name>Timeout</Name>
+          <Description>Connection timeout (all connect, receive and send)</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" SubElementID="UseSSL">
+          <Name>Use SSL</Name>
+          <Description>Secure the connection</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" SubElementID="UnescapeBody">
+          <Name>Unescape Body</Name>
+          <Description>Replace escaped characters with their unescaped form. I.e. \t => tab, \r\n => new line, etc.</Description>
+        </DisplayString>
+        
+        <!-- Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding -->
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding">
+          <Name>Text encoding enumeration</Name>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding.ASCII">
+          <Name>ASCII</Name>
+          <Description>Standard ASCII encoding.</Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding.UTF7">
+          <Name>UTF7</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding.UTF8">
+          <Name>UTF8</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding.UTF32">
+          <Name>UTF32</Name>
+          <Description></Description>
+        </DisplayString>
+        <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect.Encoding.Unicode">
+          <Name>Unicode</Name>
+          <Description></Description>
+        </DisplayString>
+        
       </DisplayStrings>
+      <KnowledgeArticles>
+        <KnowledgeArticle ElementID="Maximus.Connectivity.Monitoring.Test.DNSNameResolution" Visible="true">
+          <MamlContent>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Test</title>
+              <subTitle>Test-Test</subTitle>
+              <para>
+                Text text text.
+              </para>
+            </section>
+          </MamlContent>
+        </KnowledgeArticle>
+      </KnowledgeArticles>
     </LanguagePack>
   </LanguagePacks>
 </ManagementPackFragment>

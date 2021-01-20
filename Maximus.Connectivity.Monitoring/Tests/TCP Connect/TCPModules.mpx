@@ -1,0 +1,265 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <TypeDefinitions>
+    <ModuleTypes>
+      <DataSourceModuleType ID="Maximus.Connectivity.Monitoring.TCPConnect.DataSource" Accessibility="Public" Batching="false">
+        <Configuration />
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS_Scheduler" TypeID="System!System.SimpleScheduler">
+                <IntervalSeconds>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/IntervalSeconds$</IntervalSeconds>
+                <SyncTime />
+              </DataSource>
+              <ProbeAction ID="PA_TCP" TypeID="Maximus.Connectivity.Monitoring.TCPConnect.ProbeAction" />
+            </MemberModules>
+            <Composition>
+              <Node ID="PA_TCP">
+                <Node ID="DS_Scheduler" />
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+      </DataSourceModuleType>
+
+      <DataSourceModuleType ID="Maximus.Connectivity.Monitoring.TCPConnect.Performance.TimeTakenMs.DataSource" Accessibility="Public" Batching="false">
+        <Configuration />
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <DataSource ID="DS_TCP" TypeID="Maximus.Connectivity.Monitoring.TCPConnect.DataSource" />
+              <ConditionDetection ID="CD_Reachable" TypeID="System!System.ExpressionFilter">
+                <Expression>
+                  <And>
+                    <!-- comparing as string, because the converter is case sensitive, but when value comes from an object, it's capitalized -->
+                    <Expression>
+                      <SimpleExpression>
+                        <ValueExpression>
+                          <Value Type="String">$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/CollectPerformanceData$</Value>
+                        </ValueExpression>
+                        <Operator>Equal</Operator>
+                        <ValueExpression>
+                          <Value Type="String">True</Value>
+                        </ValueExpression>
+                      </SimpleExpression>
+                    </Expression>
+                    <Expression>
+                      <Or>
+                        <Expression>
+                          <SimpleExpression>
+                            <ValueExpression>
+                              <XPathQuery Type="String">Property[@Name='HealthState']</XPathQuery>
+                            </ValueExpression>
+                            <Operator>Equal</Operator>
+                            <ValueExpression>
+                              <Value Type="String">SUCCESS</Value>
+                            </ValueExpression>
+                          </SimpleExpression>
+                        </Expression>
+                        <Expression>
+                          <SimpleExpression>
+                            <ValueExpression>
+                              <XPathQuery Type="String">Property[@Name='HealthState']</XPathQuery>
+                            </ValueExpression>
+                            <Operator>Equal</Operator>
+                            <ValueExpression>
+                              <Value Type="String">WARNING</Value>
+                            </ValueExpression>
+                          </SimpleExpression>
+                        </Expression>
+                      </Or>
+                    </Expression>
+                  </And>
+                </Expression>
+              </ConditionDetection>
+              <ConditionDetection ID="CD_PerfMapper" TypeID="Perf!System.Performance.DataGenericMapper">
+                <ObjectName>TCP Connect</ObjectName>
+                <CounterName>TimeTakenMs</CounterName>
+                <InstanceName />
+                <Value>$Data/Property[@Name='TimeTakenMs']$</Value>
+              </ConditionDetection>
+            </MemberModules>
+            <Composition>
+              <Node ID="CD_PerfMapper">
+                <Node ID="CD_Reachable">
+                  <Node ID="DS_TCP" />
+                </Node>
+              </Node>
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>Perf!System.Performance.Data</OutputType>
+      </DataSourceModuleType>
+      
+      <ProbeActionModuleType ID="Maximus.Connectivity.Monitoring.TCPConnect.ProbeAction" Accessibility="Public" Batching="false">
+        <Configuration />
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Composite>
+            <MemberModules>
+              <ProbeAction ID="PA_SubstituteParametersFromObject" TypeID="Maximus.Connectivity.Monitoring.TCPConnect.NativeProbeAction">
+                <TestDisplayName>$Target/Host/Property[Type="System!System.Entity"]/DisplayName$</TestDisplayName>
+                
+                <FullyQualifiedDomainName>$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$</FullyQualifiedDomainName>
+                <TargetIndex>$Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$</TargetIndex>
+
+                <Port>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/Port$</Port>
+                <UseSSL>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/UseSSL$</UseSSL>
+                <Timeout>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/Timeout$</Timeout>
+                <SendData>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/SendData$</SendData>
+                <RequestBody>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/RequestBody$</RequestBody>
+                <RequestIsBinary>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/RequestIsBinary$</RequestIsBinary>
+                <UnescapeBody>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/UnescapeBody$</UnescapeBody>
+                <ExpectResponse>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/ExpectResponse$</ExpectResponse>
+                <Encoding>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/Encoding$</Encoding>
+                <ResponseRegEx>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/ResponseRegEx$</ResponseRegEx>
+              </ProbeAction>
+            </MemberModules>
+            <Composition>
+              <Node ID="PA_SubstituteParametersFromObject" />
+            </Composition>
+          </Composite>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
+      
+      <ProbeActionModuleType ID="Maximus.Connectivity.Monitoring.TCPConnect.NativeProbeAction" Accessibility="Internal" Batching="false">
+        <Configuration>
+          <xsd:element minOccurs="1" name="TestDisplayName" type="xsd:string" />
+
+          <xsd:element minOccurs="1" name="FullyQualifiedDomainName" type="xsd:string" />
+          <xsd:element minOccurs="1" name="TargetIndex" type="xsd:integer" />
+
+          <xsd:element minOccurs="1" name="Port" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="UseSSL" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="Timeout" type="xsd:integer" />
+          <xsd:element minOccurs="1" name="SendData" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="RequestBody" type="xsd:string" />
+          <xsd:element minOccurs="1" name="RequestIsBinary" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="UnescapeBody" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="ExpectResponse" type="xsd:boolean" />
+          <xsd:element minOccurs="1" name="Encoding" type="xsd:string" /> <!-- actually Guid -->
+          <xsd:element minOccurs="1" name="ResponseRegEx" type="xsd:string" />
+        </Configuration>
+        <OverrideableParameters />
+        <ModuleImplementation>
+          <Managed>
+            <Assembly>Maximus.Connectivity.Monitoring.Modules.DeployableAssembly</Assembly>
+            <Type>Maximus.Connectivity.Modules.TCPConnectPA</Type>
+          </Managed>
+        </ModuleImplementation>
+        <OutputType>System!System.PropertyBagData</OutputType>
+        <InputType>System!System.BaseData</InputType>
+      </ProbeActionModuleType>
+    </ModuleTypes>
+
+    <MonitorTypes>
+      <UnitMonitorType ID="Maximus.Connectivity.Monitoring.TCPConnect.UnitMonitor" Accessibility="Public">
+        <MonitorTypeStates>
+          <MonitorTypeState ID="Success" NoDetection="false"/>
+          <MonitorTypeState ID="Warning" NoDetection="false"/>
+          <MonitorTypeState ID="Error" NoDetection="false"/>
+        </MonitorTypeStates>
+        <Configuration />
+        <OverrideableParameters />
+        <MonitorImplementation>
+          <MemberModules>
+            <DataSource ID="DS_TCP" TypeID="Maximus.Connectivity.Monitoring.TCPConnect.DataSource" />
+            <ProbeAction ID="PA_TCP" TypeID="Maximus.Connectivity.Monitoring.TCPConnect.ProbeAction" />
+            <ProbeAction ID="PA_Passthrough" TypeID="System!System.PassThroughProbe" />
+            <ConditionDetection ID="CD_Success" TypeID="System!System.ExpressionFilter">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='HealthState']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">SUCCESS</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_Warning" TypeID="System!System.ExpressionFilter.IntervalSuppression">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='HealthState']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">WARNING</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+              <SuppressionSettings>
+                <MatchCount>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/MatchCount$</MatchCount>
+                <SampleCount>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/SampleCount$</SampleCount>
+              </SuppressionSettings>
+            </ConditionDetection>
+            <ConditionDetection ID="CD_Error" TypeID="System!System.ExpressionFilter.IntervalSuppression">
+              <Expression>
+                <SimpleExpression>
+                  <ValueExpression>
+                    <XPathQuery Type="String">Property[@Name='HealthState']</XPathQuery>
+                  </ValueExpression>
+                  <Operator>Equal</Operator>
+                  <ValueExpression>
+                    <Value Type="String">ERROR</Value>
+                  </ValueExpression>
+                </SimpleExpression>
+              </Expression>
+              <SuppressionSettings>
+                <MatchCount>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/MatchCount$</MatchCount>
+                <SampleCount>$Target/Property[Type="Maximus.Connectivity.Monitoring.Test"]/SampleCount$</SampleCount>
+              </SuppressionSettings>
+            </ConditionDetection>
+          </MemberModules>
+          <RegularDetections>
+            <RegularDetection MonitorTypeStateID="Success">
+              <Node ID="CD_Success">
+                <Node ID="DS_TCP" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Warning">
+              <Node ID="CD_Warning">
+                <Node ID="DS_TCP" />
+              </Node>
+            </RegularDetection>
+            <RegularDetection MonitorTypeStateID="Error">
+              <Node ID="CD_Error">
+                <Node ID="DS_TCP" />
+              </Node>
+            </RegularDetection>
+          </RegularDetections>
+          <OnDemandDetections>
+            <OnDemandDetection MonitorTypeStateID="Success">
+              <Node ID="CD_Success">
+                <Node ID="PA_TCP">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Warning">
+              <Node ID="CD_Warning">
+                <Node ID="PA_TCP">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+            <OnDemandDetection MonitorTypeStateID="Error">
+              <Node ID="CD_Error">
+                <Node ID="PA_TCP">
+                  <Node ID="PA_Passthrough" />
+                </Node>
+              </Node>
+            </OnDemandDetection>
+          </OnDemandDetections>
+        </MonitorImplementation>
+      </UnitMonitorType>
+    </MonitorTypes>
+  </TypeDefinitions>
+</ManagementPackFragment>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Data;
@@ -20,6 +21,7 @@ using Microsoft.EnterpriseManagement.Mom.Internal.UI;
 using Microsoft.EnterpriseManagement.Mom.Internal.UI.Cache;
 using Microsoft.EnterpriseManagement.Mom.Internal.UI.Common;
 using Microsoft.EnterpriseManagement.Mom.Internal.UI.Controls;
+using Microsoft.EnterpriseManagement.Mom.UI;
 using Microsoft.EnterpriseManagement.Monitoring;
 
 namespace Maximus.Connectivity.UI.Control
@@ -51,6 +53,9 @@ namespace Maximus.Connectivity.UI.Control
       ForceCommandUpdate(MaximusCommands.EditDestination, true);
       ForceCommandUpdate(MaximusCommands.DeleteTest, true);
       ForceCommandUpdate(MaximusCommands.EditTest, true);
+      ForceCommandUpdate(MaximusCommands.MaintenanceModeStart, true);
+      ForceCommandUpdate(MaximusCommands.MaintenanceModeEdit, true);
+      ForceCommandUpdate(MaximusCommands.MaintenanceModeEnd, true);
     }
 
     protected override void AddUserActions()
@@ -59,8 +64,12 @@ namespace Maximus.Connectivity.UI.Control
       {
         RegisterCommands();
 
-        #region experiment
+        // Standard commands in the standard container
+        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.MaintenanceModeStart);
+        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.MaintenanceModeEdit);
+        AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.MaintenanceModeEnd);
 
+        // Custom commands in custom containers
         ICommandControlContainer actionsTaskContainer = ((ICommandControlService)GetService(typeof(ICommandControlService))).GetContainer(this, "Actions");
 
         ICommandTaskGroup destinationsTaskGroup = (ICommandTaskGroup)actionsTaskContainer.CreateCommandControl(this, typeof(ICommandTaskGroup), MaximusCommands.DestinationGroup);
@@ -68,15 +77,11 @@ namespace Maximus.Connectivity.UI.Control
         AddTaskItem(MaximusCommands.DestinationGroup, MaximusCommands.NewDestination); // , OnNewDestination); -- do it just ONCE !!!
         AddTaskItem(MaximusCommands.DestinationGroup, MaximusCommands.EditDestination); // , OnEditDestination, OnEditDestinationStatus); -- do it just ONCE !!!
         AddTaskItem(MaximusCommands.DestinationGroup, MaximusCommands.DeleteDestination); // , OnDeleteDestination, OnDeleteDestinationStatus); -- do it just ONCE !!!
-        //CommandHelpers.AddActionItem(this, destinationsTaskGroup, actionsTaskContainer, MaximusCommands.NewDestination, CommandRoute.SendToControlCreator);
-        //CommandHelpers.AddActionItem(this, destinationsTaskGroup, actionsTaskContainer, MaximusCommands.EditDestination, CommandRoute.SendToControlCreator);
-        //CommandHelpers.AddActionItem(this, destinationsTaskGroup, actionsTaskContainer, MaximusCommands.DeleteDestination, CommandRoute.SendToControlCreator);
 
         ICommandTaskGroup testsTaskGroup = (ICommandTaskGroup)actionsTaskContainer.CreateCommandControl(this, typeof(ICommandTaskGroup), MaximusCommands.TestGroup);
         actionsTaskContainer.Items.Add(testsTaskGroup);
         if (TestClassesInitialized)
         {
-          //  ICommandTaskDropDown parent = (ICommandTaskDropDown)CommandHelpers.AddActionDropDownItem(this, actionsTaskContainer, MaximusCommands.AddTestDropDown, CommandRoute.SendToControlCreator);
           ICommandTaskDropDown parent = AddTaskDropDownItem(MaximusCommands.TestGroup, MaximusCommands.AddTestDropDown);
 
           foreach (KeyValuePair<Guid, ManagementPackClass> commandAndClass in TestClassesAddCommands)
@@ -86,37 +91,12 @@ namespace Maximus.Connectivity.UI.Control
         }
         AddTaskItem(MaximusCommands.TestGroup, MaximusCommands.EditTest, OnEditTest, null); // status us in the child form
         AddTaskItem(MaximusCommands.TestGroup, MaximusCommands.DeleteTest, OnDeleteTest, null); // status us in the child form
-        //CommandHelpers.AddActionItem(this, testsTaskGroup, actionsTaskContainer, MaximusCommands.EditTest, CommandRoute.SendToControlCreator);
-        //CommandHelpers.AddActionItem(this, testsTaskGroup, actionsTaskContainer, MaximusCommands.DeleteTest, CommandRoute.SendToControlCreator);
 
         ICommandTaskGroup configurationTaskGroup = (ICommandTaskGroup)actionsTaskContainer.CreateCommandControl(this, typeof(ICommandTaskGroup), MaximusCommands.ConfigurationGroup);
         actionsTaskContainer.Items.Add(configurationTaskGroup);
         AddTaskItem(MaximusCommands.ConfigurationGroup, MaximusCommands.EditTemplates);
         AddTaskItem(MaximusCommands.ConfigurationGroup, MaximusCommands.BulkExport, OnBulkExport, null); 
         AddTaskItem(MaximusCommands.ConfigurationGroup, MaximusCommands.BulkImport, OnBulkImport, null); 
-        //CommandHelpers.AddActionItem(this, configurationTaskGroup, actionsTaskContainer, MaximusCommands.BulkExport, CommandRoute.SendToControlCreator);
-        //CommandHelpers.AddActionItem(this, configurationTaskGroup, actionsTaskContainer, MaximusCommands.BulkImport, CommandRoute.SendToControlCreator);
-        #endregion
-
-        //AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.NewDestination); // , OnNewDestination); -- do it just ONCE !!!
-        //AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.EditDestination); // , OnEditDestination, OnEditDestinationStatus); -- do it just ONCE !!!
-        //AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.DeleteDestination); // , OnDeleteDestination, OnDeleteDestinationStatus); -- do it just ONCE !!!
-        //AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
-        //if (TestClassesInitialized)
-        //{
-        //  ICommandTaskDropDown parent = AddTaskDropDownItem(TaskCommands.ActionsTaskGroup, MaximusCommands.TestActionsCommand);
-          
-        //  foreach (KeyValuePair<Guid, ManagementPackClass> commandAndClass in TestClassesAddCommands)
-        //  {
-        //    parent.Items.Add(parent.CreateCommandControl(this, typeof(ICommandMenuItem), new CommandID(commandAndClass.Key, TestClassCommandId)));
-        //  }
-        //}
-        // AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.EditTest, OnEditTest, null); // status us in the child form
-        // AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.DeleteTest, OnDeleteTest, null); // status us in the child form
-        // AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
-        //AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.BulkExport, OnBulkExport, null); 
-        //AddTaskItem(TaskCommands.ActionsTaskGroup, MaximusCommands.BulkImport, OnBulkImport, null); 
-        //AddTaskSeparatorItem(TaskCommands.ActionsTaskGroup);
       }
       catch (Exception e)
       {
@@ -162,12 +142,102 @@ namespace Maximus.Connectivity.UI.Control
             }
           }
           contextMenu.AddContextMenuSeparator();
+          contextMenu.AddContextMenuItem(MaximusCommands.MaintenanceModeStart, OnMaintenanceModeStart, OnMaintenanceModeStartStatus); // can register callback only ONCE
+          contextMenu.AddContextMenuItem(MaximusCommands.MaintenanceModeEdit, OnMaintenanceModeEdit, OnMaintenanceModeEditStatus); // can register callback only ONCE
+          contextMenu.AddContextMenuItem(MaximusCommands.MaintenanceModeEnd, OnMaintenanceModeEnd, OnMaintenanceModeEditStatus); // can register callback only ONCE
+          contextMenu.AddContextMenuSeparator();
         }
       }
       catch (Exception e)
       {
         MessageBox.Show($"In {System.Reflection.MethodBase.GetCurrentMethod().Name} it said {e.Message}");
       }
+    }
+
+    private void OnMaintenanceModeEnd(object sender, CommandEventArgs e)
+    {
+      ConsoleJobs.RunJob(this, (param0, param1) =>
+      {
+        IEnumerable<InstanceState> monitoringObjects = GridSelectedItems.Where(si => si.InMaintenanceMode);
+        if (!monitoringObjects.Any())
+          return;
+        using (MaintenanceModeExitDialog maintenanceModeExitDialog = new MaintenanceModeExitDialog())
+        {
+          if (maintenanceModeExitDialog.ShowDialog() != DialogResult.Yes)
+            return;
+          foreach (InstanceState monitoringObject in monitoringObjects)
+            monitoringObject.GetPartialMonitoringObject(ManagementGroup).StopMaintenanceMode(DateTime.UtcNow, maintenanceModeExitDialog.ApplyToContained ? TraversalDepth.Recursive : TraversalDepth.OneLevel);
+          UpdateCache();
+        }
+      });
+    }
+
+    private void OnMaintenanceModeEditStatus(object sender, CommandStatusEventArgs e)
+    {
+      e.CommandStatus.Enabled = false;
+      ConsoleUserSettings service = (ConsoleUserSettings)GetService(typeof(ConsoleUserSettings));
+      if (!ManagementGroupSession.IsUserOperator || service != null && Grid.SelectedRows.Count > service.MaxItemsForMaintenanceMode)
+      {
+        e.CommandStatus.Visible = false;
+      }
+      else
+      {
+        e.CommandStatus.Visible = true;
+        e.CommandStatus.Enabled = GridSelectedItems?.All(si => si.InMaintenanceMode) ?? false;
+      }
+    }
+
+    private void OnMaintenanceModeEdit(object sender, CommandEventArgs e)
+    {
+      ConsoleJobs.RunJob(this, (param0, param1) =>
+      {
+        IEnumerable<InstanceState> monitoringObjects = GridSelectedItems.Where(si => si.InMaintenanceMode);
+        if (!monitoringObjects.Any())
+          return;
+        using (MaintenanceModeDialog maintenanceModeDialog = new MaintenanceModeDialog())
+        {
+          Site.Container.Add(maintenanceModeDialog);
+          foreach (InstanceState monitoringObject in monitoringObjects)
+            maintenanceModeDialog.EntityItems.Add(monitoringObject.GetPartialMonitoringObject(ManagementGroup));
+          if (maintenanceModeDialog.ShowDialog() != DialogResult.OK)
+            return;
+          UpdateCache(UpdateReason.Refresh);
+        }
+      });
+    }
+
+    private void OnMaintenanceModeStartStatus(object sender, CommandStatusEventArgs e)
+    {
+      e.CommandStatus.Enabled = false;
+      ConsoleUserSettings service = (ConsoleUserSettings)GetService(typeof(ConsoleUserSettings));
+      if (!ManagementGroupSession.IsUserOperator || service != null && Grid.SelectedRows.Count > service.MaxItemsForMaintenanceMode)
+      {
+        e.CommandStatus.Visible = false;
+      }
+      else
+      {
+        e.CommandStatus.Visible = true;
+        e.CommandStatus.Enabled = GridSelectedItems?.All(si => !si.InMaintenanceMode) ?? false;
+      }
+    }
+
+    private void OnMaintenanceModeStart(object sender, CommandEventArgs e)
+    {
+      ConsoleJobs.RunJob(this, (param0, param1) =>
+      {
+        IEnumerable<InstanceState> monitoringObjects = GridSelectedItems.Where(i => !i.InMaintenanceMode);
+        if (!monitoringObjects.Any())
+          return;
+        using (MaintenanceModeDialog maintenanceModeDialog = new MaintenanceModeDialog())
+        {
+          Site.Container.Add(maintenanceModeDialog);
+          foreach (InstanceState monitoringObject in monitoringObjects)
+            maintenanceModeDialog.EntityItems.Add(monitoringObject.GetPartialMonitoringObject(ManagementGroup));
+          if (maintenanceModeDialog.ShowDialog() != DialogResult.OK)
+            return;
+          UpdateCache(UpdateReason.Refresh);
+        }
+      });
     }
 
     private void OnDeleteTest(object sender, CommandEventArgs e)
@@ -376,17 +446,21 @@ namespace Maximus.Connectivity.UI.Control
       TryAddCommand(MaximusCommands.DestinationGroup, "Destination", "");
       TryAddCommand(MaximusCommands.NewDestination, "New Destination", "Create a new destination FQDN object.", Resources.NewDestination);
       TryAddCommand(MaximusCommands.DeleteDestination, "Delete Destination", "Delete the selected destination.", CommandHelpers.GetImage(StandardCommands.Delete));
-      TryAddCommand(MaximusCommands.EditDestination, "Edit Destination", "Delete the selected destination.", CommandHelpers.GetImage(ViewCommands.ViewProperties));
+      TryAddCommand(MaximusCommands.EditDestination, "Edit Destination", "Edit the selected destination.", CommandHelpers.GetImage(ViewCommands.ViewProperties));
       // Tests
       TryAddCommand(MaximusCommands.TestGroup, "Test Object", "");
       TryAddCommand(MaximusCommands.AddTestDropDown, "Add Test...", "Add a test to the selected destination.");
       TryAddCommand(MaximusCommands.EditTest, "Edit Test", "Edit the currently selected test for the selected destination.");
-      TryAddCommand(MaximusCommands.DeleteTest, "Delete Test", "Delete the currently selected test for the selected destination.");
+      TryAddCommand(MaximusCommands.DeleteTest, "Delete Test", "Delete the currently selected test for the selected destination.", CommandHelpers.GetImage(StandardCommands.Delete));
       // Configuration
       TryAddCommand(MaximusCommands.ConfigurationGroup, "Configuration", "");
       TryAddCommand(MaximusCommands.BulkExport, "Bulk Export", "Exports all destinations and optionally export tests.");
       TryAddCommand(MaximusCommands.BulkImport, "Bulk Import", "Import destinations and/or test settings.");
       TryAddCommand(MaximusCommands.EditTemplates, "Edit Templates", "Edit Templates and apply changes to referenced tests.", enabled: false);
+      // Maintenance mode
+      TryAddCommand(MaximusCommands.MaintenanceModeStart, "Start Maintenance Mode...", "", (Bitmap)ConsoleResources.GetObject("MaintenanceModeEnterImage", CurrentCulture));
+      TryAddCommand(MaximusCommands.MaintenanceModeEdit, "Edit Maintenance Mode Settings...", "", (Bitmap)ConsoleResources.GetObject("MaintenanceModeChangeImage", CurrentCulture));
+      TryAddCommand(MaximusCommands.MaintenanceModeEnd, "Stop Maintenance Mode", "", (Bitmap)ConsoleResources.GetObject("MaintenanceModeExitImage", CurrentCulture));
 
       // dynamic commands
       if (!TestClassesInitialized)

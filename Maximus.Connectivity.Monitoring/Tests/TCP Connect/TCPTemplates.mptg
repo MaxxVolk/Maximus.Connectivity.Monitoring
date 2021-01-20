@@ -1,0 +1,67 @@
+<TemplateGroup>
+  <Instances>
+    <Instance ID="Instance1cb8bbbf42bb4bd8ba0ce5a2d4aaa2da" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
+      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <MonitorType>Maximus.Connectivity.Monitoring.TCPConnect.UnitMonitor</MonitorType>
+        <MonitorOperationalStates>
+          <OperationalState>
+            <OperationalStateId>Success</OperationalStateId>
+            <OperationalStateDisplayName>Success</OperationalStateDisplayName>
+            <MonitorTypeStateId>Success</MonitorTypeStateId>
+            <HealthState>Success</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>Warning</OperationalStateId>
+            <OperationalStateDisplayName>Warning</OperationalStateDisplayName>
+            <MonitorTypeStateId>Warning</MonitorTypeStateId>
+            <HealthState>Warning</HealthState>
+          </OperationalState>
+          <OperationalState>
+            <OperationalStateId>Error</OperationalStateId>
+            <OperationalStateDisplayName>Error</OperationalStateDisplayName>
+            <MonitorTypeStateId>Error</MonitorTypeStateId>
+            <HealthState>Error</HealthState>
+          </OperationalState>
+        </MonitorOperationalStates>
+        <ParentMonitor>Health!System.Health.AvailabilityState</ParentMonitor>
+        <Accessibility>Public</Accessibility>
+        <Id>TCPConnect.Monitor</Id>
+        <DisplayName>TCP Connect Monitor</DisplayName>
+        <Description>Test TCP connection to remote server and optionally send and receive data.</Description>
+        <Target>Maximus.Connectivity.Monitoring.Test.TCPConnect</Target>
+        <Enabled>true</Enabled>
+        <Category>AvailabilityHealth</Category>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <AlertAutoResolve>true</AlertAutoResolve>
+        <AlertOnState>Warning</AlertOnState>
+        <AlertPriority>High</AlertPriority>
+        <AlertSeverity>MatchMonitorHealth</AlertSeverity>
+        <AlertName>TCP Connection Failed</AlertName>
+        <AlertDescription>Unable to connect to remote destination (CRITICAL) or unable to send/receive data or response unexpected (WARNING) while connecting to connect to the $Target/Host/Property[Type="System!System.Entity"]/DisplayName$ destination (index: $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/TargetIndex$) at the $Target/Host/Property[Type="Maximus.Connectivity.Monitoring.FullyQualifiedDomainName"]/FullyQualifiedDomainName$:$Target/Property[Type="Maximus.Connectivity.Monitoring.Test.TCPConnect"]/Port$.
+
+Message: $Data/Context/Property[@Name='Message']$</AlertDescription>
+        <ConfirmDelivery>false</ConfirmDelivery>
+      </UnitMonitorConfig>
+    </Instance>
+    <Instance ID="Instancefdcbf895716f4a85af751cf7ac70a55f" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.PerformanceCollectionRule" Version="1.0.0.0">
+      <PerformanceCollectionRuleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+        <Id>TCPConnect.Performance.TimeTakenMs.PerformanceCollectionRule</Id>
+        <DisplayName>TCP Probe Time Taken Performance Collection Rule</DisplayName>
+        <Description>Collect time taken (in miliseconds) to perform TCP Connect probe. It includes conection time and send/receive time when configured.</Description>
+        <Category>PerformanceCollection</Category>
+        <ConfirmDelivery>false</ConfirmDelivery>
+        <Target>Maximus.Connectivity.Monitoring.Test.TCPConnect</Target>
+        <Enabled>true</Enabled>
+        <Remotable>true</Remotable>
+        <Priority>Normal</Priority>
+        <DiscardLevel>100</DiscardLevel>
+        <ConditionDetectionId>CD</ConditionDetectionId>
+        <DataSourceId>DS</DataSourceId>
+        <DataSourceType>Maximus.Connectivity.Monitoring.TCPConnect.Performance.TimeTakenMs.DataSource</DataSourceType>
+        <CollectToDB>true</CollectToDB>
+        <CollectToDW>true</CollectToDW>
+      </PerformanceCollectionRuleConfig>
+    </Instance>
+  </Instances>
+</TemplateGroup>

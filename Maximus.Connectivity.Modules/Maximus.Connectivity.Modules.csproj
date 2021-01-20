@@ -76,13 +76,17 @@
   <ItemGroup>
     <Compile Include="ModInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyBags\PropertyBagObject.cs" />
+    <Compile Include="PropertyBags\TCPConnectResult.cs" />
     <Compile Include="Simple Probes\DNSResolutionPA.cs" />
     <Compile Include="Simple Probes\HTTPProbePA.cs" />
     <Compile Include="Simple Probes\PingPA.cs" />
     <Compile Include="Simple Probes\ServerCertificatePA.cs" />
+    <Compile Include="Simple Probes\TCPConnectPA.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Maximus.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

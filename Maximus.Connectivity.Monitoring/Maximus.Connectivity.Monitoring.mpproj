@@ -115,6 +115,13 @@
       <SubType>Code</SubType>
       <DependentUpon>Tests\SSL Connection\SSLTemplates.mptg</DependentUpon>
     </Compile>
+    <Compile Include="Tests\TCP Connect\TCPModules.mpx">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tests\TCP Connect\TCPTemplates.mptg.mpx">
+      <SubType>Code</SubType>
+      <DependentUpon>Tests\TCP Connect\TCPTemplates.mptg</DependentUpon>
+    </Compile>
     <Compile Include="UI.mpx">
       <SubType>Code</SubType>
     </Compile>
@@ -158,11 +165,16 @@
       <SubType>Content</SubType>
       <Generator>FragmentGenerator</Generator>
     </Content>
+    <Content Include="Tests\TCP Connect\TCPTemplates.mptg">
+      <SubType>Content</SubType>
+      <Generator>FragmentGenerator</Generator>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Tests" />
     <Folder Include="Tests\DNS Resolution" />
     <Folder Include="Tests\HTTP Probe" />
+    <Folder Include="Tests\TCP Connect" />
     <Folder Include="Tests\SSL Connection" />
     <Folder Include="Tests\Ping" />
   </ItemGroup>

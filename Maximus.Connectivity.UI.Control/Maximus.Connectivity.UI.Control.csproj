@@ -97,6 +97,12 @@
       <DependentUpon>FQDNGridView.cs</DependentUpon>
     </Compile>
     <Compile Include="IDs.cs" />
+    <Compile Include="MamlHelpDisplayForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MamlHelpDisplayForm.Designer.cs">
+      <DependentUpon>MamlHelpDisplayForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MaximusCommands.cs" />
     <Compile Include="NewDestinationDialog.cs">
       <SubType>Form</SubType>
@@ -130,6 +136,9 @@
     <None Include="Maximus.snk" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="MamlHelpDisplayForm.resx">
+      <DependentUpon>MamlHelpDisplayForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NewDestinationDialog.resx">
       <DependentUpon>NewDestinationDialog.cs</DependentUpon>
     </EmbeddedResource>
