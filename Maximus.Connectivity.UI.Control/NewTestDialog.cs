@@ -13,6 +13,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -42,6 +43,17 @@ namespace Maximus.Connectivity.UI.Control
         TargetClass = ExistingObject.GetMostDerivedClasses().First();
       }
       rtbDescription.Text = TargetClass.Description;
+      try
+      {
+        ManagementPackKnowledgeArticle kb =TargetClass.GetKnowledgeArticle(Thread.CurrentThread.CurrentUICulture);
+        btDocumentation.Enabled = kb != null;
+        llLearnMore.Enabled = kb != null;
+      }
+      catch (ObjectNotFoundException)
+      {
+        btDocumentation.Enabled = false;
+        llLearnMore.Enabled = false;
+      }
 
       if (existingTestObjectId == Guid.Empty)
         Text = $"New {(string.IsNullOrWhiteSpace(TargetClass.DisplayName) ? TargetClass.Name : TargetClass.DisplayName)}";
@@ -87,6 +99,23 @@ namespace Maximus.Connectivity.UI.Control
           e.Cancel = true;
           return;
         }
+    }
+
+    private void btDocumentation_Click(object sender, EventArgs e)
+    {
+      using (MamlHelpDisplayForm helpForm = new MamlHelpDisplayForm())
+      {
+        helpForm.KnowledgeControl.KnowledgeType = Microsoft.EnterpriseManagement.Mom.Internal.UI.Controls.KnowledgeType.Any;
+        helpForm.KnowledgeControl.DefaultContent = "Empty";
+        helpForm.KnowledgeControl.Group = ManagementGroup;
+        helpForm.KnowledgeControl.KnowledgeId = TargetClass.Id;
+        helpForm.ShowDialog();
+      }
+    }
+
+    private void llLearnMore_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+      btDocumentation_Click(sender, null);
     }
   }
 }

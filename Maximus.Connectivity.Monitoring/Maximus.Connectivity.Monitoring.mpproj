@@ -73,6 +73,9 @@
     <Compile Include="Classes.mpx">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="KnowledgeArticles.mpx">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ManagementPack.mpx">
       <SubType>Code</SubType>
     </Compile>

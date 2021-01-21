@@ -1,0 +1,77 @@
+﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LanguagePacks>
+    <LanguagePack ID="ENU" IsDefault="true">
+      <KnowledgeArticles>
+        <KnowledgeArticle ElementID="Maximus.Connectivity.Monitoring.Test.DNSNameResolution" Visible="true">
+          <MamlContent>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Test</title>
+              <subTitle>Test-Test</subTitle>
+              <para>
+                Text text text.
+              </para>
+            </section>
+          </MamlContent>
+        </KnowledgeArticle>
+
+        <KnowledgeArticle ElementID="Maximus.Connectivity.Monitoring.Test.TCPConnect" Visible="true">
+          <MamlContent>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Description</title>
+              <para>
+                This test object performs a TCP connect test with optional send and receive operations. SSL connection is also supported, but
+                unlike 'Secure Socket Layer Connection' test object it uses best-negotiated SSL protocol and follows system policies.
+              </para>
+            </section>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Operations</title>
+              <sections>
+                <section>
+                  <title>Connect</title>
+                  <para>
+                    The basic connect operation establishes a TCP connection to the port configured by the 'Remote Port' test object property
+                    and then immediately closed it (if no Send or Receive operations are enabled). The 'Use SSL' property is not used with connect-only test.
+                  </para>
+                  <para>
+                    If Connect was not successful, the TCP Connect' monitor will turn into CRITICAL state.
+                  </para>
+                </section>
+                <section>
+                  <title>Send</title>
+                  <para>
+                    When 'Send Data' property is set to <codeInline>True</codeInline>, then the test object tries to send data to remote server.
+                    If the 'Use SSL' property is set to <codeInline>True</codeInline>, then a secure connection will be initiated before sending data.
+                    To define what data is send use the 'Request Body' property. It can be either binary text, i.e. a string of hex numbers without spaces
+                    like <codeInline>DF0ACD83F1</codeInline> when the 'Request Is Binary' property is set to <codeInline>True</codeInline>, or a simple text otherwise.
+                    When 'Request Body' is text, then it either can be sent as it is using encoding selected in the 'Encoding' property, or unescaped first, is the 'Unescape Body'
+                    property is selected. Unescaping removes escape expressions and replaces them their native chars, like it replaces <codeInline>\t</codeInline> with tab,
+                    <codeInline>\r</codeInline> with caret return, etc. For full list see
+                    <navigationLink>
+                      <linkText>Microsoft documentation</linkText>
+                      <uri href="https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex.unescape?view=net-5.0" />
+                    </navigationLink>. If you need a '\' char in the unescape mode, double it as '\\'.
+                  </para>
+                  <para>
+                    If Send is not successful, the TCP Connect' monitor will turn into WARNING state.
+                  </para>
+                </section>
+                <section>
+                  <title>Receive</title>
+                  <para>
+                    When the 'Expect Response' property is set, the test will try to receive up to 16 KB (hardcoded limit) from the remote server. Receive and Send operations
+                    are independent, i.e. they can be turned on and off individually. Receive opertaion is either succeed upon receiving any positive number of bytes, or
+                    if the 'Response Regular Expression' property not empty, the response is tested to math the regular expression. The same encoding from 'Encoding' property
+                    is used to decode server response into text.
+                  </para>
+                  <para>
+                    If Receive is not successful (either due to no response, or response not matching the regular expression), the TCP Connect' monitor will turn into WARNING state.
+                  </para>
+                </section>
+              </sections>
+            </section>
+          </MamlContent>
+        </KnowledgeArticle>
+      </KnowledgeArticles>
+    </LanguagePack>
+  </LanguagePacks>
+</ManagementPackFragment>

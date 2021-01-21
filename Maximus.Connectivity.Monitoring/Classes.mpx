@@ -418,19 +418,6 @@
         </DisplayString>
         
       </DisplayStrings>
-      <KnowledgeArticles>
-        <KnowledgeArticle ElementID="Maximus.Connectivity.Monitoring.Test.DNSNameResolution" Visible="true">
-          <MamlContent>
-            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
-              <title>Test</title>
-              <subTitle>Test-Test</subTitle>
-              <para>
-                Text text text.
-              </para>
-            </section>
-          </MamlContent>
-        </KnowledgeArticle>
-      </KnowledgeArticles>
     </LanguagePack>
   </LanguagePacks>
 </ManagementPackFragment>

@@ -1,7 +1,7 @@
 ﻿<ManagementPackFragment SchemaVersion="2.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Resources>
     <Assembly ID="Maximus.Connectivity.Monitoring.UI.Control.Assembly" HasNullStream="false" Accessibility="Public"
-              QualifiedName="Maximus.Connectivity.UI.Control, Version=1.0.0.142, Culture=neutral, PublicKeyToken=fd5098a6a3259696"
+              QualifiedName="Maximus.Connectivity.UI.Control, Version=1.0.0.148, Culture=neutral, PublicKeyToken=fd5098a6a3259696"
               FileName="Maximus.Connectivity.UI.Control.dll">
       <Dependency ID="MBL!Maximus.Base.Library.Console.Assembly" />
     </Assembly>
