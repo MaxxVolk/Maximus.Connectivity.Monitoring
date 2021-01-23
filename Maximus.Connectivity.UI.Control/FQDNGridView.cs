@@ -133,6 +133,7 @@ namespace Maximus.Connectivity.UI.Control
           contextMenu.AddContextMenuItem(MaximusCommands.NewDestination, OnNewDestination); // can register callback only ONCE
           contextMenu.AddContextMenuItem(MaximusCommands.EditDestination, OnEditDestination, OnSingleRowSelectedStatus); // can register callback only ONCE
           contextMenu.AddContextMenuItem(MaximusCommands.DeleteDestination, OnDeleteDestination, OnDeleteDestinationStatus); // can register callback only ONCE
+          contextMenu.AddContextMenuSeparator();
           ICommandMenuItem subMenu = contextMenu.AddContextMenuItem(MaximusCommands.AddTestDropDown, null);
           if (TestClassesInitialized)
           {

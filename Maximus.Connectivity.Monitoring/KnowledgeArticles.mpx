@@ -2,14 +2,562 @@
   <LanguagePacks>
     <LanguagePack ID="ENU" IsDefault="true">
       <KnowledgeArticles>
+        
+        <KnowledgeArticle ElementID="Maximus.Connectivity.Monitoring.Test.Ping" Visible="true">
+          <MamlContent>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Description</title>
+              <para>
+                This object performs a simple ICMP echo test known as 'ping' to ensure that remote destination is on-line.
+              </para>
+              <para>
+                Collect Performance Data is supported: YES
+              </para>
+              <table>
+                <title>Monitors and Rules</title>
+                <tableHeader>
+                  <row>
+                    <entry>
+                      <para>Monitor/Rule</para>
+                    </entry>
+                    <entry>
+                      <para>Name</para>
+                    </entry>
+                    <entry>
+                      <para>Has Threshold</para>
+                    </entry>
+                    <entry>
+                      <para>Alert Suppression</para>
+                    </entry>
+                  </row>
+                </tableHeader>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>ICMP availability (Ping) Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>No</para>
+                  </entry>
+                  <entry>
+                    <para>Supported</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>Ping Slow Response Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>Yes</para>
+                    <table>
+                      <row>
+                        <entry>
+                          <para>WarningResponseTime</para>
+                        </entry>
+                        <entry>
+                          <para>1500ms</para>
+                        </entry>
+                      </row>
+                    </table>
+                  </entry>
+                  <entry>
+                    <para>Supported</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Performance Collection Rule</para>
+                  </entry>
+                  <entry>
+                    <para>Ping Round Trip Time Performance Collection Rule</para>
+                  </entry>
+                  <entry>
+                    <para>N/A</para>
+                  </entry>
+                  <entry>
+                    <para>N/A</para>
+                  </entry>
+                </row>
+              </table>
+            </section>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Operations</title>
+              <sections>
+                <section>
+                  <title>Ping</title>
+                  <para>
+                    Ping operation sends an ICMP packet to the destination and expects an echo packet to be sent back. Size of the packet is set by the 'Buffer Size' option.
+                    The 'Max TTL' limit number of hops test packet can make through routers on its way to the destination.
+                    For large packets, bigger than any current or in-transit network's MTU, the 'Don't Fragment' property will cause packet drop, when is set to True.
+                    Therefore, large buffer size in combination with the 'Don't Fragment' option can be used to ensure that there are no networks with smaller MTU in
+                    the transit way to the destination.
+                  </para>
+                  <para>
+                    The 'Timeout' parameter defines overall timeout when packet considered as lost. Bear in mind, that 'Ping Slow Response Monitor' monitor's threshold cannot be 
+                    larger than the overall timeout.
+                  </para>
+                  <para>
+                    If Ping is not successful, the 'ICMP availability (Ping) Monitor' monitor will turn into CRITICAL state.
+                  </para>
+                  <para>
+                    If Ping is successful, but slow, the 'Ping Slow Response Monitor' monitor will turn into WARNING state.
+                  </para>
+                </section>
+              </sections>
+            </section>
+          </MamlContent>
+        </KnowledgeArticle>
+
         <KnowledgeArticle ElementID="Maximus.Connectivity.Monitoring.Test.DNSNameResolution" Visible="true">
           <MamlContent>
             <section xmlns="http://schemas.microsoft.com/maml/2004/10">
-              <title>Test</title>
-              <subTitle>Test-Test</subTitle>
+              <title>Description</title>
               <para>
-                Text text text.
+                This object resolves destination fully qualified domain name into an IP address using system-configured DNS servers at selected action point (edit destination to change its action point).
               </para>
+              <para>
+                Collect Performance Data is supported: NO
+              </para>
+              <table>
+                <title>Monitors and Rules</title>
+                <tableHeader>
+                  <row>
+                    <entry>
+                      <para>Monitor/Rule</para>
+                    </entry>
+                    <entry>
+                      <para>Name</para>
+                    </entry>
+                    <entry>
+                      <para>Has Threshold</para>
+                    </entry>
+                    <entry>
+                      <para>Alert Suppression</para>
+                    </entry>
+                  </row>
+                </tableHeader>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>DNS Name Resolution Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>No</para>
+                  </entry>
+                  <entry>
+                    <para>Supported</para>
+                  </entry>
+                </row>
+              </table>
+            </section>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Operations</title>
+              <sections>
+                <section>
+                  <title>Name Resolution</title>
+                  <para>
+                    Name Resolution operation tries to resolve destination name into an IP address using locally configured system DNS servers. If no IP address can be found,
+                    then the operation is failed.
+                  </para>
+                  <para>
+                    If destination name cannot be resolved to IP address, the 'DNS Name Resolution Monitor' will turn into CRITICAL state.
+                  </para>
+                </section>
+              </sections>
+            </section>
+          </MamlContent>
+        </KnowledgeArticle>
+
+        <KnowledgeArticle ElementID="Maximus.Connectivity.Monitoring.Test.SSL" Visible="true">
+          <MamlContent>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Description</title>
+              <para>
+                This object tries to establish a secure connection to destination and collects information about connection type and remote server certificate. No payload data is being sent or receive during the test, 
+                however it generates some traffic to negotiate encryption and receive remote certificate. The test makes several connection attempts in a row to determine all available SSL levels (from SSL 2 to TLS 1.3).
+              </para>
+              <para>
+                Collect Performance Data is supported: NO
+              </para>
+              <table>
+                <title>Monitors and Rules</title>
+                <tableHeader>
+                  <row>
+                    <entry>
+                      <para>Monitor/Rule</para>
+                    </entry>
+                    <entry>
+                      <para>Name</para>
+                    </entry>
+                    <entry>
+                      <para>Has Threshold</para>
+                    </entry>
+                    <entry>
+                      <para>Alert Suppression</para>
+                    </entry>
+                  </row>
+                </tableHeader>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>Allowed SSL Protocol Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>No</para>
+                  </entry>
+                  <entry>
+                    <para>Not Supported</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>Certificate Expiration Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>Yes</para>
+                    <table>
+                      <row>
+                        <entry>
+                          <para>DaysBeforeExpirationWarning</para>
+                        </entry>
+                        <entry>
+                          <para>15 days</para>
+                        </entry>
+                      </row>
+                    </table>
+                  </entry>
+                  <entry>
+                    <para>Not Supported</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>Certificate Policy Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>No</para>
+                  </entry>
+                  <entry>
+                    <para>Not Supported</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>Certificate Validity Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>No</para>
+                  </entry>
+                  <entry>
+                    <para>Not Supported</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>Disabled SSL Protocols Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>No</para>
+                  </entry>
+                  <entry>
+                    <para>Not Supported</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>Weak Certificate Hash Signature Algorithm Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>No</para>
+                  </entry>
+                  <entry>
+                    <para>Not Supported</para>
+                  </entry>
+                </row>
+              </table>
+            </section>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Operations</title>
+              <sections>
+                <section>
+                  <title>SSL Connect</title>
+                  <para>
+                    During this operation, the test object tries to establish a secure connection to the remote server defined by the corresponding destination's FQDN.
+                    It tries all SSL versions available (from SSL 2 to TLS 1.3 in the current implementation). All connection results are recorded and compared to the 'Allowed SSL Protocols' and 'Disabled SSL Protocols'
+                    test object properties. At the end of the operation, remote server certificate properties are being tested. This includes certificate Not Before and Not After timestamps and hash algorithm.
+                  </para>
+                  <para>
+                    If at least one protocol, listed in the 'Disabled SSL Protocols' property is supported, this will turn the 'Disabled SSL Protocols Monitor' monitor into WARNING state.
+                  </para>
+                  <para>
+                    If no protocols, listed in the 'Allowed SSL Protocols' property is supported, this will turn the 'Allowed SSL Protocol Monitor' monitor into WARNING state.
+                  </para>
+                  <para>
+                    If the current UTC date is outside of certificate's validity timestamps, this will turn the 'Certificate Expiration Monitor' monitor into either WARNING state is certificate is about to expire, or 
+                    into CRITICAL state if it's already expired.
+                  </para>
+                  <para>
+                    If the hash algorithm used to sign the remote server certificate is listed in the 'Disabled Hash List' property, this will turn the 'Weak Certificate Hash Signature Algorithm Monitor' monitor
+                    into WARNING state.
+                  </para>
+                </section>
+                <section>
+                  <title>SSL Policy</title>
+                  <para>
+                    When a secure connection is negotiated, the system may report about some security policy (defined at OS level) breaches. The test object will override any policy warning, and allow the connection, 
+                    however, all policy error will be recored and alerted.
+                  </para>
+                  <para>
+                    If any policy errors are reported by .Net/OS during this phase, this will turn the 'Certificate Policy Monitor' monitor into WARNING state.
+                  </para>
+                </section>
+                <section>
+                  <title>Certificate Chain</title>
+                  <para>
+                    At the final state, the test object tries to build certificate chain and validate the certificate. The following property can be tuned to enable/disable particular validation aspects:
+                  </para>
+                  <table>
+                    <tableHeader>
+                      <row>
+                        <entry>
+                          <para>Property Name</para>
+                        </entry>
+                        <entry>
+                          <para>Property Description</para>
+                        </entry>
+                      </row>
+                    </tableHeader>
+                    <row>
+                      <entry>
+                        <para>Allow Unknown Certificate Authority</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the chain cannot be verified due to an unknown certificate authority (CA).</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Application Policy OIDs</para>
+                      </entry>
+                      <entry>
+                        <para>Collection of object identifiers (OIDs) specifying which application policies or enhanced key usages (EKUs) the certificate must support.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Certificate Policy OIDs</para>
+                      </entry>
+                      <entry>
+                        <para>Collection of object identifiers (OIDs) specifying which certificate policies the certificate must support.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore Certificate Authority Revocation Unknown</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the certificate authority revocation is unknown when determining certificate verification.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore CTL Not Time Valid</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the certificate trust list (CTL) is not valid, for reasons such as the CTL has expired, when determining certificate verification.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore CTL Signer Revocation Unknown</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the certificate trust list (CTL) signer revocation is unknown when determining certificate verification.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore End Revocation Unknown</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the end certificate (the user certificate) revocation is unknown when determining certificate verification.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore Invalid Basic Constraints</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the basic constraints are not valid when determining certificate verification.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore Invalid Name</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the certificate has an invalid name when determining certificate verification.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore Invalid Policy</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the certificate has invalid policy when determining certificate verification.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore Not Time Nested</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the CA (certificate authority) certificate and the issued certificate have validity periods that are not nested when verifying the certificate. For example, the CA cert can be valid from January 1 to December 1 and the issued certificate from January 2 to December 2, which would mean the validity periods are not nested.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore Not Time Valid</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore certificates in the chain that are not valid either because they have expired or they are not yet in effect when determining certificate validity.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore Root Revocation Unknown</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the root revocation is unknown when determining certificate verification.</para>
+                      </entry>
+                    </row>
+                    <row>
+                      <entry>
+                        <para>Ignore Wrong Usage</para>
+                      </entry>
+                      <entry>
+                        <para>Ignore that the certificate was not issued for the current use when determining certificate verification.</para>
+                      </entry>
+                    </row>
+                  </table>
+                  <para>
+                    If the created certificate chain has any issues (excluding any aspects disabled or altered using the properties below), this will turn the 'Certificate Validity Monitor' monitor into WARNING state.
+                  </para>
+                </section>
+              </sections>
+            </section>
+          </MamlContent>
+        </KnowledgeArticle>
+
+        <KnowledgeArticle ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" Visible="true">
+          <MamlContent>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Description</title>
+              <para>
+                Test object makes a single-transaction HTTP request operation (with an optional request body for operations like PUT or POST), then either report on successful response or analyses received body.
+              </para>
+              <para>
+                Collect Performance Data is supported: YES
+              </para>
+              <table>
+                <title>Monitors and Rules</title>
+                <tableHeader>
+                  <row>
+                    <entry>
+                      <para>Monitor/Rule</para>
+                    </entry>
+                    <entry>
+                      <para>Name</para>
+                    </entry>
+                    <entry>
+                      <para>Has Threshold</para>
+                    </entry>
+                    <entry>
+                      <para>Alert Suppression</para>
+                    </entry>
+                  </row>
+                </tableHeader>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>HTTP Probe Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>No</para>
+                  </entry>
+                  <entry>
+                    <para>Supported</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Performance Collection Rule</para>
+                  </entry>
+                  <entry>
+                    <para>HTTP Request Response Time Performance Collection Rule</para>
+                  </entry>
+                  <entry>
+                    <para>N/A</para>
+                  </entry>
+                  <entry>
+                    <para>N/A</para>
+                  </entry>
+                </row>
+
+              </table>
+            </section>
+            <section xmlns="http://schemas.microsoft.com/maml/2004/10">
+              <title>Operations</title>
+              <sections>
+                <section>
+                  <title>HTTP Request</title>
+                  <para>
+                    First, the test object forms destination URI, using destination's FQDN property, as well as the 'Schema', optional 'Port', and optional 'Request Path' properties. Final URI is created of:
+                    Schema://FullyQualifiedDomainName:Port/Path.
+                    To make HTTP request the test object next creates headers and optional body. The 'HTTP Method' property defines HTTP method to use, like GET, SET, PUT, etc.
+                    The 'Header - *'properties set their corresponding header values, and the 'Header - Extra' property may
+                    set extra headers when non-empty. Put extra headers as 'HeaderParameter1: Value1|HeaderParameter2: Value2 syntax', using '|' as separator. Note, if 'Request Body' is not empty, the 'Content-Length' header will be set automatically.
+                    The 'Allow Redirect' property instructs HTTP client used by the test object to make request, either to follow or not the automatic redirection. If the 'Request Body' property is not empty, the request will have a body, regardles of
+                    the selected HTTP method.
+                  </para>
+                  <para>
+                    The 'Regular Expression' and 'Expression Not Match' are used to validate received response. The response either must match the defined regular expression (when 'Expression Not Match' is False), or must not match.
+                    If 'Regular Expression' is empty, no check is performed.
+                  </para>
+                  <para>
+                    If HTTP request is unsuccessful, or returned an HTTP error code, this will turn the 'HTTP Probe Monitor' monitor into CRITICAL state.
+                  </para>
+                  <para>
+                    If received response doesn't satisfy defined regular expression condition, this will turn the 'HTTP Probe Monitor' monitor into WARNING state.
+                  </para>
+                </section>
+              </sections>
             </section>
           </MamlContent>
         </KnowledgeArticle>
@@ -22,6 +570,56 @@
                 This test object performs a TCP connect test with optional send and receive operations. SSL connection is also supported, but
                 unlike 'Secure Socket Layer Connection' test object it uses best-negotiated SSL protocol and follows system policies.
               </para>
+              <para>
+                Collect Performance Data is supported: YES
+              </para>
+              <table>
+                <title>Monitors and Rules</title>
+                <tableHeader>
+                  <row>
+                    <entry>
+                      <para>Monitor/Rule</para>
+                    </entry>
+                    <entry>
+                      <para>Name</para>
+                    </entry>
+                    <entry>
+                      <para>Has Threshold(s)</para>
+                    </entry>
+                    <entry>
+                      <para>Alert Suppression</para>
+                    </entry>
+                  </row>
+                </tableHeader>
+                <row>
+                  <entry>
+                    <para>Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>TCP Connect Monitor</para>
+                  </entry>
+                  <entry>
+                    <para>No</para>
+                  </entry>
+                  <entry>
+                    <para>Supported</para>
+                  </entry>
+                </row>
+                <row>
+                  <entry>
+                    <para>Performance Collection Rule</para>
+                  </entry>
+                  <entry>
+                    <para>TCP Probe Time Taken Performance Collection Rule</para>
+                  </entry>
+                  <entry>
+                    <para>N/A</para>
+                  </entry>
+                  <entry>
+                    <para>N/A</para>
+                  </entry>
+                </row>
+              </table>
             </section>
             <section xmlns="http://schemas.microsoft.com/maml/2004/10">
               <title>Operations</title>
@@ -33,7 +631,7 @@
                     and then immediately closed it (if no Send or Receive operations are enabled). The 'Use SSL' property is not used with connect-only test.
                   </para>
                   <para>
-                    If Connect was not successful, the TCP Connect' monitor will turn into CRITICAL state.
+                    If Connect was not successful, the 'TCP Connect' monitor will turn into CRITICAL state.
                   </para>
                 </section>
                 <section>
@@ -52,7 +650,7 @@
                     </navigationLink>. If you need a '\' char in the unescape mode, double it as '\\'.
                   </para>
                   <para>
-                    If Send is not successful, the TCP Connect' monitor will turn into WARNING state.
+                    If Send is not successful, the 'TCP Connect' monitor will turn into WARNING state.
                   </para>
                 </section>
                 <section>
@@ -64,7 +662,7 @@
                     is used to decode server response into text.
                   </para>
                   <para>
-                    If Receive is not successful (either due to no response, or response not matching the regular expression), the TCP Connect' monitor will turn into WARNING state.
+                    If Receive is not successful (either due to no response, or response not matching the regular expression), the 'TCP Connect' monitor will turn into WARNING state.
                   </para>
                 </section>
               </sections>

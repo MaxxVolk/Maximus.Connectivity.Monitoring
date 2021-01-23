@@ -44,7 +44,6 @@
         <ClassType ID="Maximus.Connectivity.Monitoring.Test.DNSNameResolution" Accessibility="Public" Base="Maximus.Connectivity.Monitoring.Test" Abstract="false"
                    Hosted="true"
                    Comment="Enables DNS name test and defines additional parameters.">
-          
         </ClassType>
 
         <ClassType ID="Maximus.Connectivity.Monitoring.Test.SSL" Accessibility="Public" Base="Maximus.Connectivity.Monitoring.Test" Abstract="false"

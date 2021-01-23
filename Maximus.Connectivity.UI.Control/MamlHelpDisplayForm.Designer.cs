@@ -76,9 +76,9 @@ namespace Maximus.Connectivity.UI.Control
       // 
       // MamlHelpDisplayForm
       // 
-      this.AcceptButton = this.btClose;
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+      this.CancelButton = this.btClose;
       this.ClientSize = new System.Drawing.Size(550, 592);
       this.Controls.Add(this.kcTestObjectDocumentation);
       this.Controls.Add(this.pControls);

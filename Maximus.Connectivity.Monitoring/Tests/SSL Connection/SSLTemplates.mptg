@@ -1,7 +1,7 @@
 <TemplateGroup>
   <Instances>
     <Instance ID="Instance1cb8bbbf42bb4bd8ba0ce5a2d4aaa2da" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
-      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <UnitMonitorConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <MonitorType>Maximus.Connectivity.Monitoring.SSL.CertExpiration.UnitMonitor</MonitorType>
         <MonitorConfig>&lt;DaysBeforeExpirationWarning&gt;15&lt;/DaysBeforeExpirationWarning&gt;</MonitorConfig>
         <MonitorOperationalStates>
@@ -51,7 +51,7 @@ Serial number: $Data/Context/Property[@Name='SerialNumber']$</AlertDescription>
       </UnitMonitorConfig>
     </Instance>
     <Instance ID="Instancecaeede346a1c4dd38a700969c722379c" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
-      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <UnitMonitorConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <MonitorType>Maximus.Connectivity.Monitoring.SSL.DisabledProtocols.UnitMonitor</MonitorType>
         <MonitorConfig />
         <MonitorOperationalStates>
@@ -91,7 +91,7 @@ Disabled SSL protocols: $Target/Property[Type="Maximus.Connectivity.Monitoring.T
       </UnitMonitorConfig>
     </Instance>
     <Instance ID="Instanceff59fa9da4d94137b94c6aa495b5a4da" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
-      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <UnitMonitorConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <MonitorType>Maximus.Connectivity.Monitoring.SSL.DontSupportProtocols.UnitMonitor</MonitorType>
         <MonitorOperationalStates>
           <OperationalState>
@@ -130,7 +130,7 @@ Allowed SSL protocols: $Target/Property[Type="Maximus.Connectivity.Monitoring.Te
       </UnitMonitorConfig>
     </Instance>
     <Instance ID="Instance6f446c21b0844a439e50ce17ca864a79" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
-      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <UnitMonitorConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <MonitorType>Maximus.Connectivity.Monitoring.SSL.PolicyErrors.UnitMonitor</MonitorType>
         <MonitorOperationalStates>
           <OperationalState>
@@ -168,7 +168,7 @@ Policy error(s): $Data/Context/Property[@Name='PolicyErrors']$</AlertDescription
       </UnitMonitorConfig>
     </Instance>
     <Instance ID="Instance4b1c05e0998145cbb15f29be407510f0" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
-      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <UnitMonitorConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <MonitorType>Maximus.Connectivity.Monitoring.SSL.WeakSignatureAlgorithm.UnitMonitor</MonitorType>
         <MonitorOperationalStates>
           <OperationalState>
@@ -207,7 +207,7 @@ Disabled hash algorithm: $Target/Property[Type="Maximus.Connectivity.Monitoring.
       </UnitMonitorConfig>
     </Instance>
     <Instance ID="Instance09704ea551f34d5e98eda34fd5ad0de4" Type="Microsoft.SystemCenter.Authoring.CodeGeneration.Monitoring.UnitMonitor" Version="1.0.0.0">
-      <UnitMonitorConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <UnitMonitorConfig xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <MonitorType>Maximus.Connectivity.Monitoring.SSL.CertificateValid.UnitMonitor</MonitorType>
         <MonitorOperationalStates>
           <OperationalState>

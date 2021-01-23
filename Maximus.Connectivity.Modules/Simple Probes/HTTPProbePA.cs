@@ -75,7 +75,6 @@ namespace Maximus.Connectivity.Modules
                 bagItem.Add("ResponseLength", FullResponse.Length);
                 bagItem.Add("ResponseTimeMs", DateTime.UtcNow.Subtract(startTime).TotalMilliseconds);
                 bagItem.Add("EffectiveUri", Destination.ToString());
-                //ModInit.Logger.WriteWarning($"{FullyQualifiedDomainName}. RegEx: {RegularExpression}, ExpressionIsNegative: {ExpressionIsNegative}, State: OK", this);
                 return new List<PropertyBagDataItem>() { CreatePropertyBag(bagItem) }.ToArray();
               }
 
@@ -90,7 +89,6 @@ namespace Maximus.Connectivity.Modules
                 bagItem.Add("ResponseLength", FullResponse.Length);
                 bagItem.Add("ResponseTimeMs", DateTime.UtcNow.Subtract(startTime).TotalMilliseconds);
                 bagItem.Add("EffectiveUri", Destination.ToString());
-                //ModInit.Logger.WriteWarning($"{FullyQualifiedDomainName}. RegEx: {RegularExpression}, regEdMatched:{regEdMatched}, ExpressionIsNegative: {ExpressionIsNegative}, State: OK", this);
               }
               else
               {
