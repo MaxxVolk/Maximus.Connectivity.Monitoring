@@ -543,7 +543,7 @@
                     To make HTTP request the test object next creates headers and optional body. The 'HTTP Method' property defines HTTP method to use, like GET, SET, PUT, etc.
                     The 'Header - *'properties set their corresponding header values, and the 'Header - Extra' property may
                     set extra headers when non-empty. Put extra headers as 'HeaderParameter1: Value1|HeaderParameter2: Value2 syntax', using '|' as separator. Note, if 'Request Body' is not empty, the 'Content-Length' header will be set automatically.
-                    The 'Allow Redirect' property instructs HTTP client used by the test object to make request, either to follow or not the automatic redirection. If the 'Request Body' property is not empty, the request will have a body, regardles of
+                    The 'Allow Redirect' property instructs HTTP client used by the test object to make request, either to follow or not the automatic redirection. If the 'Request Body' property is not empty, the request will have a body, regardless of
                     the selected HTTP method.
                   </para>
                   <para>
@@ -657,7 +657,7 @@
                   <title>Receive</title>
                   <para>
                     When the 'Expect Response' property is set, the test will try to receive up to 16 KB (hardcoded limit) from the remote server. Receive and Send operations
-                    are independent, i.e. they can be turned on and off individually. Receive opertaion is either succeed upon receiving any positive number of bytes, or
+                    are independent, i.e. they can be turned on and off individually. Receive operation is either succeed upon receiving any positive number of bytes, or
                     if the 'Response Regular Expression' property not empty, the response is tested to math the regular expression. The same encoding from 'Encoding' property
                     is used to decode server response into text.
                   </para>

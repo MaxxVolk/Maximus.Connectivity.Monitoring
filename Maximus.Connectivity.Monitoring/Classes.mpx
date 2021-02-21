@@ -24,7 +24,7 @@
         <ClassType ID="Maximus.Connectivity.Monitoring.Test" Accessibility="Public" Base="System!System.Entity" Abstract="true"
                    Hosted="true" Singleton="false"
                    Comment="Base class for all tests. Has template name.">
-          <Property ID="TestId" Type="guid" Key="true"/>
+          <Property ID="TestId" Type="guid" Key="true" />
           <Property ID="TemplateReference" Type="string" Comment="Template reference"/>
           <Property ID="IntervalSeconds" Type="int" DefaultValue="600" />
           <Property ID="MatchCount" Type="int" DefaultValue="3"/>
@@ -50,7 +50,7 @@
                    Hosted="true" Singleton="false"
                    Comment="Enables SSL test for its parent FQDN object. Defines additional testing parameters.">
           <Property ID="Schema" Type="string" Comment="Secure schema such as https, ldaps, smtps, etc. If empty or non-standard, then port number should be defined."/>
-          <Property ID="Port" Type="int" DefaultValue="-1" Comment="Defines port for secure connection, overrides default schema's value."/>
+          <Property ID="Port" Type="int" DefaultValue="0" Comment="Defines port for secure connection, overrides default schema's value."/>
           <!-- Testing options -->
           <Property ID="IgnoreRevocationCheck" Type="bool" Comment="X509ChainPolicy.RevocationMode" />
           <Property ID="ApplicationPolicy" Type="string" Comment="List of OIDs for X509ChainPolicy.ApplicationPolicy" />
@@ -77,7 +77,7 @@
                    Comment="Enables HTTP test for its parent FQDN object. Defines additional testing parameters." >
           <Property ID="Schema" Type="string" Comment="http or https"/>
           <Property ID="Path" Type="string" Comment="Full url is schema + parent.FullyQualifiedDomainName + path."/>
-          <Property ID="Port" Type="int" DefaultValue="-1" />
+          <Property ID="Port" Type="int" DefaultValue="0" />
           <!-- Testing options -->
           <Property ID="AllowRedirect" Type="bool" DefaultValue="true"/>
           <Property ID="HTTPMethod" Type="string" DefaultValue="GET"/>
@@ -338,7 +338,7 @@
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="Port">
           <Name>Port</Name>
-          <Description>Target URL port. Set to -1 or 0 to use schema-defaulted port. Full URL is constructed as Schema://FullyQualifiedDomainName:Port/Path.</Description>
+          <Description>Target URL port. Set to 0 to use schema-defaulted port. Full URL is constructed as Schema://FullyQualifiedDomainName:Port/Path.</Description>
         </DisplayString>
         <DisplayString ElementID="Maximus.Connectivity.Monitoring.Test.HTTP" SubElementID="UserAgent">
           <Name>Header - User-Agent</Name>

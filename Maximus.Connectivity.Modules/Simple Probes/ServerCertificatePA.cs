@@ -51,7 +51,7 @@ namespace Maximus.Connectivity.Modules
         {
           ModInit.Logger.WriteWarning($"Unable to get port number from {Schema} schema. Will retry using explicit port number (if available).\r\nError message: {e.Message}", this);
         }
-      if (remotePort <= 0 && Port >= 0)
+      if (remotePort <= 0 && Port > 0)
         remotePort = Port;
       if (remotePort <= 0)
       {

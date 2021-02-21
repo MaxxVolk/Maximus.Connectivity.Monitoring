@@ -6,7 +6,7 @@
       <Dependency ID="MBL!Maximus.Base.Library.Console.Assembly" />
     </Assembly>
     <DeployableAssembly ID="Maximus.Connectivity.Monitoring.Modules.DeployableAssembly" HasNullStream="false" Accessibility="Public"
-                        QualifiedName="Maximus.Connectivity.Modules, Version=1.0.0.20, Culture=neutral, PublicKeyToken=fd5098a6a3259696"
+                        QualifiedName="Maximus.Connectivity.Modules, Version=1.0.0.21, Culture=neutral, PublicKeyToken=fd5098a6a3259696"
                         FileName="Maximus.Connectivity.Modules.dll">
       <Dependency ID="MBL!Maximus.Base.Library.ManagedWorkflowBase.DeployableAssembly"/>
       <Dependency ID="MBL!Maximus.Base.Library.Newtonsoft.Json.DeployableAssembly"/>
