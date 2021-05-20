@@ -34,36 +34,42 @@
       <HintPath>C:\Projects\SCOMAuthoring\Maximus.Base.Library\Maximus.Base.Library\bin\Release\Maximus.Base.Library.mpb</HintPath>
       <Alias>MBL</Alias>
       <MinVersion>1.0.0.16</MinVersion>
-    </ManagementPackReference>
-    <ManagementPackReference Include="Microsoft.SystemCenter.DataWarehouse.Library">
-      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2016\Microsoft.SystemCenter.DataWarehouse.Library.mp</HintPath>
-      <Alias>MSDL</Alias>
-      <MinVersion>7.2.11719.0</MinVersion>
-    </ManagementPackReference>
-    <ManagementPackReference Include="Microsoft.SystemCenter.Library">
-      <Alias>SC</Alias>
-      <PackageToBundle>false</PackageToBundle>
-    </ManagementPackReference>
-    <ManagementPackReference Include="Microsoft.Windows.Library">
-      <Alias>Windows</Alias>
-      <PackageToBundle>false</PackageToBundle>
-    </ManagementPackReference>
-    <ManagementPackReference Include="System.Health.Library">
-      <Alias>Health</Alias>
-      <PackageToBundle>false</PackageToBundle>
-    </ManagementPackReference>
-    <ManagementPackReference Include="System.Library">
-      <Alias>System</Alias>
-      <PackageToBundle>false</PackageToBundle>
-    </ManagementPackReference>
-    <ManagementPackReference Include="Microsoft.SystemCenter.Visualization.Library">
-      <Alias>Visualization</Alias>
       <PackageToBundle>False</PackageToBundle>
     </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.DataWarehouse.Library">
+      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.SystemCenter.DataWarehouse.Library.mp</HintPath>
+      <Alias>MSDL</Alias>
+      <MinVersion>7.1.10226.0</MinVersion>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.Library">
+      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.SystemCenter.Library.mp</HintPath>
+      <Alias>SC</Alias>
+      <MinVersion>7.0.8433.0</MinVersion>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.SystemCenter.Visualization.Library">
+      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.SystemCenter.Visualization.Library.mp</HintPath>
+      <Alias>Visualization</Alias>
+      <MinVersion>7.1.10226.0</MinVersion>
+    </ManagementPackReference>
+    <ManagementPackReference Include="Microsoft.Windows.Library">
+      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2012R2\Microsoft.Windows.Library.mp</HintPath>
+      <Alias>Windows</Alias>
+      <MinVersion>7.5.8501.0</MinVersion>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Health.Library">
+      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2012R2\System.Health.Library.mp</HintPath>
+      <Alias>Health</Alias>
+      <MinVersion>7.0.8433.0</MinVersion>
+    </ManagementPackReference>
+    <ManagementPackReference Include="System.Library">
+      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2012R2\System.Library.mp</HintPath>
+      <Alias>System</Alias>
+      <MinVersion>7.5.8501.0</MinVersion>
+    </ManagementPackReference>
     <ManagementPackReference Include="System.Performance.Library">
-      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2016\System.Performance.Library.mp</HintPath>
+      <HintPath>C:\Program Files (x86)\System Center Visual Studio Authoring Extensions\References\OM2012R2\System.Performance.Library.mp</HintPath>
       <Alias>Perf</Alias>
-      <MinVersion>7.0.8437.0</MinVersion>
+      <MinVersion>7.0.8433.0</MinVersion>
     </ManagementPackReference>
   </ItemGroup>
   <ItemGroup>

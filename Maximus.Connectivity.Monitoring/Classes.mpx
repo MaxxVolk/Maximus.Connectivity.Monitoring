@@ -76,7 +76,7 @@
                    Hosted="true" Singleton="false"
                    Comment="Enables HTTP test for its parent FQDN object. Defines additional testing parameters." >
           <Property ID="Schema" Type="string" Comment="http or https"/>
-          <Property ID="Path" Type="string" Comment="Full url is schema + parent.FullyQualifiedDomainName + path."/>
+          <Property ID="Path" Type="string" MaxLength="8000" Comment="Full url is schema + parent.FullyQualifiedDomainName + path."/>
           <Property ID="Port" Type="int" DefaultValue="0" />
           <!-- Testing options -->
           <Property ID="AllowRedirect" Type="bool" DefaultValue="true"/>
